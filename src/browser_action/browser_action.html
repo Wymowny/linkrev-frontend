@@ -1,34 +1,70 @@
 <!doctype html>
 <style type="text/css">
-    input, textarea {
-        width: 100%;
+    body {
+        margin: 0;
+        padding: 0;
+        color: white;
     }
 
     #mainPopup {
         padding: 10px;
-        width: 400px;
-        overflow-x: hidden;
-        font-family: Arial, sans-serif;
         font-size: 12px;
+        width: 430px;
+        background: #674172;
+    }
+
+    input, textarea {
+        color: #ffffff;
+        font-size: 13px;
+        width: calc(100% - 30px);
+        height: 35px;
+        padding-left: 15px;
+        padding-right: 15px;
+        border: none;
+        border-radius: 20px;
+        background: rgba(255,255,255,.2);
+    }
+
+    textarea {
+        height: 150px;
+    }
+
+    input:focus, textarea:focus {
+        background: rgba(255,255,255,.3);
+        transition: background .5s ease;
+        border: none;
+    }
+
+    input[type="submit"] {
+        width: auto;
+    }
+
+    label {
+        font-weight: 400;
+        text-transform: uppercase;
+        font-size: 13px;
+        padding-left: 15px;
+        padding-bottom: 5px;
+        color: rgba(255,255,255,.7);
+        display: block;
     }
 
     h1 {
         font-size: 2em;
     }
+
+
 </style>
 
 <div id="mainPopup">
     <h1>Comment this page:</h1>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    </p>
     <form id="addbookmark">
         <p>
             <label for="title">Name:</label>
             <input type="text" id="title" name="title" size="50" value="">
         </p>
         <p>
-            <label for="summary">Comment:</label><br />
+            <label for="summary">Comment:</label>
             <textarea id="summary" name="summary" rows="6" cols="35"></textarea>
         </p>
         <p>
