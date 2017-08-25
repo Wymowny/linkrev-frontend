@@ -6,7 +6,7 @@
         color: white;
     }
 
-    #mainPopup {
+    #form {
         padding: 10px;
         font-size: 12px;
         width: 430px;
@@ -17,7 +17,6 @@
         color: #ffffff;
         font-size: 13px;
         width: calc(100% - 30px);
-        height: 35px;
         padding-left: 15px;
         padding-right: 15px;
         border: none;
@@ -25,8 +24,8 @@
         background: rgba(255,255,255,.2);
     }
 
-    textarea {
-        height: 150px;
+    input {
+        height: 35px;
     }
 
     input:focus, textarea:focus {
@@ -48,27 +47,21 @@
         color: rgba(255,255,255,.7);
         display: block;
     }
-
-    h1 {
-        font-size: 2em;
-    }
-
-
 </style>
 
-<div id="mainPopup">
+<div id="form">
     <h1>Comment this page:</h1>
-    <form id="addbookmark">
+    <form id="sendComment">
         <p>
-            <label for="title">Name:</label>
-            <input type="text" id="title" name="title" size="50" value="">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" size="50" value="">
         </p>
         <p>
-            <label for="summary">Comment:</label>
-            <textarea id="summary" name="summary" rows="6" cols="35"></textarea>
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" rows="8" cols="35"></textarea>
         </p>
         <p>
-            <input id="save" type="submit" value="Send" />
+            <input id="send" type="submit" value="Send" />
             <span id="status-display"></span>
         </p>
     </form>
