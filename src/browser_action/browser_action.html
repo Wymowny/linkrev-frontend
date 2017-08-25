@@ -1,19 +1,39 @@
 <!doctype html>
 <style type="text/css">
-	#mainPopup {
-		padding: 10px;
-		height: 200px;
-		width: 400px;
-		font-family: Helvetica, Ubuntu, Arial, sans-serif;
-	}
-	h1 {
-		font-size: 2em;
-	}
+    input, textarea {
+        width: 100%;
+    }
+
+    #mainPopup {
+        padding: 10px;
+        width: 400px;
+        overflow-x: hidden;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
 </style>
 
 <div id="mainPopup">
-<h1>Narlit is awesome!</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-</p>
+    <h1>Comment this page:</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+    </p>
+    <form id="addbookmark">
+        <p>
+            <label for="title">Name:</label>
+            <input type="text" id="title" name="title" size="50" value="">
+        </p>
+        <p>
+            <label for="summary">Comment:</label><br />
+            <textarea id="summary" name="summary" rows="6" cols="35"></textarea>
+        </p>
+        <p>
+            <input id="save" type="submit" value="Send" />
+            <span id="status-display"></span>
+        </p>
+    </form>
 </div>
