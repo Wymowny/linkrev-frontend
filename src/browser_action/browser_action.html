@@ -1,68 +1,95 @@
 <!doctype html>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css" />
 <style type="text/css">
-    body {
-        margin: 0;
-        padding: 0;
-        color: white;
+    h2 {
+        margin-bottom: 10px;
     }
 
-    #form {
-        padding: 10px;
-        font-size: 12px;
+    #content {
         width: 430px;
-        background: #674172;
+        padding: 10px;
     }
 
-    input, textarea {
-        color: #ffffff;
-        font-size: 13px;
-        width: calc(100% - 30px);
-        padding-left: 15px;
-        padding-right: 15px;
-        border: none;
-        border-radius: 20px;
-        background: rgba(255,255,255,.2);
-    }
-
-    input {
-        height: 35px;
-    }
-
-    input:focus, textarea:focus {
-        background: rgba(255,255,255,.3);
-        transition: background .5s ease;
-        border: none;
-    }
-
-    input[type="submit"] {
-        width: auto;
-    }
-
-    label {
-        font-weight: 400;
-        text-transform: uppercase;
-        font-size: 13px;
-        padding-left: 15px;
-        padding-bottom: 5px;
-        color: rgba(255,255,255,.7);
-        display: block;
+    #sendComment {
+        margin-bottom: 20px;
     }
 </style>
 
-<div id="form">
-    <h1>Comment this page:</h1>
+<div id="content">
+    <h2>Comment this page:</h2>
     <form id="sendComment">
-        <p>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" size="50" value="">
-        </p>
-        <p>
-            <label for="comment">Comment:</label>
-            <textarea id="comment" name="comment" rows="8" cols="35"></textarea>
-        </p>
-        <p>
-            <input id="send" type="submit" value="Send" />
-            <span id="status-display"></span>
-        </p>
+        <div class="field">
+            <label class="label">Name:</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Your name">
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Message:</label>
+            <div class="control">
+                <textarea class="textarea" placeholder="Your comment"></textarea>
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox">
+                    I agree to the <a href="#">terms and conditions</a>
+                </label>
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-primary">Submit</button>
+            </div>
+        </div>
     </form>
+
+    <h2>Previous comments:</h2>
+    <div class="comments">
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>John Smith</strong> <small>24.08.2017</small>
+                            <br>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>John Smith</strong> <small>24.08.2017</small>
+                            <br>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>John Smith</strong> <small>24.08.2017</small>
+                            <br>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
+                        </p>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
 </div>
