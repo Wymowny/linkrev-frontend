@@ -1,9 +1,9 @@
 {
-  "name": "Narlit",
+  "name": "LinkRev",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Online Hydepark!",
-  "homepage_url": "http://extensionizr.com",
+  "description": "LinkRev - read and add comments to any website on the Internet",
+  "homepage_url": "https://linkrev.com",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -16,7 +16,7 @@
   },
   "browser_action": {
     "default_icon": "icons/icon19.png",
-    "default_title": "Narlit extension",
+    "default_title": "LinkRev",
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
