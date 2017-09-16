@@ -22,15 +22,15 @@ localizeHtmlPage();
 
 window.onload = function() {
 
-    SetExistingComments();
+    GetExistingComments();
 }
 
-function SetExistingComments() {
+function GetExistingComments() {
 
-    getCurrentUrl(Haah);
+    getCurrentUrl(ExistingCommentsAjaxQuery);
 }
 
-function Haah(url)
+function ExistingCommentsAjaxQuery(url)
 {
     var xhr = new XMLHttpRequest();
     
@@ -40,11 +40,20 @@ function Haah(url)
 
         if (this.responseText) {
         
-            var existingComments = document.getElementById("existing-comments");
-            existingComments.innerText = this.responseText;
+            var existingComments = document.getElementById("comments");
+            
+            var comments = JSON.parse(this.responseText);
+
+            var html = '';
+            for (var i = 0; i < comments.length; i++) {
+
+                html += '<div class="box"><article class="media"><div class="media-content"><div class="content"><p>' + comments[i].content + '</p>' + '<sub>' + new Date(comments[i].createdDate).toLocaleDateString() + ' ' + new Date(comments[i].createdDate).toLocaleTimeString()  + '</sub>' + '</div></div></article></div>';
+            }
+
+            existingComments.innerHTML = html;
         }
     };    
     
-    xhr.open("GET", getCountUrl() + "?link=" + url, true);
+    xhr.open("GET", getCommentsUrl() + "?link=" + url, true);
     xhr.send();
 }

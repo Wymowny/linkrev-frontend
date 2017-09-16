@@ -8,6 +8,11 @@ function getBaseUrl() {
     return this.getBaseUrl() +  "api/comments/count";
   }
 
+  function getCommentsUrl() {
+    
+      return this.getBaseUrl() +  "api/comments";
+}
+
   function getCurrentUrl(callback) {
 
     chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
