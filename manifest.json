@@ -22,6 +22,8 @@
   "permissions": [
     "notifications",
     "webNavigation",
-    "tabs"
+    "tabs",
+    "storage",
+    "https://linkrev.com/"
   ]
 }

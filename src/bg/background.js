@@ -1,10 +1,10 @@
-function getGmailUrl() {
+function getBaselUrl() {
   return "https://linkrev.com/";
 }
 
 function getCountUrl() {
 
-  return "api/comments/count"
+  return this.getBaselUrl() +  "api/comments/count";
 }
 
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
@@ -29,7 +29,6 @@ function updateCommentsCount() {
     getInboxCount(
       url,
       function(count) {
-        alert(count);
         updateUnreadCount(count);
       },
       function() {
@@ -42,63 +41,65 @@ function updateCommentsCount() {
 
 function updateUnreadCount(count) {
   var changed = localStorage.unreadCount != count;
-  localStorage.unreadCount = count;
-  updateIcon();
+
+  if (changed) {
+
+    localStorage.unreadCount = count;
+    updateIcon();
+  } 
 }
 
 function updateIcon() {
-  if (!localStorage.hasOwnProperty('unreadCount')) {
-    chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-    chrome.browserAction.setBadgeText({text:"?"});
-  } else {
+
+  if (localStorage.unreadCount) {
+
     chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
     chrome.browserAction.setBadgeText({
       text: localStorage.unreadCount != "0" ? localStorage.unreadCount : ""
     });
   }
+  else {
+
+    chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
+    chrome.browserAction.setBadgeText({text:"0"});
+  }  
 }
 
 function getInboxCount(url, onSuccess, onError) {
+
   var xhr = new XMLHttpRequest();
-  var abortTimerId = window.setTimeout(function() {
-    xhr.abort();
-  }, requestTimeout);
 
   function handleSuccess(count) {
-    localStorage.requestFailureCount = 0;
-    window.clearTimeout(abortTimerId);
     if (onSuccess)
       onSuccess(count);
   }
 
   var invokedErrorCallback = false;
   function handleError() {
-    ++localStorage.requestFailureCount;
-    window.clearTimeout(abortTimerId);
     if (onError && !invokedErrorCallback)
       onError();
     invokedErrorCallback = true;
   }
 
   try {
+
     xhr.onreadystatechange = function() {
       if (xhr.readyState != 4)
         return;
 
       if (this.responseText) {
         
-        handleSuccess(JSON.parse(this.responseText));
+        handleSuccess(this.responseText);
       }
-
-      handleError();
     };
 
     xhr.onerror = function(error) {
+
       handleError();
     };
 
-    xhr.open("GET", getCountUrl() + "?url=" + url, true);
-    xhr.send(null);
+    xhr.open("GET", getCountUrl() + "?link=" + url, true);
+    xhr.send();
   } catch(e) {
     handleError();
   }
