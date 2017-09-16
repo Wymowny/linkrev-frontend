@@ -14,6 +14,9 @@
   "TermsAndConditions": {
     "message":"terms and conditions"
   },
+  "TermsAndConditionsLink": {
+    "message": "https://linkrev.com/en/TermsAndConditions"
+  },
   "Submit": {
     "message":"Submit"
   }

@@ -25,31 +25,18 @@
         <div class="field">
             <div class="control">
                 <label class="checkbox">
-                    __MSG_IAgree__<a target="_blank" href="https://linkrev.com/en/TermsAndConditions">__MSG_TermsAndConditions__</a>
+                    __MSG_IAgree__<a target="_blank" href="__MSG_TermsAndConditionsLink__">__MSG_TermsAndConditions__</a>
                 </label>
             </div>
         </div>
         <div class="field is-grouped">
             <div class="control">
-                <button type="button" class="button is-primary" onclick="sendComment();">__MSG_Submit__</button>
+                <button id="submit-button" type="button" class="button is-primary">__MSG_Submit__</button>
             </div>
         </div>
     </form>
     <h2 id="existing-comments"></h2>
     <div id="comments" class="comments">
-        <div class="box">
-            <article class="media">
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>John Smith</strong> <small>24.08.2017</small>
-                            <br>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
-                        </p>
-                    </div>
-                </div>
-            </article>
-        </div>
     </div>
 </div>
 <script src="../global.js"></script>

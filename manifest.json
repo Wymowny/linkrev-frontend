@@ -23,6 +23,7 @@
     "notifications",
     "webNavigation",
     "tabs",
+    "activeTab",
     "storage",
     "https://linkrev.com/"
   ]

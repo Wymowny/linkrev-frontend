@@ -25,6 +25,10 @@ window.onload = function() {
     GetExistingComments();
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("submit-button").addEventListener("click", sendComment);
+  });
+
 function GetExistingComments() {
 
     getCurrentUrl(ExistingCommentsAjaxQuery);
@@ -56,4 +60,34 @@ function ExistingCommentsAjaxQuery(url)
     
     xhr.open("GET", getCommentsUrl() + "?link=" + url, true);
     xhr.send();
+}
+
+function sendComment() {
+
+    getCurrentUrl(AddCommentAjaxQuery);
+}
+
+function AddCommentAjaxQuery(url) {
+
+    var xhr = new XMLHttpRequest();
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState != 4)
+        return;
+
+        document.getElementById('comment').value = '';
+        GetExistingComments();
+    };    
+    
+    var commentContent = document.getElementById('comment').value;
+    var link = url;
+    var language = getCurrentLanguage();
+
+    var params = "Link=" + link + '&NewCommentContent=' + commentContent + '&Language=' + language;
+
+    xhr.open("POST", getAddCommentUrl(), true);
+
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    xhr.send(params);
 }
