@@ -21,6 +21,7 @@
   },
   "permissions": [
     "notifications",
-    "webNavigation"
+    "webNavigation",
+    "tabs"
   ]
 }
