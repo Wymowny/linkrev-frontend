@@ -14,57 +14,29 @@
         margin-bottom: 20px;
     }
 </style>
-
 <div id="content">
     <form id="sendComment">
         <div class="field">
-            <label class="label">Message:</label>
+            <label class="label">__MSG_Message__:</label>
             <div class="control">
-                <textarea class="textarea" placeholder="Your comment"></textarea>
+                <textarea id="comment" class="textarea" placeholder="__MSG_YourComment__"></textarea>
             </div>
         </div>
         <div class="field">
             <div class="control">
                 <label class="checkbox">
-                    <input type="checkbox">
-                    I agree to the <a href="https://linkrev.com/en/TermsAndConditions">terms and conditions</a>
+                    __MSG_IAgree__<a target="_blank" href="https://linkrev.com/en/TermsAndConditions">__MSG_TermsAndConditions__</a>
                 </label>
             </div>
         </div>
         <div class="field is-grouped">
             <div class="control">
-                <button class="button is-primary">Submit</button>
+                <button type="button" class="button is-primary" onclick="sendComment();">__MSG_Submit__</button>
             </div>
         </div>
     </form>
-    <h2>Previous comments:</h2>
+    <h2 id="existing-comments"></h2>
     <div class="comments">
-        <div class="box">
-            <article class="media">
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>John Smith</strong> <small>24.08.2017</small>
-                            <br>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
-                        </p>
-                    </div>
-                </div>
-            </article>
-        </div>
-        <div class="box">
-            <article class="media">
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>John Smith</strong> <small>24.08.2017</small>
-                            <br>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.
-                        </p>
-                    </div>
-                </div>
-            </article>
-        </div>
         <div class="box">
             <article class="media">
                 <div class="media-content">
@@ -80,3 +52,5 @@
         </div>
     </div>
 </div>
+<script src="../global.js"></script>
+<script src="browser_action.js"></script>

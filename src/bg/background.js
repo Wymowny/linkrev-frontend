@@ -1,12 +1,3 @@
-function getBaselUrl() {
-  return "https://linkrev.com/";
-}
-
-function getCountUrl() {
-
-  return this.getBaselUrl() +  "api/comments/count";
-}
-
 chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
   var url = tab.url;
       
@@ -23,20 +14,21 @@ chrome.tabs.onActivated.addListener(function(details) {
 
 function updateCommentsCount() {
 
-  chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-    var url = tabs[0].url;
-    
-    getInboxCount(
-      url,
-      function(count) {
-        updateUnreadCount(count);
-      },
-      function() {
-        delete localStorage.unreadCount;
-        updateIcon();
-      }
-    );
-  }); 
+  getCurrentUrl(unreadMessagesCount);
+}
+
+function unreadMessagesCount(url) {
+
+  getInboxCount(
+    url,
+    function(count) {
+      updateUnreadCount(count);
+    },
+    function() {
+      delete localStorage.unreadCount;
+      updateIcon();
+    }
+  );
 }
 
 function updateUnreadCount(count) {
