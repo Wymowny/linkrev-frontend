@@ -1,11 +1,24 @@
 {
     "appDesc": {
-      "message": "LinkRev - read and add comments to any website on the Internet.",
-      "description": "description of the applications"
+      "message": "LinkRev - czytaj i dodwaj komentarze w dowolnym miejscu w Internecie."
+    },
+    "Message": {
+      "message":"Wiadomość"
+    },
+    "YourComment": {
+      "message":"Twój komentarz"
+    },
+    "IAgree": {
+      "message": "Wysyłając komentarz akceptujesz  "
+    },
+    "TermsAndConditions": {
+      "message":"regularmin."
+    },
+    "TermsAndConditionsLink": {
+      "message": "https://linkrev.com/pl/TermsAndConditions"
     },
     "Submit": {
-      "message":"Submit",
-      "description":"submit your comment"
+      "message":"Wyślij"
     }
   }
   
