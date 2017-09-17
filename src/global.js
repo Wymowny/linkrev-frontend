@@ -28,15 +28,13 @@ function getAddCommentUrl() {
 
 function getCurrentLanguage() {
 
-    var language;
+    var language = window.navigator.userLanguage || window.navigator.language;
+    
 
-    if (window.navigator.languages) {
+    if (language.length > 2) {
 
-        language = window.navigator.languages[0];
-    } else {
-
-        language = window.navigator.userLanguage || window.navigator.language;
+        language = language.substring(0, 2);
     }
-
+ 
     return language;
 }

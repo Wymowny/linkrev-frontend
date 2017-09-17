@@ -64,7 +64,12 @@ function ExistingCommentsAjaxQuery(url)
 
 function sendComment() {
 
-    getCurrentUrl(AddCommentAjaxQuery);
+    var commentContent = document.getElementById('comment').value;
+
+    if(commentContent != '' && commentContent.length < 1000) {
+
+        getCurrentUrl(AddCommentAjaxQuery);
+    }    
 }
 
 function AddCommentAjaxQuery(url) {
@@ -83,7 +88,7 @@ function AddCommentAjaxQuery(url) {
     var link = url;
     var language = getCurrentLanguage();
 
-    var params = "Link=" + link + '&NewCommentContent=' + commentContent + '&Language=' + language;
+    var params = "Link=" + link + '&NewCommentContent=' + commentContent + '&CommentLanguage=' + language;
 
     xhr.open("POST", getAddCommentUrl(), true);
 
