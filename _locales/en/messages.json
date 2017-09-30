@@ -3,21 +3,21 @@
     "message": "Write and read comments on the Internet."
   },
   "Message": {
-    "message":"Message"
+    "message": "Message"
   },
   "YourComment": {
-    "message":"Your comment"
+    "message": "Your comment"
   },
   "IAgree": {
     "message": "Submitting I agree to the "
   },
   "TermsAndConditions": {
-    "message":"terms and conditions"
+    "message": "terms and conditions"
   },
   "TermsAndConditionsLink": {
     "message": "https://linkrev.com/en/TermsAndConditions"
   },
   "Submit": {
-    "message":"Submit"
+    "message": "Submit"
   }
 }
