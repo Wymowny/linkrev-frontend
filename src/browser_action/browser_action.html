@@ -1,5 +1,6 @@
 <!doctype html>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css" />
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 <style type="text/css">
     h2 {
         margin-bottom: 10px;
@@ -13,6 +14,32 @@
     #sendComment {
         margin-bottom: 20px;
     }
+
+    .box__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+        border-bottom: 1px solid rgba(10,10,10,.1);
+        padding-bottom: 5px;
+    }
+
+    .box__footer {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 5px;
+    }
+
+    .box__footer .fa-warning {
+        margin-right: 3px;
+    }
+
+    .control__select {
+        font-size: 13px;
+        line-height: 30px;
+        margin-bottom: 5px;
+    }
+
 </style>
 <div id="content">
     <form id="sendComment">
@@ -29,6 +56,7 @@
                 </label>
             </div>
         </div>
+
         <div class="field is-grouped">
             <div class="control">
                 <button id="submit-button" type="button" class="button is-primary">__MSG_Submit__</button>
@@ -36,7 +64,54 @@
         </div>
     </form>
     <h2 id="existing-comments"></h2>
+
+    <div class="control control__select">
+        Komentarze (122):
+        <div class="select">
+            <select>
+                <option>najstarsze</option>
+                <option>najnowsze</option>
+                <option>najlepsze</option>
+            </select>
+        </div>
+    </div>
+
     <div id="comments" class="comments">
+
+        <div class="box">
+            <article class="media">
+                <div class="media-content">
+                    <div class="content">
+                        <div class="box__head">
+                            <sub>24.05.2017 o 22:24</sub>
+                            <span class="rating">
+                                <span class="has-text-success">25</span>
+                                <span class="icon has-text-success">
+                                    <i class="fa fa-plus-square"></i>
+                                </span>
+
+                                <span class="icon has-text-danger">
+                                    <i class="fa fa-minus-square"></i>
+                                </span>
+                            </span>
+                        </div>
+
+                        <p class="comment__content">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi explicabo hic nihil rem similique, suscipit tempore ullam vitae. Asperiores cum et itaque officiis quasi quidem, ut! Officia sint sunt unde!
+                        </p>
+
+                        <div class="box__footer">
+                            <span class="button is-primary is-small" data-attribute="report">
+                                <i class="fa fa-warning"></i> Report
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+
+
     </div>
 </div>
 

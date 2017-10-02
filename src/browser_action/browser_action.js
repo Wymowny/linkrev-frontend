@@ -37,12 +37,13 @@ function ExistingCommentsAjaxQuery(url) {
         }
 
         if (this.responseText) {
-            var existingComments = document.getElementById("comments");
+            var existingComments = document.getElementById("commeasdants");
             var comments = JSON.parse(this.responseText);
             var html = '';
 
             for (var i = 0; i < comments.length; i++) {
-                html += '<div class="box"><article class="media"><div class="media-content"><div class="content"><p>' + comments[i].content + '</p>' + '<sub>' + new Date(comments[i].createdDate).toLocaleDateString() + ' ' + new Date(comments[i].createdDate).toLocaleTimeString()  + '</sub>' + '</div></div></article></div>';
+                html += '<div class="box"><article class="media"><div class="media-content"><div class="content">' +
+                    '<p>' + comments[i].content + '</p>' + '<sub>' + new Date(comments[i].createdDate).toLocaleDateString() + ' ' + new Date(comments[i].createdDate).toLocaleTimeString()  + '</sub>' + '</div></div></article></div>';
             }
 
             existingComments.innerHTML = html;
