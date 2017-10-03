@@ -1,3 +1,5 @@
+"use strict";
+
 function localizeHtmlPage() {
     var objects = document.getElementsByTagName('html');
 
@@ -21,7 +23,10 @@ window.onload = function() {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById("submit-button").addEventListener("click", sendComment);
+    document.getElementById("submitButton").addEventListener("click", sendComment);
+    document.getElementById("plusForComment").addEventListener("click", plusComment);
+    document.getElementById("minusForComment").addEventListener("click", minusComment);
+    document.getElementById("reportComment").addEventListener("click", reportComment);
 });
 
 function GetExistingComments() {
@@ -60,6 +65,18 @@ function sendComment() {
     if(commentContent != '' && commentContent.length < 1000) {
         getCurrentUrl(AddCommentAjaxQuery);
     }    
+}
+
+function plusComment() {
+    console.log(plusComment);
+}
+
+function minusComment() {
+    console.log(minusComment);
+}
+
+function reportComment() {
+    console.log(reportComment);
 }
 
 function AddCommentAjaxQuery(url) {

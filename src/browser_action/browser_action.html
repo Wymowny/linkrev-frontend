@@ -40,8 +40,24 @@
         margin-bottom: 5px;
     }
 
+    .notification:not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    button.icon {
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
 </style>
 <div id="content">
+    <div class="notification is-success">
+        <button class="delete"></button>
+        Success lorem ipsum dolor sit amet, consectetur adipiscing dolor. <strong>Pellentesque
+        risus mi</strong>, tempus quis placerat ut!
+    </div>
+
     <form id="sendComment">
         <div class="field">
             <label class="label">__MSG_Message__:</label>
@@ -59,7 +75,7 @@
 
         <div class="field is-grouped">
             <div class="control">
-                <button id="submit-button" type="button" class="button is-primary">__MSG_Submit__</button>
+                <button id="submitButton" type="button" class="button is-primary">__MSG_Submit__</button>
             </div>
         </div>
     </form>
@@ -86,13 +102,13 @@
                             <sub>24.05.2017 o 22:24</sub>
                             <span class="rating">
                                 <span class="has-text-success">25</span>
-                                <span class="icon has-text-success">
+                                <button class="icon has-text-success" id="plusForComment">
                                     <i class="fa fa-plus-square"></i>
-                                </span>
+                                </button>
 
-                                <span class="icon has-text-danger">
+                                <button class="icon has-text-danger" id="minusForComment">
                                     <i class="fa fa-minus-square"></i>
-                                </span>
+                                </button>
                             </span>
                         </div>
 
@@ -101,9 +117,9 @@
                         </p>
 
                         <div class="box__footer">
-                            <span class="button is-primary is-small" data-attribute="report">
+                            <button class="button is-primary is-small" id="reportComment">
                                 <i class="fa fa-warning"></i> Report
-                            </span>
+                            </button>
                         </div>
                     </div>
                 </div>
