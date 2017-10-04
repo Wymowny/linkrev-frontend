@@ -1,24 +1,35 @@
 {
-    "appDesc": {
-      "message": "Pisz i czytaj komentarze w Internecie."
-    },
-    "Message": {
-      "message": "Wiadomość"
-    },
-    "YourComment": {
-      "message": "Twój komentarz"
-    },
-    "IAgree": {
-      "message": "Wysyłając komentarz akceptujesz  "
-    },
-    "TermsAndConditions": {
-      "message": "regulamin."
-    },
-    "TermsAndConditionsLink": {
-      "message": "https://linkrev.com/pl/TermsAndConditions"
-    },
-    "Submit": {
-      "message": "Wyślij"
-    }
+  "appDesc": {
+    "message": "Pisz i czytaj komentarze w Internecie."
+  },
+  "Message": {
+    "message": "Wiadomość"
+  },
+  "YourComment": {
+    "message": "Twój komentarz"
+  },
+  "IAgree": {
+    "message": "Wysyłając komentarz akceptujesz  "
+  },
+  "TermsAndConditions": {
+    "message": "regulamin."
+  },
+  "TermsAndConditionsLink": {
+    "message": "https://linkrev.com/pl/TermsAndConditions"
+  },
+  "Submit": {
+    "message": "Wyślij"
+  },
+  "Comments": {
+    "message": "Komentarze"
+  },
+  "BestFromAll": {
+    "message": "najlepsze"
+  },
+  "OldToNew": {
+    "message": "najstarsze"
+  },
+  "NewToOld": {
+    "message": "najnowsze"
   }
-  
+}

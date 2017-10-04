@@ -1,0 +1,58 @@
+
+
+h2 {
+    margin-bottom: 10px;
+}
+
+#content {
+    width: 430px;
+    padding: 5px;
+}
+
+#sendComment {
+    margin-bottom: 20px;
+}
+
+.box__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(10,10,10,.1);
+    padding-bottom: 5px;
+}
+
+.box__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.box__footer .fa-warning {
+    margin-right: 3px;
+}
+
+.control__select {
+    font-size: 13px;
+    line-height: 30px;
+    margin-bottom: 5px;
+}
+
+.notification:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+button.icon {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.hyphenate {
+    word-break: break-all;
+    hyphens: auto;
+}
+
+.validation {
+    padding: 5px;
+}

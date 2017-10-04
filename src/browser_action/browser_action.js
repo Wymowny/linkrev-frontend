@@ -24,9 +24,7 @@ window.onload = function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("submitButton").addEventListener("click", sendComment);
-    document.getElementById("plusForComment").addEventListener("click", plusComment);
-    document.getElementById("minusForComment").addEventListener("click", minusComment);
-    document.getElementById("reportComment").addEventListener("click", reportComment);
+    document.getElementById("informationNoteDeleteButton").addEventListener("click", deleteNotification);
 });
 
 function GetExistingComments() {
@@ -42,13 +40,21 @@ function ExistingCommentsAjaxQuery(url) {
         }
 
         if (this.responseText) {
-            var existingComments = document.getElementById("commeasdants");
+            var existingComments = document.getElementById("comments");
             var comments = JSON.parse(this.responseText);
             var html = '';
 
+            $('#commentsCounter').text(comments.length);
+            console.log(comments.length);
+
             for (var i = 0; i < comments.length; i++) {
-                html += '<div class="box"><article class="media"><div class="media-content"><div class="content">' +
-                    '<p>' + comments[i].content + '</p>' + '<sub>' + new Date(comments[i].createdDate).toLocaleDateString() + ' ' + new Date(comments[i].createdDate).toLocaleTimeString()  + '</sub>' + '</div></div></article></div>';
+                html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() +
+                    ' ' + new Date(comments[i].createdDate).toLocaleTimeString() + '</sub><span class="rating"><span class="has-text-success">25</span>' +
+                    '<button class="icon has-text-success" data-attribute="plusForComment"><i class="fa fa-plus-square"></i></button>' +
+                    '<button class="icon has-text-danger" data-attribute="minusForComment"><i class="fa fa-minus-square"></i></button></span>' +
+                    '</div><p class="comment__content">' + comments[i].content + '</p><div class="box__footer">' +
+                    '<button class="button is-primary is-small" data-attribute="reportComment"><i class="fa fa-warning"></i> Report</button>' +
+                    '</div></div></div>';
             }
 
             existingComments.innerHTML = html;
@@ -67,16 +73,16 @@ function sendComment() {
     }    
 }
 
-function plusComment() {
-    console.log(plusComment);
+function deleteNotification() {
+    fadeOutElement('informationNote');
 }
 
-function minusComment() {
-    console.log(minusComment);
-}
+function fadeOutElement(id) {
+    var elem = document.getElementById(id);
 
-function reportComment() {
-    console.log(reportComment);
+    $(elem).fadeOut("normal", function() {
+        $(this).remove();
+    });
 }
 
 function AddCommentAjaxQuery(url) {
@@ -84,7 +90,7 @@ function AddCommentAjaxQuery(url) {
     var commentContent = document.getElementById('comment').value;
     var language = getCurrentLanguage();
     var link = url;
-    var params = "Link=" + link + '&NewCommentContent=' + commentContent + '&CommentLanguage=' + language;
+    var params = "Link=" + link + '&NewCommentContent=' + encodeURIComponent(commentContent) + '&CommentLanguage=' + language;
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState != 4) {

@@ -1,135 +1,95 @@
 <!doctype html>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css" />
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
-<style type="text/css">
-    h2 {
-        margin-bottom: 10px;
-    }
-
-    #content {
-        width: 430px;
-        padding: 5px;
-    }
-
-    #sendComment {
-        margin-bottom: 20px;
-    }
-
-    .box__head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px;
-        border-bottom: 1px solid rgba(10,10,10,.1);
-        padding-bottom: 5px;
-    }
-
-    .box__footer {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 5px;
-    }
-
-    .box__footer .fa-warning {
-        margin-right: 3px;
-    }
-
-    .control__select {
-        font-size: 13px;
-        line-height: 30px;
-        margin-bottom: 5px;
-    }
-
-    .notification:not(:last-child) {
-        margin-bottom: 10px;
-    }
-
-    button.icon {
-        background: none;
-        border: none;
-        padding: 0;
-    }
-
-</style>
-<div id="content">
-    <div class="notification is-success">
-        <button class="delete"></button>
-        Success lorem ipsum dolor sit amet, consectetur adipiscing dolor. <strong>Pellentesque
-        risus mi</strong>, tempus quis placerat ut!
-    </div>
-
-    <form id="sendComment">
-        <div class="field">
-            <label class="label">__MSG_Message__:</label>
-            <div class="control">
-                <textarea id="comment" class="textarea" placeholder="__MSG_YourComment__"></textarea>
+    <head>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="browser_action.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="content">
+            <div class="notification is-success" id="informationNote">
+                <button class="delete" id="informationNoteDeleteButton"></button>
+                Success lorem ipsum dolor sit amet, consectetur adipiscing dolor. <strong>Pellentesque
+                risus mi</strong>, tempus quis placerat ut!
             </div>
-        </div>
-        <div class="field">
-            <div class="control">
-                <label class="checkbox">
-                    __MSG_IAgree__<a target="_blank" href="__MSG_TermsAndConditionsLink__">__MSG_TermsAndConditions__</a>
-                </label>
+
+
+            <form id="sendComment">
+                <div class="field">
+                    <label class="label">__MSG_Message__:</label>
+
+                    <div id="notificationWarning" class="notification is-danger validation">
+                        <button class="delete"></button>
+                        Please enter at least <strong>4</strong> characters!
+                    </div>
+
+                    <div class="control">
+                        <textarea id="comment" class="textarea" placeholder="__MSG_YourComment__"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" checked>
+
+                            __MSG_IAgree__<a target="_blank" href="__MSG_TermsAndConditionsLink__">__MSG_TermsAndConditions__</a>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button id="submitButton" type="button" class="button is-primary">__MSG_Submit__</button>
+                    </div>
+                </div>
+            </form>
+            <h2 id="existing-comments"></h2>
+
+            <div class="control control__select">
+                __MSG_Comments__ (<span id="commentsCounter"></span>):
+                <div class="select">
+                    <select>
+                        <option>__MSG_OldToNew__</option>
+                        <option>__MSG_NewToOld__</option>
+                        <option>__MSG_BestFromAll__</option>
+                    </select>
+                </div>
             </div>
-        </div>
 
-        <div class="field is-grouped">
-            <div class="control">
-                <button id="submitButton" type="button" class="button is-primary">__MSG_Submit__</button>
-            </div>
-        </div>
-    </form>
-    <h2 id="existing-comments"></h2>
+            <div id="comments" class="comments">
 
-    <div class="control control__select">
-        Komentarze (122):
-        <div class="select">
-            <select>
-                <option>najstarsze</option>
-                <option>najnowsze</option>
-                <option>najlepsze</option>
-            </select>
-        </div>
-    </div>
-
-    <div id="comments" class="comments">
-
-        <div class="box">
-            <article class="media">
-                <div class="media-content">
+                <div class="box">
                     <div class="content">
                         <div class="box__head">
                             <sub>24.05.2017 o 22:24</sub>
                             <span class="rating">
                                 <span class="has-text-success">25</span>
-                                <button class="icon has-text-success" id="plusForComment">
+                                <button class="icon has-text-success" data-attribute="plusForComment">
                                     <i class="fa fa-plus-square"></i>
                                 </button>
 
-                                <button class="icon has-text-danger" id="minusForComment">
+                                <button class="icon has-text-danger" data-attribute="minusForComment">
                                     <i class="fa fa-minus-square"></i>
                                 </button>
                             </span>
                         </div>
 
                         <p class="comment__content">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi explicabo hic nihil rem similique, suscipit tempore ullam vitae. Asperiores cum et itaque officiis quasi quidem, ut! Officia sint sunt unde!
+
                         </p>
 
                         <div class="box__footer">
-                            <button class="button is-primary is-small" id="reportComment">
+                            <button class="button is-primary is-small" data-attribute="reportComment">
                                 <i class="fa fa-warning"></i> Report
                             </button>
                         </div>
                     </div>
                 </div>
-            </article>
+
+            </div>
         </div>
 
-
-
-    </div>
-</div>
-
-<script src="../global.js"></script>
-<script src="browser_action.js"></script>
+        <script src="../global.js"></script>
+        <script src="browser_action.js"></script>
+    </body>
+</html>

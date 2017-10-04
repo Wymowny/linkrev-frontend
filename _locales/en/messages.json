@@ -19,5 +19,17 @@
   },
   "Submit": {
     "message": "Submit"
+  },
+  "Comments": {
+    "message": "Comments"
+  },
+  "BestFromAll": {
+    "message": "best"
+  },
+  "OldToNew": {
+    "message": "oldest"
+  },
+  "NewToOld": {
+    "message": "newest"
   }
 }
