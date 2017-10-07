@@ -57,40 +57,15 @@ function updateIcon() {
 }
 
 function getInboxCount(url, onSuccess, onError) {
-  var xhr = new XMLHttpRequest();
-  var invokedErrorCallback = false;
 
-  function handleSuccess(count) {
-    if (onSuccess) {
-        onSuccess(count);
-    }
-  }
+  $.ajax({
+    type: "GET",
+    url: getCountUrl() + "?link=" + url,
+    success: function(count) {
 
-  function handleError() {
-    if (onError && !invokedErrorCallback) {
-        onError();
-        invokedErrorCallback = true;
-    }
-  }
-
-  try {
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState != 4) {
-          return;
-      }
-
-      if (this.responseText) {
-        handleSuccess(this.responseText);
-      }
-    };
-
-    xhr.onerror = function(error) {
-      handleError();
-    };
-
-    xhr.open("GET", getCountUrl() + "?link=" + url, true);
-    xhr.send();
-  } catch(e) {
-    handleError();
-  }
+      onSuccess(count);
+    },
+    error: onError,
+    dataType: "html"
+  });
 }
