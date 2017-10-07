@@ -31,5 +31,8 @@
   },
   "NewToOld": {
     "message": "najnowsze"
+  },
+  "DiscussionLink": {
+    "message": "Dołącz do dyskusji!"
   }
 }

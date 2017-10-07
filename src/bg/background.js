@@ -2,7 +2,6 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
   var url = tab.url;
       
   if (url !== undefined && changeinfo.status == "complete") {
-
     updateCommentsCount();
   }
  });
@@ -32,7 +31,6 @@ function updateUnreadCount(count) {
   var changed = localStorage.unreadCount != count;
 
   if (changed) {
-
     localStorage.unreadCount = count;
     updateIcon();
   } 

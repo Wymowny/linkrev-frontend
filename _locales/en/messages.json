@@ -31,5 +31,8 @@
   },
   "NewToOld": {
     "message": "newest"
+  },
+  "DiscussionLink": {
+    "message": "Go to hot discussion!"
   }
 }

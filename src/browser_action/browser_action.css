@@ -58,3 +58,23 @@ button.icon {
 .validation {
     padding: 5px;
 }
+
+.discussion {
+    margin-bottom: 20px;
+    display: flex;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.discussion svg {
+    position: absolute;
+}
+
+.discussion__content {
+    padding-left: 25px;
+    margin-bottom: 5px;
+}
+
+.button--right {
+    margin-left: auto;
+}
