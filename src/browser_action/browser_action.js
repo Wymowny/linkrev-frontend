@@ -43,7 +43,6 @@ function ExistingCommentsAjaxQuery(url) {
             var html = '';
 
             $('#commentsCounter').text(comments.length);
-            console.log(comments.length);
 
             for (var i = 0; i < comments.length; i++) {
                 html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() +
