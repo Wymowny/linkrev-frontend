@@ -41,6 +41,7 @@ function ExistingCommentsAjaxQuery(url) {
                 var html = '';
     
                 $('#commentsCounter').text(comments.length);
+                $('#comments-order-panel').show();                
     
                 for (var i = 0; i < comments.length; i++) {
                     html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() +
@@ -60,11 +61,33 @@ function ExistingCommentsAjaxQuery(url) {
 }
 
 function sendComment() {
+
     var commentContent = document.getElementById('comment').value;
 
-    if(commentContent != '' && commentContent.length < 1000) {
+    if (isCommentValid(commentContent)) {
+
         getCurrentUrl(AddCommentAjaxQuery);
+    }    
+}
+
+function isCommentValid(commentContent) {
+
+    if(!commentContent) {
+        
+        return false;
     }
+
+    if (commentContent.length < 2 || commentContent.length > 1000) {
+
+        return false;
+    }
+
+    if (!($('#terms-and-conditions').is(':checked'))) {
+
+        return false;
+    }
+    
+    return true;
 }
 
 function deleteNotification() {

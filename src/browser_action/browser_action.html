@@ -33,8 +33,7 @@
                 <div class="field">
                     <div class="control">
                         <label class="checkbox">
-                            <input type="checkbox" checked>
-
+                            <input id="terms-and-conditions" type="checkbox" checked>
                             __MSG_IAgree__<a target="_blank" href="__MSG_TermsAndConditionsLink__">__MSG_TermsAndConditions__</a>
                         </label>
                     </div>
@@ -46,19 +45,17 @@
                     </div>
                 </div>
             </form>
-            <h2 id="existing-comments"></h2>
-
-            <div class="control control__select">
-                __MSG_Comments__ (<span id="commentsCounter"></span>):
-                <div class="select">
-                    <select>
-                        <option>__MSG_OldToNew__</option>
-                        <option>__MSG_NewToOld__</option>
-                        <option>__MSG_BestFromAll__</option>
-                    </select>
+            <div id="comments-order-panel" class="control control__select" style="display: none;">
+                    __MSG_Comments__ (<span id="commentsCounter"></span>):
+                    <div class="select">
+                        <select id="comments-sort">
+                            <option value="best">__MSG_BestFromAll__</option>
+                            <option value="old">__MSG_OldToNew__</option>
+                            <option value="new">__MSG_NewToOld__</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-
+            <h2 id="existing-comments"></h2>
             <div id="comments" class="comments"></div>
         </div>
 
