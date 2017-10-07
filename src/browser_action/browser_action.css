@@ -40,7 +40,7 @@ h2 {
     margin-bottom: 5px;
 }
 
-.notification:not(:last-child) {
+#errorsContainer {
     margin-bottom: 10px;
 }
 

@@ -16,12 +16,11 @@ function updateCommentsCount() {
 
 function unreadMessagesCount(url) {
   getInboxCount(
-    url,
-    function(count) {
+    url, function(count) {
       updateUnreadCount(count);
     },
-    function() {
 
+    function() {
       chrome.storage.local.remove('unreadCount', function() {
 
         updateIcon();
@@ -31,13 +30,10 @@ function unreadMessagesCount(url) {
 }
 
 function updateUnreadCount(count) {  
-
   chrome.storage.local.get('unreadCount', function(results) {
-    
     var changed = results.unreadCount != count;
 
     if (changed) {
-        
       chrome.storage.local.set({'unreadCount': count}, function() {
         
       updateIcon();
@@ -47,18 +43,13 @@ function updateUnreadCount(count) {
 }
 
 function updateIcon() {
-
   chrome.storage.local.get('unreadCount', function(results) {
-    
     if (results.unreadCount) {
-
       chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
       chrome.browserAction.setBadgeText({
         text: results.unreadCount != "0" ? results.unreadCount : ""
       });
-    }
-    else {
-
+    } else {
       chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
       chrome.browserAction.setBadgeText({text:"0"});
     }

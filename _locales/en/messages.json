@@ -34,5 +34,14 @@
   },
   "DiscussionLink": {
     "message": "Go to hot discussion!"
+  },
+  "MessageLengthUnder": {
+    "message": "Message is not long enough!"
+  },
+  "MessageLengthOver": {
+    "message": "Message is too long!"
+  },
+  "MessageTiming": {
+    "message": "You have to wait 30 seconds!"
   }
 }

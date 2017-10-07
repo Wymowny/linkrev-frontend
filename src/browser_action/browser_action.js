@@ -39,10 +39,9 @@ function ExistingCommentsAjaxQuery(url) {
 
             if (comments) {
                 var html = '';
-    
+
                 $('#commentsCounter').text(comments.length);
-                $('#comments-order-panel').show();                
-    
+
                 for (var i = 0; i < comments.length; i++) {
                     html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() +
                         ' ' + new Date(comments[i].createdDate).toLocaleTimeString() + '</sub><span class="rating"><span class="has-text-success">25</span>' +
@@ -52,7 +51,7 @@ function ExistingCommentsAjaxQuery(url) {
                         '<button class="button is-primary is-small" data-attribute="reportComment"><i class="fa fa-warning"></i> Report</button>' +
                         '</div></div></div>';
                 }
-    
+
                 $('#existing-comments').html(safeResponse.cleanDomString(html));
             }
         },
@@ -61,49 +60,34 @@ function ExistingCommentsAjaxQuery(url) {
 }
 
 function sendComment() {
-
-    var commentContent = document.getElementById('comment').value;
-
-    if (isCommentValid(commentContent)) {
-
+    if ($('#comment').val().length < 2) {
+        createValidationMessage('__MSG_MessageLengthUnder__', 'is-danger');
+    } else if ($('#comment').val().length > 1000) {
+        createValidationMessage('__MSG_MessageLengthOver__', 'is-danger');
+    } else if ($('#submitButton').hasClass('button--disabled')) {
+        createValidationMessage('__MSG_MessageTiming__', 'is-danger');
+    } else {
         getCurrentUrl(AddCommentAjaxQuery);
-    }    
+        createValidationMessage('__MSG_CommentSuccess__', 'is-success');
+
+        $('#submitButton').addClass('button--disabled');
+        window.setTimeout(activateButton, 30000);
+    }
 }
 
-function isCommentValid(commentContent) {
-
-    if(!commentContent) {
-        
-        return false;
-    }
-
-    if (commentContent.length < 2 || commentContent.length > 1000) {
-
-        return false;
-    }
-
-    if (!($('#terms-and-conditions').is(':checked'))) {
-
-        return false;
-    }
-    
-    return true;
+function activateButton() {
+    $('#submitButton').removeClass('button--disabled');
 }
 
-function deleteNotification() {
-    fadeOutElement('informationNote');
-}
+function createValidationMessage(message, additionalClass) {
+    var messageContainer = document.getElementById("errorsContainer");
+    var messageData = '<div class=\"notification ' + additionalClass + ' validation\">' + message +'</div>';
 
-function fadeOutElement(id) {
-    var elem = document.getElementById(id);
-
-    $(elem).fadeOut("normal", function() {
-        $(this).remove();
-    });
+    messageContainer.innerHTML = messageData;
 }
 
 function AddCommentAjaxQuery(url) {
-    
+
     var commentContent = document.getElementById('comment').value;
     var language = getCurrentLanguage();
     var link = url;
@@ -120,5 +104,5 @@ function AddCommentAjaxQuery(url) {
             GetExistingComments();
         },
         dataType: "json"
-      });
+    });
 }
