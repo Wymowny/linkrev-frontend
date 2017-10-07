@@ -21,32 +21,48 @@ function unreadMessagesCount(url) {
       updateUnreadCount(count);
     },
     function() {
-      delete localStorage.unreadCount;
-      updateIcon();
+
+      chrome.storage.local.remove('unreadCount', function() {
+
+        updateIcon();
+      });
     }
   );
 }
 
-function updateUnreadCount(count) {
-  var changed = localStorage.unreadCount != count;
+function updateUnreadCount(count) {  
 
-  if (changed) {
-    localStorage.unreadCount = count;
-    updateIcon();
-  } 
+  chrome.storage.local.get('unreadCount', function(results) {
+    
+    var changed = results.unreadCount != count;
+
+    if (changed) {
+        
+      chrome.storage.local.set({'unreadCount': count}, function() {
+        
+      updateIcon();
+      });
+    }
+  });
 }
 
 function updateIcon() {
-  if (localStorage.unreadCount) {
-    chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
-    chrome.browserAction.setBadgeText({
-      text: localStorage.unreadCount != "0" ? localStorage.unreadCount : ""
-    });
-  }
-  else {
-    chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-    chrome.browserAction.setBadgeText({text:"0"});
-  }  
+
+  chrome.storage.local.get('unreadCount', function(results) {
+    
+    if (results.unreadCount) {
+
+      chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+      chrome.browserAction.setBadgeText({
+        text: results.unreadCount != "0" ? results.unreadCount : ""
+      });
+    }
+    else {
+
+      chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
+      chrome.browserAction.setBadgeText({text:"0"});
+    }
+  });
 }
 
 function getInboxCount(url, onSuccess, onError) {
