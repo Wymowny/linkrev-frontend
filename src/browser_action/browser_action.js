@@ -70,7 +70,7 @@ function sendComment() {
 
     if(commentContent != '' && commentContent.length < 1000) {
         getCurrentUrl(AddCommentAjaxQuery);
-    }    
+    }
 }
 
 function deleteNotification() {
