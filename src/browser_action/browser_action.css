@@ -1,19 +1,63 @@
-h2 {
-    margin-bottom: 10px;
+/* General classes */
+
+.hyphenate {
+    word-break: break-all;
+    hyphens: auto;
 }
+
+.validation {
+    padding: 5px;
+}
+
+.button--right {
+    margin-left: auto;
+}
+
+button.icon {
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+/* Widget styling */
 
 #content {
     width: 430px;
     padding: 5px;
 }
 
-.comment__content {
-    overflow-wrap: break-word;
-}
-
 #sendComment {
     margin-bottom: 20px;
 }
+
+.control__select {
+    font-size: 13px;
+    line-height: 30px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+#errorsContainer {
+    margin-bottom: 10px;
+}
+
+.discussion {
+    margin-bottom: 20px;
+    display: flex;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.discussion__content {
+    padding-left: 25px;
+    margin-bottom: 5px;
+}
+
+.discussion svg {
+    position: absolute;
+}
+
+/* Comments styling */
 
 .box__head {
     display: flex;
@@ -34,47 +78,6 @@ h2 {
     margin-right: 3px;
 }
 
-.control__select {
-    font-size: 13px;
-    line-height: 30px;
-    margin-bottom: 5px;
-}
-
-#errorsContainer {
-    margin-bottom: 10px;
-}
-
-button.icon {
-    background: none;
-    border: none;
-    padding: 0;
-}
-
-.hyphenate {
-    word-break: break-all;
-    hyphens: auto;
-}
-
-.validation {
-    padding: 5px;
-}
-
-.discussion {
-    margin-bottom: 20px;
-    display: flex;
-    padding: 10px;
-    flex-wrap: wrap;
-}
-
-.discussion svg {
-    position: absolute;
-}
-
-.discussion__content {
-    padding-left: 25px;
-    margin-bottom: 5px;
-}
-
-.button--right {
-    margin-left: auto;
+.comment__content {
+    overflow-wrap: break-word;
 }
