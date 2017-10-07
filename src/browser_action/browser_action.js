@@ -24,7 +24,6 @@ window.onload = function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("submitButton").addEventListener("click", sendComment);
-    document.getElementById("informationNoteDeleteButton").addEventListener("click", deleteNotification);
 });
 
 function GetExistingComments() {
@@ -40,7 +39,6 @@ function ExistingCommentsAjaxQuery(url) {
         }
 
         if (this.responseText) {
-            var existingComments = document.getElementById("comments");
             var comments = JSON.parse(this.responseText);
             var html = '';
 
@@ -57,7 +55,7 @@ function ExistingCommentsAjaxQuery(url) {
                     '</div></div></div>';
             }
 
-            existingComments.innerHTML = html;
+            $('#existing-comments').html(safeResponse.cleanDomString(html));
         }
     };    
     
