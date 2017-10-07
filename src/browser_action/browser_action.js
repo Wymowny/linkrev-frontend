@@ -61,11 +61,11 @@ function ExistingCommentsAjaxQuery(url) {
 
 function sendComment() {
     if ($('#comment').val().length < 2) {
-        createValidationMessage('__MSG_MessageLengthUnder__');
+        createValidationMessage('__MSG_MessageLengthUnder__', 'is-danger');
     } else if ($('#comment').val().length > 1000) {
-        createValidationMessage('__MSG_MessageLengthOver__');
+        createValidationMessage('__MSG_MessageLengthOver__', 'is-danger');
     } else if ($('#submitButton').hasClass('button--disabled')) {
-        createValidationMessage('__MSG_MessageTiming__');
+        createValidationMessage('__MSG_MessageTiming__', 'is-danger');
     } else {
         getCurrentUrl(AddCommentAjaxQuery);
         createValidationMessage('__MSG_CommentSuccess__', 'is-success');
@@ -81,17 +81,9 @@ function activateButton() {
 
 function createValidationMessage(message, additionalClass) {
     var messageContainer = document.getElementById("errorsContainer");
-    var messageData = '<div class=\"notification is-danger validation\">' + message +'</div>';
+    var messageData = '<div class=\"notification ' + additionalClass + ' validation\">' + message +'</div>';
 
     messageContainer.innerHTML = messageData;
-}
-
-function fadeOutElement(id) {
-    var elem = document.getElementById(id);
-
-    $(elem).fadeOut("normal", function() {
-        $(this).remove();
-    });
 }
 
 function AddCommentAjaxQuery(url) {
@@ -112,5 +104,5 @@ function AddCommentAjaxQuery(url) {
             GetExistingComments();
         },
         dataType: "json"
-      });
+    });
 }
