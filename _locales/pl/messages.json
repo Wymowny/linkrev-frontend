@@ -34,5 +34,14 @@
   },
   "DiscussionLink": {
     "message": "Dołącz do dyskusji!"
+  },
+  "MessageLengthUnder": {
+    "message": "Wiadomość musi mieć przynajmniej 2 znaki!"
+  },
+  "MessageLengthOver": {
+    "message": "Wiadomość musi być krótsza niż 1000 znaków!"
+  },
+  "MessageTiming": {
+    "message": "Poczekaj 30 sekund przed kolejną wiadomością!"
   }
 }

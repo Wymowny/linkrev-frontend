@@ -24,7 +24,6 @@ window.onload = function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("submitButton").addEventListener("click", sendComment);
-    document.getElementById("informationNoteDeleteButton").addEventListener("click", deleteNotification);
 });
 
 function GetExistingComments() {
@@ -45,7 +44,6 @@ function ExistingCommentsAjaxQuery(url) {
             var html = '';
 
             $('#commentsCounter').text(comments.length);
-            console.log(comments.length);
 
             for (var i = 0; i < comments.length; i++) {
                 html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() +
@@ -66,15 +64,30 @@ function ExistingCommentsAjaxQuery(url) {
 }
 
 function sendComment() {
-    var commentContent = document.getElementById('comment').value;
-
-    if(commentContent != '' && commentContent.length < 1000) {
+    if ($('#comment').val().length < 2) {
+        createValidationMessage('__MSG_MessageLengthUnder__');
+    } else if ($('#comment').val().length > 1000) {
+        createValidationMessage('__MSG_MessageLengthOver__');
+    } else if ($('#submitButton').hasClass('button--disabled')) {
+        createValidationMessage('__MSG_MessageTiming__');
+    } else {
         getCurrentUrl(AddCommentAjaxQuery);
+        createValidationMessage('__MSG_CommentSuccess__', 'is-success');
+
+        $('#submitButton').addClass('button--disabled');
+        window.setTimeout(activateButton, 30000);
     }
 }
 
-function deleteNotification() {
-    fadeOutElement('informationNote');
+function activateButton() {
+    $('#submitButton').removeClass('button--disabled');
+}
+
+function createValidationMessage(message, additionalClass) {
+    var messageContainer = document.getElementById("errorsContainer");
+    var messageData = '<div class=\"notification is-danger validation\">' + message +'</div>';
+
+    messageContainer.innerHTML = messageData;
 }
 
 function fadeOutElement(id) {
