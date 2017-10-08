@@ -46,5 +46,11 @@
   },
   "CommentSuccess": {
     "message": "Komentarz został wysłany!"
+  },
+  "SentSuccessfully": {
+    "message": "Wysłano pomyślnie!"
+  },
+  "Report": {
+    "message": "Zgłoś"
   }
 }

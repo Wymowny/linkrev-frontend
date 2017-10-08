@@ -23,6 +23,69 @@ linkRev.prototype.initEventListeners = function() {
     document.getElementById("submitButton").addEventListener("click", this.sendComment.bind(this));
 };
 
+linkRev.prototype.initCommentsEventListeners = function() {
+
+    var _this = this;
+    
+    // Handle report button
+    $("[data-attribute='reportComment']").each(function() {
+
+        $(this).on('click', function() {
+
+            var button = this;
+
+            $.ajax({
+                type: "POST",
+                url: _this.getAddReportingUrl() + $(this).attr('data-comment-id'),
+                success: function(data) {
+
+                    $(button).html('<i class="fa fa-check"></i>&nbsp;' + chrome.i18n.getMessage('SentSuccessfully'));
+                    $(button).attr('disabled', true);
+                },
+                dataType: "html"
+            });
+        });
+      });
+
+    // Handle like button
+    $("[data-attribute='likeComment']").each(function() {
+        
+        $(this).on('click', function() {
+
+            var button = this;
+
+            $.ajax({
+                type: "POST",
+                url: _this.getLikeCommentUrl($(this).attr('data-comment-id')),
+                success: function(data) {
+
+                    $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
+                },
+                dataType: "html"
+            });
+        });
+    });
+
+    // Handle dislike button
+    $("[data-attribute='dislikeComment']").each(function() {
+        
+        $(this).on('click', function() {
+
+            var button = this;
+
+            $.ajax({
+                type: "POST",
+                url: _this.getDislikeCommentUrl($(this).attr('data-comment-id')),
+                success: function(data) {
+
+                    $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
+                },
+                dataType: "html"
+            });
+        });
+    });
+};
+
 linkRev.prototype.localizeHtmlPage = function() {
     var objects = document.getElementsByTagName('html');
 
@@ -56,25 +119,8 @@ linkRev.prototype.removeInvalidAttributes = function(target) {
 };
 
 linkRev.prototype.cleanDomString = function(data) {
-    var parser = new DOMParser;
-    var tmpDom = parser.parseFromString(data, "text/html").body;
-
-    var list, current, currentHref;
-
-    list = tmpDom.querySelectorAll("script,img");
-
-    for (var i = list.length - 1; i >= 0; i--) {
-        current = list[i];
-        current.parentNode.removeChild(current);
-    }
-
-    list = tmpDom.getElementsByTagName("*");
-
-    for (i = list.length - 1; i >= 0; i--) {
-        this.removeInvalidAttributes(list[i]);
-    }
-
-    return tmpDom.innerHTML;
+    
+    return data.replace(/<[^>]*>?/g, '');
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -104,21 +150,29 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
         url: commentsUrl,
         success: function (comments) {
             if (comments) {
-                var html = '';
+                var html = '';                
 
                 $('#commentsCounter').text(comments.length);
 
                 for (var i = 0; i < comments.length; i++) {
-                    html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() +
-                        ' ' + new Date(comments[i].createdDate).toLocaleTimeString() + '</sub><span class="rating"><span class="has-text-success">25</span>' +
-                        '<button class="icon has-text-success" data-attribute="plusForComment"><i class="fa fa-plus-square"></i></button>' +
-                        '<button class="icon has-text-danger" data-attribute="minusForComment"><i class="fa fa-minus-square"></i></button></span>' +
-                        '</div><p class="comment__content">' + comments[i].content + '</p><div class="box__footer">' +
-                        '<button class="button is-primary is-small" data-attribute="reportComment"><i class="fa fa-warning"></i> Report</button>' +
+
+                    var cleanId = this.cleanDomString(comments[i]._id);
+                    var cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
+                    var cleanContent = this.cleanDomString(comments[i].content);
+                    var cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
+
+                    html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(cleanCreatedDateTime).toLocaleDateString() +
+                        ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating"><span class="has-text-success" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
+                        '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' +
+                        '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
+                        '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                        '<button class="button is-primary is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '"><i class="fa fa-warning"></i>' + chrome.i18n.getMessage('Report')  + '</button>' +
                         '</div></div></div>';
                 }
 
-                $('#existing-comments').html(this.cleanDomString(html));
+                $('#existing-comments').html(html);
+
+                this.initCommentsEventListeners();
             }
         }.bind(this),
         dataType: "json"
@@ -166,6 +220,18 @@ linkRev.prototype.getCommentsUrl = function() {
 
 linkRev.prototype.getAddCommentUrl = function() {
     return this.basicUrl +  "api/comment";
+};
+
+linkRev.prototype.getAddReportingUrl = function() {
+    return this.basicUrl +  "api/reporting/";
+};
+
+linkRev.prototype.getLikeCommentUrl = function(commentId) {
+    return this.basicUrl +  "api/comment/" + commentId + "/like";
+};
+
+linkRev.prototype.getDislikeCommentUrl = function(commentId) {
+    return this.basicUrl +  "api/comment/" + commentId + "/dislike";
 };
 
 linkRev.prototype.getCurrentUrl = function(callback) {
