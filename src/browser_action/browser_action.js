@@ -166,7 +166,7 @@ linkRev.prototype.activateButton = function() {
 linkRev.prototype.checkRatings = function() {
     var ratedComments = $('[data-attribute="ratingValue"]');
 
-    for (var i = 0; i <= ratedComments.length(); i++) {
+    for (var i = 0; i <= ratedComments.length; i++) {
         if (ratedComments.val() > 0) {
             this.addClass(this.hasTextSuccessClass);
         } else if (ratedComments.val() < 0) {
