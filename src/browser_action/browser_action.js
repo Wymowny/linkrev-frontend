@@ -5,22 +5,41 @@ function linkRev() {
 }
 
 linkRev.prototype.init = function() {
+
+    // Basic variables:
     this.validAttrs = ['class', 'id', 'href', 'style'];
     this.basicUrl = "https://linkrev.com/";
     this.nextCommentTimeBlocker = 30000;
 
+    // State classes:
+    this.disabledButtonClass = 'button--disabled';
+    this.isDangerClass = 'is-danger';
+    this.isSuccessClass = 'is-success';
+    this.hasTextSuccessClass = 'has-text-success';
+    this.hasTextDangerClass = 'has-text-danger';
+
+    // Initial functions:
     this.onUpdatedTab();
     this.onActivatedTab();
     this.localizeHtmlPage();
-    this.initEventListeners();
 
+    // DOM selectors:
+    this.$commentsCounter = $('#commentsCounter');
+    this.$commentContent = $('#comment');
+    this.$existingComments = $('#existing-comments');
+    this.$submitButton = $('#submitButton');
+    this.$errorContainer = $('#errorsContainer');
+
+    // Functions fired after opening LinkRev extension:
     window.onload = function () {
         this.getExistingComments();
+        this.initEventListeners();
+        this.checkRatings();
     }.bind(this);
 };
 
 linkRev.prototype.initEventListeners = function() {
-    document.getElementById("submitButton").addEventListener("click", this.sendComment.bind(this));
+    this.$submitButton.on('click', this.sendComment.bind(this));
 };
 
 linkRev.prototype.localizeHtmlPage = function() {
@@ -78,10 +97,9 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
-    var commentContent = document.getElementById('comment').value;
-    var language = this.getCurrentLanguage();
+    var language = _this.getCurrentLanguage();
     var link = url;
-    var data = "Link=" + link + '&NewCommentContent=' + encodeURIComponent(commentContent) + '&CommentLanguage=' + language;
+    var data = "Link=" + link + '&NewCommentContent=' + encodeURIComponent(this.$commentContent.val()) + '&CommentLanguage=' + language;
 
     $.ajax({
         type: "POST",
@@ -89,7 +107,7 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
         contentType:"application/x-www-form-urlencoded",
         data: data,
         success: function() {
-            document.getElementById('comment').value = '';
+            this.$commentContent.val('');
             this.getExistingComments();
         }.bind(this),
         dataType: "json"
@@ -106,19 +124,19 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
             if (comments) {
                 var html = '';
 
-                $('#commentsCounter').text(comments.length);
+                this.$commentsCounter.text(comments.length);
 
                 for (var i = 0; i < comments.length; i++) {
-                    html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() +
-                        ' ' + new Date(comments[i].createdDate).toLocaleTimeString() + '</sub><span class="rating"><span class="has-text-success">25</span>' +
+                    html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(comments[i].createdDate).toLocaleDateString() + ' ' +
+                        new Date(comments[i].createdDate).toLocaleTimeString() + '</sub><span class="rating"><span class="rating__number" data-rating="ratingValue">25</span>' +
                         '<button class="icon has-text-success" data-attribute="plusForComment"><i class="fa fa-plus-square"></i></button>' +
                         '<button class="icon has-text-danger" data-attribute="minusForComment"><i class="fa fa-minus-square"></i></button></span>' +
                         '</div><p class="comment__content">' + comments[i].content + '</p><div class="box__footer">' +
-                        '<button class="button is-primary is-small" data-attribute="reportComment"><i class="fa fa-warning"></i> Report</button>' +
+                        '<button class="button is-info is-small" data-attribute="reportComment"><i class="fa fa-warning"></i> Report</button>' +
                         '</div></div></div>';
                 }
 
-                $('#existing-comments').html(this.cleanDomString(html));
+                this.$existingComments.html(this.cleanDomString(html));
             }
         }.bind(this),
         dataType: "json"
@@ -126,30 +144,41 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
 };
 
 linkRev.prototype.sendComment = function() {
-    if ($('#comment').val().length < 2) {
-        this.createValidationMessage('MessageLengthUnder', 'is-danger');
-    } else if ($('#comment').val().length > 1000) {
-        this.createValidationMessage('MessageLengthOver', 'is-danger');
-    } else if ($('#submitButton').hasClass('button--disabled')) {
-        this.createValidationMessage('MessageTiming', 'is-danger');
+    if (this.$commentContent.val().length < 2) {
+        this.createValidationMessage('MessageLengthUnder', this.isDangerClass);
+    } else if (this.$commentContent.val().length > 1000) {
+        this.createValidationMessage('MessageLengthOver', this.isDangerClass);
+    } else if (this.$submitButton.hasClass('button--disabled')) {
+        this.createValidationMessage('MessageTiming', this.isDangerClass);
     } else {
         this.getCurrentUrl(this.addCommentAjaxQuery);
-        this.createValidationMessage('CommentSuccess', 'is-success');
+        this.createValidationMessage('CommentSuccess', this.isSuccessClass);
 
-        $('#submitButton').addClass('button--disabled');
+        this.$submitButton.addClass(this.disabledButtonClass);
         setTimeout(this.activateButton, this.nextCommentTimeBlocker);
     }
 };
 
 linkRev.prototype.activateButton = function() {
-    $('#submitButton').removeClass('button--disabled');
+    this.$submitButton.removeClass(this.disabledButtonClass);
+};
+
+linkRev.prototype.checkRatings = function() {
+    var ratedComments = $('[data-attribute="ratingValue"]');
+
+    for (var i = 0; i <= ratedComments.length(); i++) {
+        if (ratedComments.val() > 0) {
+            this.addClass(this.hasTextSuccessClass);
+        } else if (ratedComments.val() < 0) {
+            this.addClass(this.hasTextDangerClass);
+        }
+    }
 };
 
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {
-    var messageContainer = document.getElementById("errorsContainer");
     var messageData = '<div class=\"notification ' + additionalClass + ' validation\">' + chrome.i18n.getMessage(message) + '</div>';
 
-    messageContainer.innerHTML = messageData;
+    this.$errorContainer.html(messageData);
 };
 
 linkRev.prototype.getExistingComments = function() {
@@ -171,7 +200,7 @@ linkRev.prototype.getAddCommentUrl = function() {
 linkRev.prototype.getCurrentUrl = function(callback) {
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
         callback(tabs[0].url);
-    }.bind(this));
+    });
 };
 
 linkRev.prototype.getCurrentLanguage = function() {
