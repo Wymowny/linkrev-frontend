@@ -43,5 +43,8 @@
   },
   "MessageTiming": {
     "message": "Poczekaj 30 sekund przed kolejną wiadomością!"
+  },
+  "CommentSuccess": {
+    "message": "Komentarz został wysłany!"
   }
 }
