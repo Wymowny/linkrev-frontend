@@ -49,5 +49,8 @@
   },
   "SentSuccessfully": {
     "message": "Wysłano pomyślnie!"
+  },
+  "Report": {
+    "message": "Zgłoś"
   }
 }

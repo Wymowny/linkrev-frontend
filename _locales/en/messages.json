@@ -49,5 +49,8 @@
   },
   "SentSuccessfully": {
     "message": "Sent successfully!"
+  },
+  "Report": {
+    "message": "Report"
   }
 }
