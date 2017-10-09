@@ -87,8 +87,10 @@ button.pointer {
     margin-right: 3px;
 }
 
-.rating__number {
-    margin-right: 5px;
+.rate__number {
+    margin-right: 10px;
+    margin-left: 10px;
+    font-weight: bold;
 }
 
 .comment__content {

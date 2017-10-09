@@ -171,8 +171,8 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
                     var cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
                     html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(cleanCreatedDateTime).toLocaleDateString() +
-                        ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating"><span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
-                        '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' +
+                        ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
+                        '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
                         '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
                         '<button class="button is-info is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '"><i class="fa fa-warning"></i>' + chrome.i18n.getMessage('Report')  + '</button>' +
