@@ -19,8 +19,6 @@ linkRev.prototype.onUpdatedTab = function() {
 };
 
 linkRev.prototype.onActivatedTab = function() {
-  var _this = this;
-
   chrome.tabs.onActivated.addListener(function(details) {
       this.updateCommentsCount();
   }.bind(this));

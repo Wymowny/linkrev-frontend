@@ -22,6 +22,7 @@ linkRev.prototype.init = function() {
     this.$existingComments = $('#existing-comments');
     this.$submitButton = $('#submitButton');
     this.$errorContainer = $('#errorsContainer');
+    this.$selectSorter = $('#comments-sort');
 
     this.$reportComment = $('[data-attribute="reportComment"]');
     this.$dislikeComment = $('[data-attribute="dislikeComment"]');
@@ -36,6 +37,7 @@ linkRev.prototype.init = function() {
 
 linkRev.prototype.initEventListeners = function() {
     this.$submitButton.on('click', this.sendComment.bind(this));
+    this.$selectSorter.on('change', this.manageSorting.bind(this));
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
@@ -169,6 +171,17 @@ linkRev.prototype.sendComment = function() {
         this.$submitButton.addClass(this.disabledButtonClass);
         setTimeout(this.activateButton, this.nextCommentTimeBlocker);
     }
+};
+
+linkRev.prototype.manageSorting = function() {
+    // $.ajax({
+    //     type: "POST",
+    //     url: url,
+    //     success: function(data) {
+    //
+    //     },
+    //     dataType: "html"
+    // });
 };
 
 linkRev.prototype.removeInvalidAttributes = function(target) {

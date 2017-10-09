@@ -84,6 +84,10 @@ button.pointer {
     padding-bottom: 5px;
 }
 
+.box__head sub {
+    color: #4C4C4C;
+}
+
 .box__footer {
     display: flex;
     justify-content: flex-end;
