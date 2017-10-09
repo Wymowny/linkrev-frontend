@@ -64,6 +64,10 @@ button.pointer {
 
 /* Comments styling */
 
+.box {
+    padding: 10px;
+}
+
 .box__head {
     display: flex;
     justify-content: space-between;
@@ -81,6 +85,10 @@ button.pointer {
 
 .box__footer .fa-warning {
     margin-right: 3px;
+}
+
+.rating__number {
+    margin-right: 5px;
 }
 
 .comment__content {

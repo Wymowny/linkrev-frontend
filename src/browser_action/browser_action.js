@@ -5,33 +5,51 @@ function linkRev() {
 }
 
 linkRev.prototype.init = function() {
+
+    // Basic variables:
     this.validAttrs = ['class', 'id', 'href', 'style'];
     this.basicUrl = "https://linkrev.com/";
     this.nextCommentTimeBlocker = 30000;
+    this.minLength = 2;
+    this.maxLength = 1000;
 
+    // State classes:
+    this.disabledButtonClass = 'button--disabled';
+    this.isDangerClass = 'is-danger';
+    this.isSuccessClass = 'is-success';
+    this.hasTextSuccessClass = 'has-text-success';
+    this.hasTextDangerClass = 'has-text-danger';
+
+    // Initial functions:
     this.onUpdatedTab();
     this.onActivatedTab();
     this.localizeHtmlPage();
-    this.initEventListeners();
 
+    // DOM selectors:
+    this.$commentsCounter = $('#commentsCounter');
+    this.$commentContent = $('#comment');
+    this.$existingComments = $('#existing-comments');
+    this.$submitButton = $('#submitButton');
+    this.$errorContainer = $('#errorsContainer');
+
+    // Functions fired after opening LinkRev extension:
     window.onload = function () {
         this.getExistingComments();
+        this.initEventListeners();
+        this.checkRatings();
     }.bind(this);
 };
 
 linkRev.prototype.initEventListeners = function() {
-    document.getElementById("submitButton").addEventListener("click", this.sendComment.bind(this));
+    this.$submitButton.on('click', this.sendComment.bind(this));
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
-
     var _this = this;
-    
+
     // Handle report button
     $("[data-attribute='reportComment']").each(function() {
-
         $(this).on('click', function() {
-
             var button = this;
 
             $.ajax({
@@ -49,16 +67,13 @@ linkRev.prototype.initCommentsEventListeners = function() {
 
     // Handle like button
     $("[data-attribute='likeComment']").each(function() {
-        
         $(this).on('click', function() {
-
             var button = this;
 
             $.ajax({
                 type: "POST",
                 url: _this.getLikeCommentUrl($(this).attr('data-comment-id')),
                 success: function(data) {
-
                     $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
                 },
                 dataType: "html"
@@ -68,16 +83,13 @@ linkRev.prototype.initCommentsEventListeners = function() {
 
     // Handle dislike button
     $("[data-attribute='dislikeComment']").each(function() {
-        
         $(this).on('click', function() {
-
             var button = this;
 
             $.ajax({
                 type: "POST",
                 url: _this.getDislikeCommentUrl($(this).attr('data-comment-id')),
                 success: function(data) {
-
                     $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
                 },
                 dataType: "html"
@@ -119,15 +131,13 @@ linkRev.prototype.removeInvalidAttributes = function(target) {
 };
 
 linkRev.prototype.cleanDomString = function(data) {
-    
     return data.replace(/<[^>]*>?/g, '');
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
-    var commentContent = document.getElementById('comment').value;
     var language = this.getCurrentLanguage();
     var link = url;
-    var data = "Link=" + link + '&NewCommentContent=' + encodeURIComponent(commentContent) + '&CommentLanguage=' + language;
+    var data = "Link=" + link + '&NewCommentContent=' + encodeURIComponent(this.$commentContent.val()) + '&CommentLanguage=' + language;
 
     $.ajax({
         type: "POST",
@@ -135,7 +145,7 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
         contentType:"application/x-www-form-urlencoded",
         data: data,
         success: function() {
-            document.getElementById('comment').value = '';
+            this.$commentContent.val('');
             this.getExistingComments();
         }.bind(this),
         dataType: "json"
@@ -150,28 +160,26 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
         url: commentsUrl,
         success: function (comments) {
             if (comments) {
-                var html = '';                
+                var html = '';
 
-                $('#commentsCounter').text(comments.length);
+                this.$commentsCounter.text(comments.length);
 
                 for (var i = 0; i < comments.length; i++) {
-
                     var cleanId = this.cleanDomString(comments[i]._id);
                     var cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
                     var cleanContent = this.cleanDomString(comments[i].content);
                     var cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
                     html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(cleanCreatedDateTime).toLocaleDateString() +
-                        ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating"><span class="has-text-success" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
+                        ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating"><span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
                         '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
-                        '<button class="button is-primary is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '"><i class="fa fa-warning"></i>' + chrome.i18n.getMessage('Report')  + '</button>' +
+                        '<button class="button is-info is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '"><i class="fa fa-warning"></i>' + chrome.i18n.getMessage('Report')  + '</button>' +
                         '</div></div></div>';
                 }
 
-                $('#existing-comments').html(html);
-
+                this.$existingComments.html(html);
                 this.initCommentsEventListeners();
             }
         }.bind(this),
@@ -180,30 +188,41 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
 };
 
 linkRev.prototype.sendComment = function() {
-    if ($('#comment').val().length < 2) {
-        this.createValidationMessage('MessageLengthUnder', 'is-danger');
-    } else if ($('#comment').val().length > 1000) {
-        this.createValidationMessage('MessageLengthOver', 'is-danger');
-    } else if ($('#submitButton').hasClass('button--disabled')) {
-        this.createValidationMessage('MessageTiming', 'is-danger');
+    if (this.$commentContent.val().length < this.minLength) {
+        this.createValidationMessage('MessageLengthUnder', this.isDangerClass);
+    } else if (this.$commentContent.val().length > this.maxLength) {
+        this.createValidationMessage('MessageLengthOver', this.isDangerClass);
+    } else if (this.$submitButton.hasClass('button--disabled')) {
+        this.createValidationMessage('MessageTiming', this.isDangerClass);
     } else {
         this.getCurrentUrl(this.addCommentAjaxQuery);
-        this.createValidationMessage('CommentSuccess', 'is-success');
+        this.createValidationMessage('CommentSuccess', this.isSuccessClass);
 
-        $('#submitButton').addClass('button--disabled');
+        this.$submitButton.addClass(this.disabledButtonClass);
         setTimeout(this.activateButton, this.nextCommentTimeBlocker);
     }
 };
 
 linkRev.prototype.activateButton = function() {
-    $('#submitButton').removeClass('button--disabled');
+    this.$submitButton.removeClass(this.disabledButtonClass);
+};
+
+linkRev.prototype.checkRatings = function() {
+    var ratedComments = $('[data-attribute="ratingValue"]');
+
+    for (var i = 0; i <= ratedComments.length; i++) {
+        if (ratedComments.val() > 0) {
+            this.addClass(this.hasTextSuccessClass);
+        } else if (ratedComments.val() < 0) {
+            this.addClass(this.hasTextDangerClass);
+        }
+    }
 };
 
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {
-    var messageContainer = document.getElementById("errorsContainer");
     var messageData = '<div class=\"notification ' + additionalClass + ' validation\">' + chrome.i18n.getMessage(message) + '</div>';
 
-    messageContainer.innerHTML = messageData;
+    this.$errorContainer.html(messageData);
 };
 
 linkRev.prototype.getExistingComments = function() {
@@ -237,7 +256,7 @@ linkRev.prototype.getDislikeCommentUrl = function(commentId) {
 linkRev.prototype.getCurrentUrl = function(callback) {
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
         callback(tabs[0].url);
-    }.bind(this));
+    });
 };
 
 linkRev.prototype.getCurrentLanguage = function() {
