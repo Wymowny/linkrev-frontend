@@ -1,3 +1,5 @@
+"use strict";
+
 function linkRev() {
     this.init();
 }
@@ -39,6 +41,5 @@ linkRev.prototype.localizeHtmlPage = function() {
 };
 
 linkRev.prototype.getBasicUrl = function() {
-
     return "https://linkrev.com/";
-}
+};
