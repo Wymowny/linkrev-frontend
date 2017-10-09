@@ -29,15 +29,14 @@ linkRev.prototype.onActivatedTab = function() {
 };
 
 linkRev.prototype.updateCommentsCount = function() {
-  var _this = this;
-
-  this.getCurrentUrl(_this.unreadMessagesCount);
+  this.getCurrentUrl(this.unreadMessagesCount.bind(this));
 };
 
 linkRev.prototype.unreadMessagesCount = function(url) {
-  var _this = new linkRev();
 
-  _this.getInboxCount(
+    var _this = this;
+
+    this.getInboxCount(
       url, function(count) {
           _this.updateUnreadCount(count);
       },
