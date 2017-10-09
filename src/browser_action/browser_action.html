@@ -41,7 +41,11 @@
                 </div>
             </form>
 
-            <div id="comments-order-panel" class="control control__select">
+            <div id="be-first-panel" class="be-first-panel" style="display: none">
+                    __MSG_BeFirstAndWriteComment__
+            </div>
+
+            <div id="comments-order-panel" class="control control__select" style="display: none;">
                 __MSG_Comments__ (<span id="commentsCounter"></span>):
                 <div class="select">
                     <select id="comments-sort">
@@ -56,6 +60,7 @@
         </div>
 
         <script src="../external/jquery/js/jquery.min.js"></script>
+        <script type="text/javascript" src="../common.js"></script>
         <script src="browser_action.js"></script>
     </body>
 </html>

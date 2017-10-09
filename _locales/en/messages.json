@@ -52,5 +52,8 @@
   },
   "Report": {
     "message": "Report"
+  },
+  "BeFirstAndWriteComment": {
+    "message": "Be first and write your comment!"
   }
 }
