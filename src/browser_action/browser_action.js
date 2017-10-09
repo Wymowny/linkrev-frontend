@@ -179,6 +179,17 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
                         '</div></div></div>';
                 }
 
+                if (comments.length > 0) {
+
+                    $('#comments-order-panel').show();
+                    $('#be-first-panel').hide();
+                }
+                else {
+
+                    $('#comments-order-panel').hide();
+                    $('#be-first-panel').show();
+                }
+                
                 this.$existingComments.html(html);
                 this.initCommentsEventListeners();
             }
