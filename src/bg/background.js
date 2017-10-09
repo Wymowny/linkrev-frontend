@@ -6,9 +6,8 @@ linkRev.prototype.init = function() {
       this.onUpdatedTab();
       this.onActivatedTab();
       this.localizeHtmlPage();
-  };
+};
 
-  
 linkRev.prototype.onUpdatedTab = function() {
   chrome.tabs.onUpdated.addListener(function (tabid, changeinfo, tab) {
       var url = tab.url;
@@ -20,7 +19,6 @@ linkRev.prototype.onUpdatedTab = function() {
 };
 
 linkRev.prototype.onActivatedTab = function() {
-
   var _this = this;
 
   chrome.tabs.onActivated.addListener(function(details) {
@@ -29,15 +27,13 @@ linkRev.prototype.onActivatedTab = function() {
 };
 
 linkRev.prototype.updateCommentsCount = function() {
-  var _this = this;
-
-  this.getCurrentUrl(_this.unreadMessagesCount);
+  this.getCurrentUrl(this.unreadMessagesCount.bind(this));
 };
 
 linkRev.prototype.unreadMessagesCount = function(url) {
-  var _this = new linkRev();
+    var _this = this;
 
-  _this.getInboxCount(
+    this.getInboxCount(
       url, function(count) {
           _this.updateUnreadCount(count);
       },
@@ -51,7 +47,6 @@ linkRev.prototype.unreadMessagesCount = function(url) {
 };
 
 linkRev.prototype.updateUnreadCount = function(count) {
-
   var _this = this;
 
   chrome.storage.local.get('unreadCount', function(results) {
@@ -80,7 +75,6 @@ linkRev.prototype.updateIcon = function() {
 };
 
 linkRev.prototype.getInboxCount = function(url, onSuccess, onError) {
-
   $.ajax({
       type: "GET",
       url: this.getCountUrl() + "?link=" + url,
