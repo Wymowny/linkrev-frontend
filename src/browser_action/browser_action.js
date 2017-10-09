@@ -12,8 +12,6 @@ linkRev.prototype.init = function() {
     this.disabledButtonClass = 'button--disabled';
     this.isDangerClass = 'is-danger';
     this.isSuccessClass = 'is-success';
-    this.hasTextSuccessClass = 'has-text-success';
-    this.hasTextDangerClass = 'has-text-danger';
 
     // Initial functions:
     this.localizeHtmlPage();
@@ -33,7 +31,6 @@ linkRev.prototype.init = function() {
     window.onload = function () {
         this.getExistingComments();
         this.initEventListeners();
-        this.checkRatings();
     }.bind(this);
 };
 
@@ -151,6 +148,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
 
                 this.$existingComments.html(html);
                 this.initCommentsEventListeners();
+                this.checkRatings();
             }
         }.bind(this),
         dataType: "json"
@@ -198,19 +196,15 @@ linkRev.prototype.activateButton = function() {
 };
 
 linkRev.prototype.checkRatings = function() {
-    setTimeout(function() {
-        var ratedComments = $('[data-likesminusdislikes]');
+    var ratedComments = $('[data-likesminusdislikes]');
 
-        ratedComments.each(function(){
-            if ($(this).text() > 0) {
-                console.log('bigger than zero');
-                $(this).addClass(this.hasTextSuccessClass);
-            } else if ($(this).text() < 0) {
-                console.log('less than zero');
-                $(this).addClass(this.hasTextDangerClass);
-            }
-        });
-    }, 3000);
+    ratedComments.each(function(){
+        if ($(this).text() > 0) {
+            $(this).addClass('has-text-success');
+        } else if ($(this).text() < 0) {
+            $(this).addClass('has-text-danger');
+        }
+    });
 };
 
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {
