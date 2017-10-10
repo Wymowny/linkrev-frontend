@@ -5,15 +5,13 @@ linkRev.prototype.init = function() {
     // Basic variables:
     this.validAttrs = ['class', 'id', 'href', 'style'];
     this.nextCommentTimeBlocker = 30000;
-    this.minLength = 2;
     this.maxLength = 1000;
+    this.minLength = 2;
 
     // State classes:
     this.disabledButtonClass = 'button--disabled';
     this.isDangerClass = 'is-danger';
     this.isSuccessClass = 'is-success';
-    this.hasTextSuccessClass = 'has-text-success';
-    this.hasTextDangerClass = 'has-text-danger';
 
     // Initial functions:
     this.localizeHtmlPage();
@@ -24,24 +22,29 @@ linkRev.prototype.init = function() {
     this.$existingComments = $('#existing-comments');
     this.$submitButton = $('#submitButton');
     this.$errorContainer = $('#errorsContainer');
+    this.$selectSorter = $('#comments-sort');
+
+    this.$reportComment = $('[data-attribute="reportComment"]');
+    this.$dislikeComment = $('[data-attribute="dislikeComment"]');
+    this.$likeComment = $('[data-attribute="likeComment"]');
 
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
         this.getExistingComments();
         this.initEventListeners();
-        this.checkRatings();
     }.bind(this);
 };
 
 linkRev.prototype.initEventListeners = function() {
     this.$submitButton.on('click', this.sendComment.bind(this));
+    this.$selectSorter.on('change', this.manageSorting.bind(this));
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
     var _this = this;
 
     // Handle report button
-    $("[data-attribute='reportComment']").each(function() {
+    this.$reportComment.each(function() {
         $(this).on('click', function() {
             var button = this;
 
@@ -59,7 +62,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
       });
 
     // Handle like button
-    $("[data-attribute='likeComment']").each(function() {
+    this.$likeComment.each(function() {
         $(this).on('click', function() {
             var button = this;
 
@@ -75,7 +78,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
     });
 
     // Handle dislike button
-    $("[data-attribute='dislikeComment']").each(function() {
+    this.$dislikeComment.each(function() {
         $(this).on('click', function() {
             var button = this;
 
@@ -89,26 +92,6 @@ linkRev.prototype.initCommentsEventListeners = function() {
             });
         });
     });
-};
-
-linkRev.prototype.removeInvalidAttributes = function(target) {
-    var attrs = target.attributes, currentAttr;
-
-    for (var i = attrs.length - 1; i >= 0; i--) {
-        currentAttr = attrs[i].name;
-
-        if (attrs[i].specified && this.validAttrs.indexOf(currentAttr) === -1) {
-            target.removeAttribute(currentAttr);
-        }
-
-        if (currentAttr === "href" && /javascript[:]/gi.test(target.getAttribute("href"))) {
-            target.parentNode.removeChild(target);
-        }
-    }
-};
-
-linkRev.prototype.cleanDomString = function(data) {
-    return data.replace(/<[^>]*>?/g, '');
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -157,18 +140,17 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
                 }
 
                 if (comments.length > 0) {
-
                     $('#comments-order-panel').show();
                     $('#be-first-panel').hide();
                 }
                 else {
-
                     $('#comments-order-panel').hide();
                     $('#be-first-panel').show();
                 }
-                
+
                 this.$existingComments.html(html);
                 this.initCommentsEventListeners();
+                this.checkRatings();
             }
         }.bind(this),
         dataType: "json"
@@ -191,20 +173,51 @@ linkRev.prototype.sendComment = function() {
     }
 };
 
+linkRev.prototype.manageSorting = function() {
+    // $.ajax({
+    //     type: "POST",
+    //     url: url,
+    //     success: function(data) {
+    //
+    //     },
+    //     dataType: "html"
+    // });
+};
+
+linkRev.prototype.removeInvalidAttributes = function(target) {
+    var attrs = target.attributes, currentAttr;
+
+    for (var i = attrs.length - 1; i >= 0; i--) {
+        currentAttr = attrs[i].name;
+
+        if (attrs[i].specified && this.validAttrs.indexOf(currentAttr) === -1) {
+            target.removeAttribute(currentAttr);
+        }
+
+        if (currentAttr === "href" && /javascript[:]/gi.test(target.getAttribute("href"))) {
+            target.parentNode.removeChild(target);
+        }
+    }
+};
+
+linkRev.prototype.cleanDomString = function(data) {
+    return data.replace(/<[^>]*>?/g, '');
+};
+
 linkRev.prototype.activateButton = function() {
     this.$submitButton.removeClass(this.disabledButtonClass);
 };
 
 linkRev.prototype.checkRatings = function() {
-    var ratedComments = $('[data-attribute="ratingValue"]');
+    var ratedComments = $('[data-likesminusdislikes]');
 
-    for (var i = 0; i <= ratedComments.length; i++) {
-        if (ratedComments.val() > 0) {
-            this.addClass(this.hasTextSuccessClass);
-        } else if (ratedComments.val() < 0) {
-            this.addClass(this.hasTextDangerClass);
+    ratedComments.each(function(){
+        if ($(this).text() > 0) {
+            $(this).addClass('has-text-success');
+        } else if ($(this).text() < 0) {
+            $(this).addClass('has-text-danger');
         }
-    }
+    });
 };
 
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {
