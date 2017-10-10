@@ -34,6 +34,12 @@ button.pointer {
     margin-bottom: 20px;
 }
 
+.content .blockquote {
+    padding: 5px 10px;
+    margin-left: 27px;
+    margin-bottom: 10px;
+}
+
 .control__select {
     font-size: 13px;
     line-height: 30px;
