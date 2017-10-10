@@ -76,7 +76,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
         });
     });
 
-    // Handle plus & minus buttons
+    // Handle minus buttons
     $('[data-attribute="dislikeComment"]').each(function() {
         $(this).on('click', function() {
             var button = this;
