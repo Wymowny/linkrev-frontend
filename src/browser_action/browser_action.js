@@ -24,10 +24,6 @@ linkRev.prototype.init = function() {
     this.$errorContainer = $('#errorsContainer');
     this.$selectSorter = $('#comments-sort');
 
-    this.$reportComment = $('[data-attribute="reportComment"]');
-    this.$dislikeComment = $('[data-attribute="dislikeComment"]');
-    this.$likeComment = $('[data-attribute="likeComment"]');
-
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
         this.getExistingComments();
@@ -44,7 +40,8 @@ linkRev.prototype.initCommentsEventListeners = function() {
     var _this = this;
 
     // Handle report button
-    this.$reportComment.each(function() {
+    $('[data-attribute="reportComment"]').each(function() {
+
         $(this).on('click', function() {
             var button = this;
 
@@ -62,7 +59,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
       });
 
     // Handle like button
-    this.$likeComment.each(function() {
+    $('[data-attribute="likeComment"]').each(function() {
         $(this).on('click', function() {
             var button = this;
 
@@ -78,7 +75,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
     });
 
     // Handle dislike button
-    this.$dislikeComment.each(function() {
+    $('[data-attribute="dislikeComment"]').each(function() {
         $(this).on('click', function() {
             var button = this;
 
@@ -165,7 +162,7 @@ linkRev.prototype.sendComment = function() {
     } else if (this.$submitButton.hasClass('button--disabled')) {
         this.createValidationMessage('MessageTiming', this.isDangerClass);
     } else {
-        this.getCurrentUrl(this.addCommentAjaxQuery);
+        this.getCurrentUrl(this.addCommentAjaxQuery.bind(this));
         this.createValidationMessage('CommentSuccess', this.isSuccessClass);
 
         this.$submitButton.addClass(this.disabledButtonClass);
