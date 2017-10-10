@@ -68,10 +68,9 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 url: _this.getLikeCommentUrl($(this).attr('data-comment-id')),
                 success: function(data) {
                     $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
+                    _this.updateRatingColor(button);
                 },
                 dataType: "html"
-            }).done(function () {
-                _this.updateRatingColor(button);
             });
         });
     });
@@ -86,10 +85,9 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 url: _this.getDislikeCommentUrl($(this).attr('data-comment-id')),
                 success: function(data) {
                     $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
+                    _this.updateRatingColor(button);
                 },
                 dataType: "html"
-            }).done(function () {
-                _this.updateRatingColor(button);
             });
         });
     });
@@ -222,7 +220,7 @@ linkRev.prototype.checkRatings = function() {
 
 linkRev.prototype.updateRatingColor = function(element) {
     var currentNumber = $(element).parent().find('.rate__number');
-    var currentNumberValue = currentNumber.text();
+    var currentNumberValue = parseInt(currentNumber.text());
 
     currentNumber.removeClass('has-text-success', 'has-text-danger');
 
