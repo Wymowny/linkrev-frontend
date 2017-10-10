@@ -68,13 +68,14 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 url: _this.getLikeCommentUrl($(this).attr('data-comment-id')),
                 success: function(data) {
                     $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
+                    _this.updateRatingColor(button);
                 },
                 dataType: "html"
             });
         });
     });
 
-    // Handle dislike button
+    // Handle dislike buttons
     $('[data-attribute="dislikeComment"]').each(function() {
         $(this).on('click', function() {
             var button = this;
@@ -84,6 +85,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 url: _this.getDislikeCommentUrl($(this).attr('data-comment-id')),
                 success: function(data) {
                     $('span[data-likesminusdislikes="' + $(button).attr('data-comment-id') + '"]').text(data);
+                    _this.updateRatingColor(button);
                 },
                 dataType: "html"
             });
@@ -93,8 +95,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
     var language = this.getCurrentLanguage();
-    var link = url;
-    var data = "Link=" + link + '&NewCommentContent=' + encodeURIComponent(this.$commentContent.val()) + '&CommentLanguage=' + language;
+    var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(this.$commentContent.val()) + '&CommentLanguage=' + language;
 
     $.ajax({
         type: "POST",
@@ -215,6 +216,19 @@ linkRev.prototype.checkRatings = function() {
             $(this).addClass('has-text-danger');
         }
     });
+};
+
+linkRev.prototype.updateRatingColor = function(element) {
+    var currentNumber = $(element).parent().find('.rate__number');
+    var currentNumberValue = parseInt(currentNumber.text());
+
+    currentNumber.removeClass('has-text-success', 'has-text-danger');
+
+    if (currentNumberValue > 0) {
+        currentNumber.addClass('has-text-success');
+    } else if (currentNumberValue < 0) {
+        currentNumber.addClass('has-text-danger');
+    }
 };
 
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {

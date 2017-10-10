@@ -13,10 +13,6 @@
     margin-left: auto;
 }
 
-.has-text-success {
-    transition: all 1s ease-in;
-}
-
 button.icon {
     background: none;
     border: none;
