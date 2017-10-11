@@ -1,5 +1,7 @@
 "use strict";
 
+linkRev.sortingStrategies = Object.freeze({ BEST: 0, NEW: 1, OLD: 2 });
+
 linkRev.prototype.init = function() {
 
     // Basic variables:
@@ -7,6 +9,7 @@ linkRev.prototype.init = function() {
     this.nextCommentTimeBlocker = 30000;
     this.maxLength = 1000;
     this.minLength = 2;
+    this.saveSortingStrategy = true;
 
     // State classes:
     this.disabledButtonClass = 'button--disabled';
@@ -26,14 +29,33 @@ linkRev.prototype.init = function() {
 
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
+        this.setSelectSorterValue();
         this.getExistingComments();
         this.initEventListeners();
     }.bind(this);
 };
 
+linkRev.prototype.setSelectSorterValue = function() {
+
+    var _this = this;
+
+    chrome.storage.local.get('commentsSortingStrategy', function(results) {
+
+        if (results.commentsSortingStrategy) {
+
+            _this.sortingStrategy = results.commentsSortingStrategy;
+            _this.$selectSorter.val(_this.sortingStrategy);
+        }
+        else {
+
+            _this.sortingStrategy = linkRev.sortingStrategies.BEST;
+        }
+    });     
+};
+
 linkRev.prototype.initEventListeners = function() {
     this.$submitButton.on('click', this.sendComment.bind(this));
-    this.$selectSorter.on('change', this.manageSorting.bind(this));
+    this.$selectSorter.on('change', this.manageSorting.bind(this));    
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
@@ -103,6 +125,9 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
         contentType:"application/x-www-form-urlencoded",
         data: data,
         success: function() {
+            this.saveSortingStrategy = false;
+            this.sortingStrategy = linkRev.sortingStrategies.NEW;
+            this.$selectSorter.val(this.sortingStrategy);
             this.$commentContent.val('');
             this.getExistingComments();
         }.bind(this),
@@ -113,6 +138,11 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
 linkRev.prototype.existingCommentsAjaxQuery = function(url) {
     var commentsUrl = this.getCommentsUrl() + '?link=' + url;
 
+    if (this.sortingStrategy)
+    {
+        commentsUrl += '&sortingStrategy=' + this.sortingStrategy;
+    }
+    
     $.ajax({
         type: "GET",
         url: commentsUrl,
@@ -172,14 +202,24 @@ linkRev.prototype.sendComment = function() {
 };
 
 linkRev.prototype.manageSorting = function() {
-    // $.ajax({
-    //     type: "POST",
-    //     url: url,
-    //     success: function(data) {
-    //
-    //     },
-    //     dataType: "html"
-    // });
+
+    var _this = this;
+
+    this.sortingStrategy = this.$selectSorter.val();
+
+    if (this.saveSortingStrategy) {
+
+        chrome.storage.local.set({'commentsSortingStrategy': this.$selectSorter.val()}, function() {
+            
+            _this.getExistingComments();
+        });
+    } 
+    else {
+
+        this.getExistingComments();
+    }    
+
+    this.saveSortingStrategy = true;
 };
 
 linkRev.prototype.removeInvalidAttributes = function(target) {
@@ -238,6 +278,7 @@ linkRev.prototype.createValidationMessage = function(message, additionalClass) {
 };
 
 linkRev.prototype.getExistingComments = function() {
+
     this.getCurrentUrl(this.existingCommentsAjaxQuery.bind(this));
 };
 
