@@ -1,7 +1,7 @@
 "use strict";
 
 linkRev.prototype.init = function() {
-    
+
     // Initial functions:
     this.onUpdatedTab();
     this.onActivatedTab();
@@ -10,18 +10,32 @@ linkRev.prototype.init = function() {
 
 linkRev.prototype.onUpdatedTab = function() {
   chrome.tabs.onUpdated.addListener(function (tabid, changeinfo, tab) {
-      var url = tab.url;
 
-      if (url !== undefined && changeinfo.status == "complete") {
-        this.getCurrentUrl(this.checkStatus.bind(this));
-      }
+        var _this = this;
+
+        var url = tab.url;
+
+        if (url !== undefined && changeinfo.status == "complete") {
+
+            chrome.storage.local.remove('hots', function() {
+
+                _this.getCurrentUrl(_this.checkStatus.bind(_this));
+            });
+        }
   }.bind(this));
 };
 
 linkRev.prototype.onActivatedTab = function() {
-  chrome.tabs.onActivated.addListener(function(details) {
-    this.getCurrentUrl(this.checkStatus.bind(this));
-  }.bind(this));
+
+    chrome.tabs.onActivated.addListener(function(details) {
+
+        var _this = this;
+        
+        chrome.storage.local.remove('hots', function() {
+            
+            _this.getCurrentUrl(_this.checkStatus.bind(_this));
+        });
+    }.bind(this));
 };
 
 linkRev.prototype.updateIcon = function(text) {
