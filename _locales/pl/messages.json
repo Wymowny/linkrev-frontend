@@ -1,24 +1,62 @@
 {
-    "appDesc": {
-      "message": "Pisz i czytaj komentarze w Internecie."
-    },
-    "Message": {
-      "message":"Wiadomość"
-    },
-    "YourComment": {
-      "message":"Twój komentarz"
-    },
-    "IAgree": {
-      "message": "Wysyłając komentarz akceptujesz  "
-    },
-    "TermsAndConditions": {
-      "message":"regularmin."
-    },
-    "TermsAndConditionsLink": {
-      "message": "https://linkrev.com/pl/TermsAndConditions"
-    },
-    "Submit": {
-      "message":"Wyślij"
-    }
+  "appDesc": {
+    "message": "Pisz i czytaj komentarze w Internecie."
+  },
+  "Message": {
+    "message": "Wiadomość"
+  },
+  "YourComment": {
+    "message": "Twój komentarz"
+  },
+  "IAgree": {
+    "message": "Wysyłając komentarz akceptujesz  "
+  },
+  "TermsAndConditions": {
+    "message": "regulamin."
+  },
+  "TermsAndConditionsLink": {
+    "message": "https://linkrev.com/pl/TermsAndConditions"
+  },
+  "Submit": {
+    "message": "Wyślij"
+  },
+  "Comments": {
+    "message": "Komentarze"
+  },
+  "BestFromAll": {
+    "message": "najlepsze"
+  },
+  "OldToNew": {
+    "message": "najstarsze"
+  },
+  "NewToOld": {
+    "message": "najnowsze"
+  },
+  "DiscussionLink": {
+    "message": "Dołącz do dyskusji!"
+  },
+  "MessageLengthUnder": {
+    "message": "Wiadomość musi mieć przynajmniej 2 znaki!"
+  },
+  "MessageLengthOver": {
+    "message": "Wiadomość musi być krótsza niż 1000 znaków!"
+  },
+  "MessageTiming": {
+    "message": "Poczekaj 30 sekund przed kolejną wiadomością!"
+  },
+  "CommentSuccess": {
+    "message": "Komentarz został wysłany!"
+  },
+  "SentSuccessfully": {
+    "message": "Wysłano pomyślnie!"
+  },
+  "Report": {
+    "message": "Zgłoś"
+  },
+  "BeFirstAndWriteComment": {
+    "message": "Bądź pierwszy i napisz komentarz!"
+  },
+  "AlertLink": {
+    "message": "Przejdź do strony i napisz komentarz"
   }
-  
+}

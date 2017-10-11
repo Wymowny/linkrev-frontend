@@ -3,21 +3,60 @@
     "message": "Write and read comments on the Internet."
   },
   "Message": {
-    "message":"Message"
+    "message": "Message"
   },
   "YourComment": {
-    "message":"Your comment"
+    "message": "Your comment"
   },
   "IAgree": {
     "message": "Submitting I agree to the "
   },
   "TermsAndConditions": {
-    "message":"terms and conditions"
+    "message": "terms and conditions"
   },
   "TermsAndConditionsLink": {
     "message": "https://linkrev.com/en/TermsAndConditions"
   },
   "Submit": {
-    "message":"Submit"
+    "message": "Submit"
+  },
+  "Comments": {
+    "message": "Comments"
+  },
+  "BestFromAll": {
+    "message": "best"
+  },
+  "OldToNew": {
+    "message": "oldest"
+  },
+  "NewToOld": {
+    "message": "newest"
+  },
+  "DiscussionLink": {
+    "message": "Go to hot discussion!"
+  },
+  "MessageLengthUnder": {
+    "message": "Message is not long enough!"
+  },
+  "MessageLengthOver": {
+    "message": "Message is too long!"
+  },
+  "MessageTiming": {
+    "message": "You have to wait 30 seconds!"
+  },
+  "CommentSuccess": {
+    "message": "Comment has been sent successfully!"
+  },
+  "SentSuccessfully": {
+    "message": "Sent successfully!"
+  },
+  "Report": {
+    "message": "Report"
+  },
+  "BeFirstAndWriteComment": {
+    "message": "Be first and write your comment!"
+  },
+  "AlertLink": {
+    "message": "Go to site and write your comment"
   }
 }

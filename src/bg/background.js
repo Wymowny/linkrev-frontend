@@ -1,98 +1,105 @@
-chrome.tabs.onUpdated.addListener(function(tabid, changeinfo, tab) {
-  var url = tab.url;
-      
-  if (url !== undefined && changeinfo.status == "complete") {
+"use strict";
 
-    updateCommentsCount();
-  }
- });
+linkRev.prototype.init = function() {
 
-chrome.tabs.onActivated.addListener(function(details) {
+    // Initial functions:
+    this.onUpdatedTab();
+    this.onActivatedTab();
+    this.localizeHtmlPage();
+};
 
-  updateCommentsCount();
-});
+linkRev.prototype.onUpdatedTab = function() {
+  chrome.tabs.onUpdated.addListener(function (tabid, changeinfo, tab) {
 
-function updateCommentsCount() {
+        var _this = this;
 
-  getCurrentUrl(unreadMessagesCount);
-}
+        var url = tab.url;
 
-function unreadMessagesCount(url) {
+        if (url !== undefined && changeinfo.status == "complete") {
 
-  getInboxCount(
-    url,
-    function(count) {
-      updateUnreadCount(count);
-    },
-    function() {
-      delete localStorage.unreadCount;
-      updateIcon();
-    }
-  );
-}
+            chrome.storage.local.remove('hots', function() {
 
-function updateUnreadCount(count) {
-  var changed = localStorage.unreadCount != count;
+                _this.getCurrentUrl(_this.checkStatus.bind(_this));
+            });
+        }
+  }.bind(this));
+};
 
-  if (changed) {
+linkRev.prototype.onActivatedTab = function() {
 
-    localStorage.unreadCount = count;
-    updateIcon();
-  } 
-}
+    chrome.tabs.onActivated.addListener(function(details) {
 
-function updateIcon() {
-
-  if (localStorage.unreadCount) {
-
-    chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
-    chrome.browserAction.setBadgeText({
-      text: localStorage.unreadCount != "0" ? localStorage.unreadCount : ""
-    });
-  }
-  else {
-
-    chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-    chrome.browserAction.setBadgeText({text:"0"});
-  }  
-}
-
-function getInboxCount(url, onSuccess, onError) {
-
-  var xhr = new XMLHttpRequest();
-
-  function handleSuccess(count) {
-    if (onSuccess)
-      onSuccess(count);
-  }
-
-  var invokedErrorCallback = false;
-  function handleError() {
-    if (onError && !invokedErrorCallback)
-      onError();
-    invokedErrorCallback = true;
-  }
-
-  try {
-
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState != 4)
-        return;
-
-      if (this.responseText) {
+        var _this = this;
         
-        handleSuccess(this.responseText);
-      }
-    };
+        chrome.storage.local.remove('hots', function() {
+            
+            _this.getCurrentUrl(_this.checkStatus.bind(_this));
+        });
+    }.bind(this));
+};
 
-    xhr.onerror = function(error) {
+linkRev.prototype.updateIcon = function(text) {
 
-      handleError();
-    };
+    if (!text) {
 
-    xhr.open("GET", getCountUrl() + "?link=" + url, true);
-    xhr.send();
-  } catch(e) {
-    handleError();
-  }
-}
+        chrome.browserAction.setBadgeText({
+            text: ""
+        });
+    }
+    else if (text === 'HOT') {
+
+        chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+        chrome.browserAction.setBadgeText({
+            text: "HOT"
+        });
+    }
+    else {
+
+        chrome.browserAction.setBadgeBackgroundColor({color: "#EE7600"});
+        chrome.browserAction.setBadgeText({
+            text: text.toString()
+        });
+    }
+};
+
+linkRev.prototype.checkStatus = function(url) {
+
+    var _this = this;
+
+    $.ajax({
+        type: "GET",
+        url: this.getStatusUrl() + "?link=" + url + '&language=' + this.getCurrentLanguage(),
+        success: function(result) {
+
+            if (result.hots.length) {
+
+                _this.updateIcon('HOT');
+
+                chrome.storage.local.set({'hots': result.hots});
+            }
+            else {
+
+                if (result.count > 0) {
+
+                    _this.updateIcon(result.count);
+                }
+                else {
+
+                    _this.updateIcon();
+                }                
+            }
+        },
+        error: function() {
+
+            _this.updateIcon();
+        },
+        dataType: "json"
+    });
+};
+
+linkRev.prototype.getStatusUrl = function() {
+
+  return this.getBasicUrl() +  "api/comments/status";
+};
+
+new linkRev();

@@ -1,6 +1,6 @@
 {
   "name": "LinkRev",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "manifest_version": 2,
   "description": "__MSG_appDesc__",
   "homepage_url": "https://linkrev.com",
@@ -14,13 +14,13 @@
     "page": "src/bg/background.html",
     "persistent": true
   },
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
   "browser_action": {
     "default_icon": "icons/icon19.png",
     "default_title": "LinkRev",
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
-    "notifications",
     "webNavigation",
     "tabs",
     "activeTab",
