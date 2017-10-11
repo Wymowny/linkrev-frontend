@@ -74,6 +74,8 @@ linkRev.prototype.checkStatus = function(url) {
             if (result.hots.length) {
 
                 _this.updateIcon('HOT');
+
+                chrome.storage.local.set({'hots': result.hots});
             }
             else {
 
@@ -85,7 +87,7 @@ linkRev.prototype.checkStatus = function(url) {
 
                     _this.updateIcon();
                 }                
-            }            
+            }
         },
         error: function() {
 

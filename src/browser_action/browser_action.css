@@ -115,3 +115,7 @@ button.pointer {
     margin-bottom: 10px;
     text-align: center;
 }
+
+.bold {
+    font-weight: bold;
+}
