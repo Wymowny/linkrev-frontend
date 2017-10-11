@@ -55,5 +55,8 @@
   },
   "BeFirstAndWriteComment": {
     "message": "Bądź pierwszy i napisz komentarz!"
+  },
+  "AlertLink": {
+    "message": "Przejdź do strony i napisz komentarz"
   }
 }

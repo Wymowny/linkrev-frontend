@@ -1,92 +1,105 @@
 "use strict";
 
 linkRev.prototype.init = function() {
-  
-      // Initial functions:
-      this.onUpdatedTab();
-      this.onActivatedTab();
-      this.localizeHtmlPage();
+
+    // Initial functions:
+    this.onUpdatedTab();
+    this.onActivatedTab();
+    this.localizeHtmlPage();
 };
 
 linkRev.prototype.onUpdatedTab = function() {
   chrome.tabs.onUpdated.addListener(function (tabid, changeinfo, tab) {
-      var url = tab.url;
 
-      if (url !== undefined && changeinfo.status == "complete") {
-          this.updateCommentsCount();
-      }
+        var _this = this;
+
+        var url = tab.url;
+
+        if (url !== undefined && changeinfo.status == "complete") {
+
+            chrome.storage.local.remove('hots', function() {
+
+                _this.getCurrentUrl(_this.checkStatus.bind(_this));
+            });
+        }
   }.bind(this));
 };
 
 linkRev.prototype.onActivatedTab = function() {
-  chrome.tabs.onActivated.addListener(function(details) {
-      this.updateCommentsCount();
-  }.bind(this));
+
+    chrome.tabs.onActivated.addListener(function(details) {
+
+        var _this = this;
+        
+        chrome.storage.local.remove('hots', function() {
+            
+            _this.getCurrentUrl(_this.checkStatus.bind(_this));
+        });
+    }.bind(this));
 };
 
-linkRev.prototype.updateCommentsCount = function() {
-  this.getCurrentUrl(this.unreadMessagesCount.bind(this));
+linkRev.prototype.updateIcon = function(text) {
+
+    if (!text) {
+
+        chrome.browserAction.setBadgeText({
+            text: ""
+        });
+    }
+    else if (text === 'HOT') {
+
+        chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+        chrome.browserAction.setBadgeText({
+            text: "HOT"
+        });
+    }
+    else {
+
+        chrome.browserAction.setBadgeBackgroundColor({color: "#EE7600"});
+        chrome.browserAction.setBadgeText({
+            text: text.toString()
+        });
+    }
 };
 
-linkRev.prototype.unreadMessagesCount = function(url) {
+linkRev.prototype.checkStatus = function(url) {
+
     var _this = this;
 
-    this.getInboxCount(
-      url, function(count) {
-          _this.updateUnreadCount(count);
-      },
+    $.ajax({
+        type: "GET",
+        url: this.getStatusUrl() + "?link=" + url + '&language=' + this.getCurrentLanguage(),
+        success: function(result) {
 
-      function() {
-          chrome.storage.local.remove('unreadCount', function() {
-              _this.updateIcon();
-          });
-      }
-  );
+            if (result.hots.length) {
+
+                _this.updateIcon('HOT');
+
+                chrome.storage.local.set({'hots': result.hots});
+            }
+            else {
+
+                if (result.count > 0) {
+
+                    _this.updateIcon(result.count);
+                }
+                else {
+
+                    _this.updateIcon();
+                }                
+            }
+        },
+        error: function() {
+
+            _this.updateIcon();
+        },
+        dataType: "json"
+    });
 };
 
-linkRev.prototype.updateUnreadCount = function(count) {
-  var _this = this;
+linkRev.prototype.getStatusUrl = function() {
 
-  chrome.storage.local.get('unreadCount', function(results) {
-      var changed = results.unreadCount != count;
-
-      if (changed) {
-          chrome.storage.local.set({'unreadCount': count}, function() {
-              _this.updateIcon();
-          });
-      }
-  });
-};
-
-linkRev.prototype.updateIcon = function() {
-  chrome.storage.local.get('unreadCount', function(results) {
-      if (results.unreadCount) {
-          chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
-          chrome.browserAction.setBadgeText({
-              text: results.unreadCount != "0" ? results.unreadCount : ""
-          });
-      } else {
-          chrome.browserAction.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-          chrome.browserAction.setBadgeText({text:"0"});
-      }
-  });
-};
-
-linkRev.prototype.getInboxCount = function(url, onSuccess, onError) {
-  $.ajax({
-      type: "GET",
-      url: this.getCountUrl() + "?link=" + url,
-      success: function(count) {
-        
-          onSuccess(count);
-      },
-      error: onError,
-      dataType: "html"
-  });
-};
-
-linkRev.prototype.getCountUrl = function() {
-  return this.getBasicUrl() +  "api/comments/count";
+  return this.getBasicUrl() +  "api/comments/status";
 };
 
 new linkRev();
