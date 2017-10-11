@@ -51,7 +51,7 @@ button.pointer {
     margin-bottom: 10px;
 }
 
-#be-first-panel, #comments-order-panel {
+#be-first-panel, #comments-order-panel, #alert, #alert-quote {
     display: none;
 }
 

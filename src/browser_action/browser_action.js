@@ -42,41 +42,30 @@ linkRev.prototype.init = function() {
 };
 
 linkRev.prototype.setHots = function() {
-
     var _this = this;
 
     chrome.storage.local.get('hots', function(results) {
-
         if (results.hots && results.hots.length > 0) {
-
             if (results.hots[0].hotComment) {
-
                 _this.$alertQuoteContent.text(results.hots[0].hotComment);
                 _this.$alertQuote.show();
             }
 
             _this.$alertTitle.text(results.hots[0].metaTitle);
-
             _this.$linkAlertGoTo.attr('href', 'http://' + results.hots[0].url);
-
             _this.$alert.show();
         }
     });
 }
 
 linkRev.prototype.setSelectSorterValue = function() {
-
     var _this = this;
 
     chrome.storage.local.get('commentsSortingStrategy', function(results) {
-
         if (results.commentsSortingStrategy) {
-
             _this.sortingStrategy = results.commentsSortingStrategy;
             _this.$selectSorter.val(_this.sortingStrategy);
-        }
-        else {
-
+        } else {
             _this.sortingStrategy = linkRev.sortingStrategies.BEST;
         }
     });   
@@ -92,7 +81,6 @@ linkRev.prototype.initCommentsEventListeners = function() {
 
     // Handle report button
     $('[data-attribute="reportComment"]').each(function() {
-
         $(this).on('click', function() {
             var button = this;
 
@@ -100,7 +88,6 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 type: "POST",
                 url: _this.getAddReportingUrl() + $(this).attr('data-comment-id'),
                 success: function(data) {
-
                     $(button).html('<i class="fa fa-check"></i>&nbsp;' + chrome.i18n.getMessage('SentSuccessfully'));
                     $(button).attr('disabled', true);
                 },
@@ -167,8 +154,7 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
 linkRev.prototype.existingCommentsAjaxQuery = function(url) {
     var commentsUrl = this.getCommentsUrl() + '?link=' + url;
 
-    if (this.sortingStrategy)
-    {
+    if (this.sortingStrategy) {
         commentsUrl += '&sortingStrategy=' + this.sortingStrategy;
     }
     
@@ -231,20 +217,15 @@ linkRev.prototype.sendComment = function() {
 };
 
 linkRev.prototype.manageSorting = function() {
-
     var _this = this;
 
     this.sortingStrategy = this.$selectSorter.val();
 
     if (this.saveSortingStrategy) {
-
         chrome.storage.local.set({'commentsSortingStrategy': this.$selectSorter.val()}, function() {
-            
             _this.getExistingComments();
         });
-    } 
-    else {
-
+    } else {
         this.getExistingComments();
     }    
 
@@ -307,7 +288,6 @@ linkRev.prototype.createValidationMessage = function(message, additionalClass) {
 };
 
 linkRev.prototype.getExistingComments = function() {
-
     this.getCurrentUrl(this.existingCommentsAjaxQuery.bind(this));
 };
 
