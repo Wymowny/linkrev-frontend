@@ -55,5 +55,11 @@
   },
   "BeFirstAndWriteComment": {
     "message": "Be first and write your comment!"
+  },
+  "AlertLink": {
+    "message": "Go to site and write your comment"
+  },
+  "OpenInLinkRev": {
+    "message": "Open in LinkRev"
   }
 }

@@ -6,21 +6,18 @@
     </head>
     <body>
         <div id="content">
-            <div class="content notification discussion" id="informationNote">
+            <div class="content notification discussion" id="alert" style="display: none;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 533.333 533.333">
                     <path d="M165.5 533.33c-35.55-73.96-16.62-116.34 10.7-156.27 29.9-43.73 37.62-87 37.62-87s23.52 30.56 14.1 78.38c41.56-46.25 49.4-119.94 43.13-148.16C364.95 285.9 405.1 428.02 351 533.33 638.7 370.56 422.58 127 384.95 99.56c12.55 27.43 14.92 73.88-10.4 96.42C331.63 33.33 225.57 0 225.57 0c12.55 83.88-45.46 175.6-101.4 244.13-1.97-33.45-4.05-56.52-21.64-88.53-3.95 60.76-50.38 110.28-62.96 171.16-17.03 82.44 12.76 142.8 125.9 206.57z"/>
                 </svg>
-                <div class="discussion__content">
-                    Success lorem ipsum dolor sit amet consectetur!
+                <div id="alert-title" class="discussion__content">
                 </div>
 
-                <blockquote class="blockquote">"Ut venenatis, nisl scelerisque sollicitudin fermentum, quam libero hendrerit ipsum, ut
-                    blandit est tellus sit amet turpis."</blockquote>
+                <blockquote class="blockquote">"<span id="alert-quote"></span>"</blockquote>
 
-                <a href="#" class="button button--right is-small is-primary">__MSG_DiscussionLink__</a>
+                <a href="#" id="alert-open-in-linkrev" class="button button--right is-small is-light">__MSG_OpenInLinkRev__</a>
+                <a href="#" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
-
-
             <form id="sendComment">
                 <div class="field">
                     <label class="label">__MSG_Message__:</label>
