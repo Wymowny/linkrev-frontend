@@ -1,44 +1,66 @@
 <!doctype html>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css" />
-<style type="text/css">
-    h2 {
-        margin-bottom: 10px;
-    }
-
-    #content {
-        width: 430px;
-        padding: 5px;
-    }
-
-    #sendComment {
-        margin-bottom: 20px;
-    }
-</style>
-<div id="content">
-    <form id="sendComment">
-        <div class="field">
-            <label class="label">__MSG_Message__:</label>
-            <div class="control">
-                <textarea id="comment" class="textarea" placeholder="__MSG_YourComment__"></textarea>
+    <head>
+        <link rel="stylesheet" type="text/css" href="../external/bulma/css/bulma.min.css" />
+        <link rel="stylesheet" type="text/css" href="../external/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="browser_action.css" />
+    </head>
+    <body>
+        <div id="content">
+            <div class="content notification discussion" id="alert" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 533.333 533.333">
+                    <path d="M165.5 533.33c-35.55-73.96-16.62-116.34 10.7-156.27 29.9-43.73 37.62-87 37.62-87s23.52 30.56 14.1 78.38c41.56-46.25 49.4-119.94 43.13-148.16C364.95 285.9 405.1 428.02 351 533.33 638.7 370.56 422.58 127 384.95 99.56c12.55 27.43 14.92 73.88-10.4 96.42C331.63 33.33 225.57 0 225.57 0c12.55 83.88-45.46 175.6-101.4 244.13-1.97-33.45-4.05-56.52-21.64-88.53-3.95 60.76-50.38 110.28-62.96 171.16-17.03 82.44 12.76 142.8 125.9 206.57z"/>
+                </svg>
+                <div id="alert-title" class="discussion__content bold">
+                </div>
+                <blockquote class="blockquote" id="alert-quote" style="display: none;">"<span id="alert-quote-content"></span>"</blockquote>                
+                <a href="#" target="_blank" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
-        </div>
-        <div class="field">
-            <div class="control">
-                <label class="checkbox">
-                    __MSG_IAgree__<a target="_blank" href="__MSG_TermsAndConditionsLink__">__MSG_TermsAndConditions__</a>
-                </label>
-            </div>
-        </div>
-        <div class="field is-grouped">
-            <div class="control">
-                <button id="submit-button" type="button" class="button is-primary">__MSG_Submit__</button>
-            </div>
-        </div>
-    </form>
-    <h2 id="existing-comments"></h2>
-    <div id="comments" class="comments">
-    </div>
-</div>
+            <form id="sendComment">
+                <div class="field">
+                    <label class="label">__MSG_Message__:</label>
 
-<script src="../global.js"></script>
-<script src="browser_action.js"></script>
+                    <div id="errorsContainer"></div>
+
+                    <div class="control">
+                        <textarea id="comment" class="textarea" placeholder="__MSG_YourComment__"></textarea>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            __MSG_IAgree__<a target="_blank" href="__MSG_TermsAndConditionsLink__">__MSG_TermsAndConditions__</a>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button id="submitButton" type="button" class="button is-primary">__MSG_Submit__</button>
+                    </div>
+                </div>
+            </form>
+
+            <div id="be-first-panel" class="be-first-panel">
+                    __MSG_BeFirstAndWriteComment__
+            </div>
+
+            <div id="comments-order-panel" class="control control__select">
+                __MSG_Comments__ (<span id="commentsCounter"></span>):
+                <div class="select">
+                    <select id="comments-sort">
+                        <option value="0">__MSG_BestFromAll__</option>
+                        <option value="1">__MSG_NewToOld__</option>
+                        <option value="2">__MSG_OldToNew__</option>                        
+                    </select>
+                </div>
+            </div>
+
+            <div id="existing-comments" class="comments"></div>
+        </div>
+
+        <script src="../external/jquery/js/jquery.min.js"></script>
+        <script type="text/javascript" src="../common.js"></script>
+        <script src="browser_action.js"></script>
+    </body>
+</html>
+
