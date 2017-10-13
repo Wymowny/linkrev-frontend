@@ -152,7 +152,7 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
 };
 
 linkRev.prototype.existingCommentsAjaxQuery = function(url) {
-    var commentsUrl = this.getCommentsUrl() + '?link=' + url;
+    var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url);
 
     if (this.sortingStrategy) {
         commentsUrl += '&sortingStrategy=' + this.sortingStrategy;
