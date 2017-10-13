@@ -54,7 +54,7 @@ linkRev.prototype.checkStatus = function(url) {
 
     $.ajax({
         type: "GET",
-        url: this.getStatusUrl() + "?link=" + url + '&language=' + this.getCurrentLanguage(),
+        url: this.getStatusUrl() + "?link=" + encodeURIComponent(url) + '&language=' + this.getCurrentLanguage(),
         success: function(result) {
 
             if (result.hots.length) {

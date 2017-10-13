@@ -62,6 +62,7 @@ linkRev.prototype.setSelectSorterValue = function() {
     var _this = this;
 
     chrome.storage.local.get('commentsSortingStrategy', function(results) {
+        
         if (results.commentsSortingStrategy) {
             _this.sortingStrategy = results.commentsSortingStrategy;
             _this.$selectSorter.val(_this.sortingStrategy);
@@ -152,17 +153,14 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
 };
 
 linkRev.prototype.existingCommentsAjaxQuery = function(url) {
-    var commentsUrl = this.getCommentsUrl() + '?link=' + url;
+    var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy;
 
-    if (this.sortingStrategy) {
-        commentsUrl += '&sortingStrategy=' + this.sortingStrategy;
-    }
-    
     $.ajax({
         type: "GET",
         url: commentsUrl,
         success: function (comments) {
             if (comments) {
+
                 var html = '';
 
                 this.$commentsCounter.text(comments.length);
