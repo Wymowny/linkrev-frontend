@@ -1,0 +1,63 @@
+{
+    "appDesc": {
+      "message": "Lesen und schreiben Sie Kommentare im Internet."
+    },
+    "Message": {
+      "message": "Kommentar"
+    },
+    "YourComment": {
+      "message": "Kommentar"
+    },
+    "IAgree": {
+      "message": "Ich akzeptiere die "
+    },
+    "TermsAndConditions": {
+      "message": "Allgemeinen Geschäftsbedingungen"
+    },
+    "TermsAndConditionsLink": {
+      "message": "https://linkrev.com/de/TermsAndConditions"
+    },
+    "Submit": {
+      "message": "Senden"
+    },
+    "Comments": {
+      "message": "Kommentare"
+    },
+    "BestFromAll": {
+      "message": "beste"
+    },
+    "OldToNew": {
+      "message": "älteste"
+    },
+    "NewToOld": {
+      "message": "neueste"
+    },
+    "DiscussionLink": {
+      "message": "Zur heißen Diskussion gehen!"
+    },
+    "MessageLengthUnder": {
+      "message": "Kommentar ist zu kurz!"
+    },
+    "MessageLengthOver": {
+      "message": "Kommentar ist zu lang!"
+    },
+    "MessageTiming": {
+      "message": "Bitte 30 Sekunden warten!"
+    },
+    "CommentSuccess": {
+      "message": "Kommentar wurde erfolgreich versendet!"
+    },
+    "SentSuccessfully": {
+      "message": "Erfolgreich gesendet!"
+    },
+    "Report": {
+      "message": "Bericht"
+    },
+    "BeFirstAndWriteComment": {
+      "message": "Schreiben Sie Ihren Kommentar!"
+    },
+    "AlertLink": {
+      "message": "Gehen Sie zur Website und schreiben Sie Ihren Kommentar"
+    }
+  }
+  
