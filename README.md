@@ -12,7 +12,7 @@ Save time - no need to register or log in.
 Extensions in browsers' stores:
 - [Google Chrome](https://chrome.google.com/webstore/detail/linkrev/nijpdaiknkbfbnepppnmbbhlhdahblpm?hl=en)
 - [Mozilla Firefox](https://addons.mozilla.org/en-US/firefox/addon/linkrev/)
-- [Opera](https://addons.opera.com/pl/extensions/details/linkrev/?display=en)
+- [Opera](https://addons.opera.com/en/extensions/details/linkrev/?display=en)
 
 Information:
 - [Terms and conditions](https://linkrev.com/en/TermsAndConditions)
