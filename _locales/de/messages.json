@@ -61,6 +61,15 @@
     },
     "Answer": {
       "message": "Antworten"
+    },
+    "AllLanguagesPost": {
+      "message": "Zeige Kommentare in allen Sprachen"
+    },
+    "ChooseLanguage": {
+      "message": "Wählen Sie die Sprache"
+    },
+    "ChooseCountry": {
+      "message": "Wählen Sie ein Land"
     }
   }
   

@@ -13,6 +13,10 @@
     margin-bottom: 2px;
 }
 
+.label, .be-first-panel {
+    color: #4a4a4a;
+}
+
 .button--right {
     margin-left: auto;
 }
@@ -51,6 +55,7 @@ label.switch {
     border-radius: 10px;
     position: relative;
     display: inline-block;
+    top: 2px;
 }
 
 label.switch:after {
@@ -78,13 +83,21 @@ label.switch:active:after {
     width: 40px;
 }
 
+i.fa {
+    font-size: 18px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
 
 /* Widget styling */
 
 .header {
     display: flex;
     justify-content: flex-end;
-    margin: 3px 5px -20px;
+    border-bottom: 1px solid #dbdbdb;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    margin: 3px 0 5px;
 }
 
 #content {
@@ -110,7 +123,7 @@ label.switch:active:after {
 }
 
 #errorsContainer .notification {
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 #be-first-panel, #comments-order-panel, #alert, #alert-quote {
@@ -118,10 +131,10 @@ label.switch:active:after {
 }
 
 .discussion {
-    margin-bottom: 20px;
     display: flex;
-    padding: 10px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 10px;
 }
 
 .discussion__content {
@@ -134,17 +147,18 @@ label.switch:active:after {
 }
 
 .overlay {
-    display: none;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: #fff;
     position: fixed;
-    width: calc(100% - 10px);
-    top: 5px;
-    left: 5px;
-    background: white;
+    display: none;
+    padding: 10px;
     z-index: 1;
-    bottom: 5px;
-    border-radius: 5px;
-    padding: 5px;
-    border: 1px solid #dbdbdb;
+}
+
+.overlay__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 .overlay__title {
@@ -154,11 +168,34 @@ label.switch:active:after {
 }
 
 .overlay__list li {
-    margin-bottom: 10px;
+    overflow: hidden;
+    margin: 0 5px 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .overlay--visible {
     display: block;
+}
+
+.overlay__text {
+    padding-right: 10px;
+    background: white;
+    z-index: 1;
+}
+
+.overlay__trigger {
+    position: relative;
+}
+
+.overlay__trigger::before {
+    width: 500px;
+    height: 1px;
+    content: '';
+    background: #22D0B2;
+    position: absolute;
+    top: 13px;
+    left: -510px;
 }
 
 /* Comments styling */

@@ -13,6 +13,7 @@ linkRev.prototype.init = function() {
 
     // State classes:
     this.disabledButtonClass = 'button--disabled';
+    this.overlayVisibleClass = 'overlay--visible';
     this.isDangerClass = 'is-danger';
     this.isSuccessClass = 'is-success';
 
@@ -56,7 +57,7 @@ linkRev.prototype.setHots = function() {
             _this.$alert.show();
         }
     });
-}
+};
 
 linkRev.prototype.setSelectSorterValue = function() {
     var _this = this;
@@ -133,12 +134,17 @@ linkRev.prototype.initCommentsEventListeners = function() {
 
     // Handle settings button
     $('[data-attribute="settingsToggle"]').on('click', function() {
-        $('[data-attribute="overlaySettings"]').toggleClass('overlay--visible')
+        $('[data-attribute="overlaySettings"]').toggleClass(_this.overlayVisibleClass);
     });
 
     // Handle panel button
     $('[data-attribute="panelToggle"]').on('click', function() {
-        $('[data-attribute="overlayPanel"]').toggleClass('overlay--visible')
+        $('[data-attribute="overlayPanel"]').toggleClass(_this.overlayVisibleClass);
+    });
+
+    // Handle close overlay button
+    $('[data-attribute="closeOverlay"]').on('click', function() {
+        $('.' + _this.overlayVisibleClass).removeClass(_this.overlayVisibleClass);
     });
 };
 

@@ -61,5 +61,14 @@
   },
   "Answer": {
     "message": "Reply"
+  },
+  "AllLanguagesPost": {
+    "message": "Show comments in all languages"
+  },
+  "ChooseLanguage": {
+    "message": "Choose your language"
+  },
+  "ChooseCountry": {
+    "message": "Choose country"
   }
 }
