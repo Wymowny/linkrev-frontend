@@ -70,5 +70,11 @@
   },
   "ChooseCountry": {
     "message": "Wybierz kraj dla wyświetlanych komentarzy"
+  },
+  "LoginButton": {
+    "message": "Zaloguj"
+  },
+  "LoginText": {
+    "message": "Logowanie"
   }
 }

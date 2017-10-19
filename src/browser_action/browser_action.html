@@ -31,7 +31,7 @@
                     <li>
                         <span class="overlay__text">__MSG_AllLanguagesPost__</span>
                         <span class="overlay__trigger">
-                            <input class="switch-input" type="checkbox" id="switch" /><label class="switch" for="switch">Toggle</label>
+                            <input class="switch-input" type="checkbox" id="homepageCommentsSwitch" /><label class="switch" for="homepageCommentsSwitch">Toggle</label>
                         </span>
                     </li>
                     <li>
@@ -39,10 +39,10 @@
                         <div class="overlay__trigger field inline-select">
                             <div class="control">
                                 <div class="select is-small">
-                                    <select>
-                                        <option>English</option>
-                                        <option>Deutsch</option>
-                                        <option>Polski</option>
+                                    <select id="language-select">
+                                        <option value="0">English</option>
+                                        <option value="1">Deutsch</option>
+                                        <option value="2">Polski</option>
                                     </select>
                                 </div>
                             </div>
@@ -53,13 +53,10 @@
                         <div class="overlay__trigger field inline-select">
                             <div class="control">
                                 <div class="select is-small">
-                                    <select>
-                                        <option>England</option>
-                                        <option>Poland</option>
-                                        <option>Germany</option>
-                                        <option>USA</option>
-                                        <option>France</option>
-                                        <option>Belgium</option>
+                                    <select id="country-select">
+                                        <option value="0">USA</option>
+                                        <option value="1">Poland</option>
+                                        <option value="2">Germany</option>
                                     </select>
                                 </div>
                             </div>
@@ -69,7 +66,7 @@
             </div>
 
             <div class="overlay" data-attribute="overlayPanel">
-                <h3 class="overlay__title">Login:</h3>
+                <h3 class="overlay__title">__MSG_LoginText__</h3>
                 <button class="button overlay__close is-small button--icon" data-attribute="closeOverlay">
                     <i class="fa fa-times" aria-hidden="true"></i>
                 </button>
@@ -91,9 +88,7 @@
                 </div>
                 <div class="field">
                     <p class="control">
-                        <button class="button is-success">
-                            Login
-                        </button>
+                        <button class="button is-success">__MSG_LoginButton__</button>
                     </p>
                 </div>
             </div>

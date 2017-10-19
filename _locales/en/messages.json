@@ -70,5 +70,11 @@
   },
   "ChooseCountry": {
     "message": "Choose country"
+  },
+  "LoginButton": {
+    "message": "Login"
+  },
+  "LoginText": {
+    "message": "Submit"
   }
 }

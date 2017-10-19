@@ -70,6 +70,12 @@
     },
     "ChooseCountry": {
       "message": "Wählen Sie ein Land"
+    },
+    "LoginButton": {
+      "message": "Login"
+    },
+    "LoginText": {
+      "message": "Login"
     }
   }
   
