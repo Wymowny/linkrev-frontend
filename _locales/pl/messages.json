@@ -58,5 +58,8 @@
   },
   "AlertLink": {
     "message": "Przejdź do strony i napisz komentarz"
+  },
+  "Answer": {
+    "message": "Odpowiedz"
   }
 }

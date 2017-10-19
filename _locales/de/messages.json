@@ -58,6 +58,9 @@
     },
     "AlertLink": {
       "message": "Gehen Sie zur Website und schreiben Sie Ihren Kommentar"
+    },
+    "Answer": {
+      "message": "Antworten"
     }
   }
   

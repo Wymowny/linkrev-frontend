@@ -130,6 +130,16 @@ linkRev.prototype.initCommentsEventListeners = function() {
             });
         });
     });
+
+    // Handle settings button
+    $('[data-attribute="settingsToggle"]').on('click', function() {
+        $('[data-attribute="overlaySettings"]').toggleClass('overlay--visible')
+    });
+
+    // Handle panel button
+    $('[data-attribute="panelToggle"]').on('click', function() {
+        $('[data-attribute="overlayPanel"]').toggleClass('overlay--visible')
+    });
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -176,6 +186,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
                         '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                        '<button class="button is-primary is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
                         '<button class="button is-info is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '"><i class="fa fa-warning"></i>' + chrome.i18n.getMessage('Report')  + '</button>' +
                         '</div></div></div>';
                 }
