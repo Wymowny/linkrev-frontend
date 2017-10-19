@@ -76,5 +76,8 @@
   },
   "LoginText": {
     "message": "Logowanie"
+  },
+  "RegisterButton": {
+    "message": "Zarejestruj"
   }
 }

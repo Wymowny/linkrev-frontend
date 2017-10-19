@@ -98,11 +98,12 @@ i.fa {
     padding-bottom: 5px;
     padding-right: 5px;
     margin: 3px 0 5px;
+    height: 36px;
 }
 
 #content {
     width: 430px;
-    padding: 5px;
+    padding: 10px;
 }
 
 #sendComment {
@@ -144,58 +145,6 @@ i.fa {
 
 .discussion svg {
     position: absolute;
-}
-
-.overlay {
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: #fff;
-    position: fixed;
-    display: none;
-    padding: 10px;
-    z-index: 1;
-}
-
-.overlay__close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-.overlay__title {
-    margin-bottom: 10px;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-.overlay__list li {
-    overflow: hidden;
-    margin: 0 5px 10px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.overlay--visible {
-    display: block;
-}
-
-.overlay__text {
-    padding-right: 10px;
-    background: white;
-    z-index: 1;
-}
-
-.overlay__trigger {
-    position: relative;
-}
-
-.overlay__trigger::before {
-    width: 500px;
-    height: 1px;
-    content: '';
-    background: #22D0B2;
-    position: absolute;
-    top: 13px;
-    left: -510px;
 }
 
 /* Comments styling */
@@ -245,4 +194,58 @@ i.fa {
 
 .bold {
     font-weight: bold;
+}
+
+/* Overlay styling */
+
+.overlay {
+   top: 0; left: 0; bottom: 0; right: 0;
+   background: #fff;
+   position: fixed;
+   display: none;
+   padding: 10px;
+   z-index: 1;
+}
+
+.overlay__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.overlay__title {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.overlay__list li {
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.overlay--visible {
+    display: block;
+}
+
+.overlay__text {
+    padding-right: 10px;
+    background: white;
+    z-index: 1;
+}
+
+.overlay__trigger {
+    position: relative;
+}
+
+.overlay__trigger::before {
+    width: 500px;
+    height: 1px;
+    content: '';
+    background: #22D0B2;
+    position: absolute;
+    top: 13px;
+    left: -510px;
 }
