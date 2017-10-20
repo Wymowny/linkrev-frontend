@@ -101,6 +101,7 @@ linkRev.prototype.initEventListeners = function() {
     });
     this.$buttonCloseSettingsOverlay.on('click', function() {
         _this.$overlaySettings.removeClass(_this.overlayVisibleClass);
+        _this.getExistingComments();
     });
     this.$countrySelect.on('change', this.manageCountry.bind(this));
     this.$languageSelect.on('change', this.manageLanguage.bind(this));

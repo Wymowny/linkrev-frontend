@@ -52,26 +52,46 @@ linkRev.prototype.updateIcon = function(text) {
 linkRev.prototype.checkStatus = function(url) {
     var _this = this;
 
-    $.ajax({
-        type: "GET",
-        url: this.getStatusUrl() + "?link=" + encodeURIComponent(url) + '&language=' + this.getCurrentLanguage(),
-        success: function(result) {
+    chrome.storage.local.get('linkRev_settings', function(results) {
 
-            if (result.hots.length) {
-                _this.updateIcon('HOT');
-                chrome.storage.local.set({'linkRev_hots': result.hots});
-            } else {
-                if (result.count > 0) {
-                    _this.updateIcon(result.count);
-                } else {
-                    _this.updateIcon();
-                }
+        var statusUrl = _this.getStatusUrl() + "?link=" + encodeURIComponent(url);
+
+        if (results.linkRev_settings) {
+
+            if (results.linkRev_settings.language) {
+
+                statusUrl += '&language=' + results.linkRev_settings.language;
             }
-        },
-        error: function() {
-            _this.updateIcon();
-        },
-        dataType: "json"
+
+            if (results.linkRev_settings.country) {
+
+                statusUrl += '&country=' + results.linkRev_settings.country;
+            }
+
+            statusUrl += '&showAll=' + results.linkRev_settings.showAll;
+        }
+        
+        $.ajax({
+            type: "GET",
+            url: statusUrl,
+            success: function(result) {
+    
+                if (result.hots.length) {
+                    _this.updateIcon('HOT');
+                    chrome.storage.local.set({'linkRev_hots': result.hots});
+                } else {
+                    if (result.count > 0) {
+                        _this.updateIcon(result.count);
+                    } else {
+                        _this.updateIcon();
+                    }
+                }
+            },
+            error: function() {
+                _this.updateIcon();
+            },
+            dataType: "json"
+        });
     });
 };
 
