@@ -130,5 +130,8 @@
   },
   "Other": {
     "message": "andere"
+  },
+  "Toggle": {
+    "message": "Umschalten"
   }
 }

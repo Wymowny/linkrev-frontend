@@ -32,16 +32,19 @@ linkRev.prototype.init = function() {
     this.$alertQuote = $('#alert-quote');
     this.$alertQuoteContent = $('#alert-quote-content');
     this.$linkAlertGoTo = $('#alert-go-to');
+    this.$buttonSettings = $('#settingsToggle');
+    this.$overlaySettings = $('#overlaySettings');
+    this.$buttonCloseSettingsOverlay = $('#buttonCloseSettingsOverlay');
     this.$countrySelect = $('#country-select');
     this.$languageSelect = $('#language-select');
-    this.$homepageCommentsSwitch = $('#homepageCommentsSwitch');
+    this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
-    window.onload = function () {
+    window.onload = function () {        
         this.setHots();
-        this.setSelectSorterValue();
+        this.setSelectSorterValue();        
         this.getExistingComments();
-        this.initEventListeners();
+        this.initEventListeners();               
     }.bind(this);
 };
 
@@ -73,15 +76,24 @@ linkRev.prototype.setSelectSorterValue = function() {
         } else {
             _this.sortingStrategy = linkRev.sortingStrategies.BEST;
         }
-    });   
+    }); 
 };
 
 linkRev.prototype.initEventListeners = function() {
+
+    var _this = this;
+
     this.$submitButton.on('click', this.sendComment.bind(this));
     this.$selectSorter.on('change', this.manageSorting.bind(this));
+    this.$buttonSettings.on('click', function() {
+        _this.$overlaySettings.toggleClass(_this.overlayVisibleClass);
+    });
+    this.$buttonCloseSettingsOverlay.on('click', function() {
+        _this.$overlaySettings.removeClass(_this.overlayVisibleClass);
+    });
     this.$countrySelect.on('change', this.manageCountry.bind(this));
     this.$languageSelect.on('change', this.manageLanguage.bind(this));
-    this.$homepageCommentsSwitch.on('change', this.manageHomepageComments.bind(this));
+    this.$showCommentsFromAllLanguages.on('change', this.manageHomepageComments.bind(this));
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
@@ -136,22 +148,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 dataType: "html"
             });
         });
-    });
-
-    // Handle settings button
-    $('[data-attribute="settingsToggle"]').on('click', function() {
-        $('[data-attribute="overlaySettings"]').toggleClass(_this.overlayVisibleClass);
-    });
-
-    // Handle panel button
-    $('[data-attribute="panelToggle"]').on('click', function() {
-        $('[data-attribute="overlayPanel"]').toggleClass(_this.overlayVisibleClass);
-    });
-
-    // Handle close overlay button
-    $('[data-attribute="closeOverlay"]').on('click', function() {
-        $('.' + _this.overlayVisibleClass).removeClass(_this.overlayVisibleClass);
-    });
+    });    
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -174,8 +171,21 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
     });
 };
 
-linkRev.prototype.existingCommentsAjaxQuery = function(url) {
+linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
     var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy;
+
+    if (settings) {
+
+        if(settings.language) {
+
+            commentsUrl += '&language=' + settings.language;
+        }
+
+        if (settings.country) {
+
+            commentsUrl += '&country=' + settings.country;
+        }
+    }
 
     $.ajax({
         type: "GET",
@@ -239,15 +249,18 @@ linkRev.prototype.sendComment = function() {
 };
 
 linkRev.prototype.manageCountry = function() {
+
     console.log('country change');
 };
 
 linkRev.prototype.manageLanguage = function() {
+
     console.log('language change');
 };
 
 linkRev.prototype.manageHomepageComments = function() {
-    if (this.$homepageCommentsSwitch.is(':checked')) {
+
+    if (this.$showCommentsFromAllLanguages.is(':checked')) {
         // Show homepagecomments
     } else {
         // Hide homepagecomments
@@ -310,7 +323,36 @@ linkRev.prototype.createValidationMessage = function(message, additionalClass) {
 };
 
 linkRev.prototype.getExistingComments = function() {
-    this.getCurrentUrl(this.existingCommentsAjaxQuery.bind(this));
+
+    var _this = this;
+    
+    chrome.storage.local.get('linkRev_settings', function(results) {
+
+        if (results.linkRev_settings) {
+
+            _this.$buttonSettings.show();
+            _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), results.linkRev_settings);
+        }
+        else {
+
+            var language = _this.getCurrentLanguage();
+            var country = _this.getCurrentCountry(language);
+            var showAll = false;
+
+            var settings = {
+
+                language: language,
+                country: country,
+                showAll: showAll,
+            };
+
+            chrome.storage.local.set({'linkRev_settings': settings}, function() {
+
+                _this.$buttonSettings.show();
+                _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), settings);
+            });
+        }
+    });    
 };
 
 linkRev.prototype.getAddCommentUrl = function() {

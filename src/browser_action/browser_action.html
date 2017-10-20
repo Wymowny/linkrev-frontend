@@ -13,14 +13,14 @@
                 <a href="#" target="_blank" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
             <div class="header">
-                <button class="button is-small button--icon no-border" data-attribute="settingsToggle" title="__MSG_Settings__">
+                <button id="settingsToggle" class="button is-small button--icon no-border" title="__MSG_Settings__" style="display: none;">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                 </button>
             </div>
 
-            <div class="overlay" data-attribute="overlaySettings">
+            <div id="overlaySettings" class="overlay">
                 <div class="header">
-                    <button class="button is-small button--icon no-border" data-attribute="closeOverlay" title="__MSG_Close__">
+                    <button id="buttonCloseSettingsOverlay" class="button is-small button--icon no-border" title="__MSG_Close__">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -31,7 +31,7 @@
                     <li>
                         <span class="overlay__text">__MSG_AllLanguagesPost__</span>
                         <span class="overlay__trigger">
-                            <input class="switch-input" type="checkbox" id="homepageCommentsSwitch" /><label class="switch" for="homepageCommentsSwitch">Toggle</label>
+                            <input class="switch-input" type="checkbox" id="showCommentsFromAllLanguages" /><label class="switch" for="showCommentsFromAllLanguages">__MSG_Toggle__</label>
                         </span>
                     </li>
                     <li>
@@ -74,7 +74,6 @@
                     </li>
                 </ul>
             </div>
-
             <form id="sendComment">
                 <div class="field">
                     <label class="label">__MSG_Message__:</label>

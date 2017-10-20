@@ -4,20 +4,46 @@ function linkRev() {
     this.init();
 }
 
-linkRev.prototype.getCurrentUrl = function(callback) {
+linkRev.prototype.getCurrentUrl = function(callback, settings) {
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
-        callback(tabs[0].url);
+
+        if (settings) {
+
+            callback(tabs[0].url, settings);
+        }
+        else {
+
+            callback(tabs[0].url);
+        }
     });
 };
 
 linkRev.prototype.getCurrentLanguage = function() {
-    var language = window.navigator.userLanguage || window.navigator.language;
+    var locale = window.navigator.userLanguage || window.navigator.language;
 
-    if (language.length > 2) {
-        language = language.substring(0, 2);
+    if (locale.length > 2) {
+
+        locale = locale.substring(0, 2);
     }
 
-    return language;
+    return locale;
+};
+
+linkRev.prototype.getCurrentCountry = function(language) {
+    var locale = window.navigator.userLanguage || window.navigator.language;
+
+    if (locale.length > 2) {
+
+        return locale.substring(3, 5);
+    }
+    else {
+
+        if (language === 'pl') return 'PL';
+        if (language === 'en') return 'US';
+        if (language === 'de') return 'CH';
+    }
+
+    return '';
 };
 
 linkRev.prototype.getCommentsUrl = function() {
