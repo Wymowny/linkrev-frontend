@@ -63,13 +63,13 @@
     "message": "Odpowiedz"
   },
   "AllLanguagesPost": {
-    "message": "Pokaż komentarze we wszystkich językach"
+    "message": "Pokaż komentarze z wszystkich języków"
   },
   "ChooseLanguage": {
-    "message": "Wybierz język wyświetlania komentarzy"
+    "message": "Wybierz domyślny język"
   },
   "ChooseCountry": {
-    "message": "Wybierz kraj dla wyświetlanych komentarzy"
+    "message": "Wybierz domyślny kraj"
   },
   "LoginButton": {
     "message": "Zaloguj"
@@ -79,5 +79,53 @@
   },
   "RegisterButton": {
     "message": "Zarejestruj"
+  },
+  "Settings": {
+    "message": "Ustawienia"
+  },  
+  "Close": {
+    "message": "Zamknij"
+  },
+  "English": {
+    "message": "angielski"
+  },
+  "German": {
+    "message": "niemiecki"
+  },
+  "Polish": {
+    "message": "polski"
+  },
+  "Australia": {
+    "message": "Australia"
+  },
+  "Austria": {
+    "message": "Austria"
+  },
+  "Canada": {
+    "message": "Kanada"
+  },
+  "Germany": {
+    "message": "Niemcy"
+  },
+  "United_Kingdom": {
+    "message": "Anglia"
+  },
+  "India": {
+    "message": "Indie"
+  },
+  "Ireland": {
+    "message": "Irlandia"
+  },
+  "New_Zealand": {
+    "message": "Nowa Zelandia"
+  },
+  "United_States": {
+    "message": "Stany Zjednoczone"
+  },
+  "Poland": {
+    "message": "Polska"
+  },
+  "Switzerland": {
+    "message": "Szwajcaria"
   }
 }

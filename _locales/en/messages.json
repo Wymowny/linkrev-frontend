@@ -63,13 +63,13 @@
     "message": "Reply"
   },
   "AllLanguagesPost": {
-    "message": "Show comments in all languages"
+    "message": "Show comments from all languages"
   },
   "ChooseLanguage": {
-    "message": "Choose your language"
+    "message": "Your default language"
   },
   "ChooseCountry": {
-    "message": "Choose country"
+    "message": "Your default country"
   },
   "LoginButton": {
     "message": "Login"
@@ -79,5 +79,53 @@
   },
   "RegisterButton": {
     "message": "Register"
+  },
+  "Settings": {
+    "message": "Settings"
+  },  
+  "Close": {
+    "message": "Close"
+  },
+  "English": {
+    "message": "English"
+  },
+  "German": {
+    "message": "German"
+  },
+  "Polish": {
+    "message": "Polish"
+  },
+  "Australia": {
+    "message": "Australia"
+  },
+  "Austria": {
+    "message": "Austria"
+  },
+  "Canada": {
+    "message": "Canada"
+  },
+  "Germany": {
+    "message": "Germany"
+  },
+  "United_Kingdom": {
+    "message": "United Kingdom"
+  },
+  "India": {
+    "message": "India"
+  },
+  "Ireland": {
+    "message": "Ireland"
+  },
+  "New_Zealand": {
+    "message": "New Zealand"
+  },
+  "United_States": {
+    "message": "United States"
+  },
+  "Poland": {
+    "message": "Poland"
+  },
+  "Switzerland": {
+    "message": "Switzerland"
   }
 }
