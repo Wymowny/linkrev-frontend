@@ -198,7 +198,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
                         '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
                         '<button class="button is-primary is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
-                        '<button class="button is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
+                        '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
                 }
 
