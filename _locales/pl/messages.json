@@ -63,10 +63,10 @@
     "message": "Odpowiedz"
   },
   "AllLanguagesPost": {
-    "message": "Pokaż komentarze z wszystkich języków"
+    "message": "Pokaż komentarze ze wszystkich języków"
   },
   "ChooseLanguage": {
-    "message": "Wybierz domyślny język"
+    "message": "Wybierz domyślny język komentarzy"
   },
   "ChooseCountry": {
     "message": "Wybierz domyślny kraj"

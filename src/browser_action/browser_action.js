@@ -86,14 +86,25 @@ linkRev.prototype.initEventListeners = function() {
     this.$submitButton.on('click', this.sendComment.bind(this));
     this.$selectSorter.on('change', this.manageSorting.bind(this));
     this.$buttonSettings.on('click', function() {
-        _this.$overlaySettings.toggleClass(_this.overlayVisibleClass);
+        chrome.storage.local.get('linkRev_settings', function(results) { 
+            
+            _this.$languageSelect.val(results.linkRev_settings.language);
+            _this.$countrySelect.val(results.linkRev_settings.country);
+
+            if (results.linkRev_settings.showAll) {
+
+                _this.$showCommentsFromAllLanguages.attr('checked', 'checked');
+            }
+
+            _this.$overlaySettings.toggleClass(_this.overlayVisibleClass);
+        });       
     });
     this.$buttonCloseSettingsOverlay.on('click', function() {
         _this.$overlaySettings.removeClass(_this.overlayVisibleClass);
     });
     this.$countrySelect.on('change', this.manageCountry.bind(this));
     this.$languageSelect.on('change', this.manageLanguage.bind(this));
-    this.$showCommentsFromAllLanguages.on('change', this.manageHomepageComments.bind(this));
+    this.$showCommentsFromAllLanguages.on('change', this.manageShowAllLanguagesSwitch.bind(this));
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
@@ -172,7 +183,7 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
 };
 
 linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
-    var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy;
+    var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy + '&showAll=' + settings.showAll;
 
     if (settings) {
 
@@ -250,21 +261,38 @@ linkRev.prototype.sendComment = function() {
 
 linkRev.prototype.manageCountry = function() {
 
-    console.log('country change');
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) { 
+        
+        results.linkRev_settings.country = _this.$countrySelect.val();
+
+        chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
+    });
 };
 
 linkRev.prototype.manageLanguage = function() {
 
-    console.log('language change');
+    var _this = this;
+    
+    chrome.storage.local.get('linkRev_settings', function(results) { 
+        
+        results.linkRev_settings.language = _this.$languageSelect.val();
+
+        chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
+    });
 };
 
-linkRev.prototype.manageHomepageComments = function() {
+linkRev.prototype.manageShowAllLanguagesSwitch = function() {
 
-    if (this.$showCommentsFromAllLanguages.is(':checked')) {
-        // Show homepagecomments
-    } else {
-        // Hide homepagecomments
-    }
+    var _this = this;
+    
+    chrome.storage.local.get('linkRev_settings', function(results) { 
+        
+        results.linkRev_settings.showAll = _this.$showCommentsFromAllLanguages.is(':checked');
+
+        chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
+    });
 };
 
 linkRev.prototype.manageSorting = function() {
