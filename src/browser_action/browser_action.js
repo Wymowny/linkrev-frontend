@@ -48,15 +48,15 @@ linkRev.prototype.init = function() {
 linkRev.prototype.setHots = function() {
     var _this = this;
 
-    chrome.storage.local.get('hots', function(results) {
-        if (results.hots && results.hots.length > 0) {
-            if (results.hots[0].hotComment) {
-                _this.$alertQuoteContent.text(results.hots[0].hotComment);
+    chrome.storage.local.get('linkRev_hots', function(results) {
+        if (results.linkRev_hots && results.linkRev_hots.length > 0) {
+            if (results.linkRev_hots[0].hotComment) {
+                _this.$alertQuoteContent.text(results.linkRev_hots[0].hotComment);
                 _this.$alertQuote.show();
             }
 
-            _this.$alertTitle.text(results.hots[0].metaTitle);
-            _this.$linkAlertGoTo.attr('href', 'http://' + results.hots[0].url);
+            _this.$alertTitle.text(results.linkRev_hots[0].metaTitle);
+            _this.$linkAlertGoTo.attr('href', 'http://' + results.linkRev_hots[0].url);
             _this.$alert.show();
         }
     });
@@ -65,10 +65,10 @@ linkRev.prototype.setHots = function() {
 linkRev.prototype.setSelectSorterValue = function() {
     var _this = this;
 
-    chrome.storage.local.get('commentsSortingStrategy', function(results) {
+    chrome.storage.local.get('linkRev_commentsSortingStrategy', function(results) {
         
-        if (results.commentsSortingStrategy) {
-            _this.sortingStrategy = results.commentsSortingStrategy;
+        if (results.linkRev_commentsSortingStrategy) {
+            _this.sortingStrategy = results.linkRev_commentsSortingStrategy;
             _this.$selectSorter.val(_this.sortingStrategy);
         } else {
             _this.sortingStrategy = linkRev.sortingStrategies.BEST;
@@ -260,7 +260,7 @@ linkRev.prototype.manageSorting = function() {
     this.sortingStrategy = this.$selectSorter.val();
 
     if (this.saveSortingStrategy) {
-        chrome.storage.local.set({'commentsSortingStrategy': this.$selectSorter.val()}, function() {
+        chrome.storage.local.set({'linkRev_commentsSortingStrategy': this.$selectSorter.val()}, function() {
             _this.getExistingComments();
         });
     } else {

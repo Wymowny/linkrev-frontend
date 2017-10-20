@@ -14,7 +14,7 @@ linkRev.prototype.onUpdatedTab = function() {
         var url = tab.url;
 
         if (url !== undefined && changeinfo.status == "complete") {
-            chrome.storage.local.remove('hots', function() {
+            chrome.storage.local.remove('linkRev_hots', function() {
                 _this.getCurrentUrl(_this.checkStatus.bind(_this));
             });
         }
@@ -25,7 +25,7 @@ linkRev.prototype.onActivatedTab = function() {
     chrome.tabs.onActivated.addListener(function(details) {
         var _this = this;
 
-        chrome.storage.local.remove('hots', function() {
+        chrome.storage.local.remove('linkRev_hots', function() {
             _this.getCurrentUrl(_this.checkStatus.bind(_this));
         });
     }.bind(this));
@@ -59,7 +59,7 @@ linkRev.prototype.checkStatus = function(url) {
 
             if (result.hots.length) {
                 _this.updateIcon('HOT');
-                chrome.storage.local.set({'hots': result.hots});
+                chrome.storage.local.set({'linkRev_hots': result.hots});
             } else {
                 if (result.count > 0) {
                     _this.updateIcon(result.count);
