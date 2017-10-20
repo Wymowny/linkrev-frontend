@@ -94,7 +94,6 @@ i.fa {
 .header {
     display: flex;
     justify-content: flex-end;
-    border-bottom: 1px solid #dbdbdb;
     padding-bottom: 5px;
     padding-right: 5px;
     margin: 3px 0 5px;
@@ -248,4 +247,8 @@ i.fa {
     position: absolute;
     top: 13px;
     left: -510px;
+}
+
+.no-border {
+    border: none;    
 }
