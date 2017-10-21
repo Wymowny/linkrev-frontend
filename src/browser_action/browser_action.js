@@ -164,23 +164,28 @@ linkRev.prototype.initCommentsEventListeners = function() {
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
-    var language = this.getCurrentLanguage();
-    var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(this.$commentContent.val()) + '&CommentLanguage=' + language;
 
-    $.ajax({
-        type: "POST",
-        url: this.getAddCommentUrl(),
-        contentType:"application/x-www-form-urlencoded",
-        data: data,
-        success: function() {
-            this.saveSortingStrategy = false;
-            this.sortingStrategy = linkRev.sortingStrategies.NEW;
-            this.$selectSorter.val(this.sortingStrategy);
-            this.$commentContent.val('');
-            this.getExistingComments();
-        }.bind(this),
-        dataType: "json"
-    });
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) { 
+
+        var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(_this.$commentContent.val()) + '&CommentLanguage=' + results.linkRev_settings.language;
+        
+        $.ajax({
+            type: "POST",
+            url: _this.getAddCommentUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function() {
+                _this.saveSortingStrategy = false;
+                _this.sortingStrategy = linkRev.sortingStrategies.NEW;
+                _this.$selectSorter.val(_this.sortingStrategy);
+                _this.$commentContent.val('');
+                _this.getExistingComments();
+            }.bind(_this),
+            dataType: "json"
+        });
+    });    
 };
 
 linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
@@ -256,7 +261,7 @@ linkRev.prototype.sendComment = function() {
         this.createValidationMessage('CommentSuccess', this.isSuccessClass);
 
         this.$submitButton.addClass(this.disabledButtonClass);
-        setTimeout(this.activateButton, this.nextCommentTimeBlocker);
+        setTimeout(this.activateButton.bind(this), this.nextCommentTimeBlocker);
     }
 };
 
@@ -317,6 +322,7 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.activateButton = function() {
+    
     this.$submitButton.removeClass(this.disabledButtonClass);
 };
 
