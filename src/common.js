@@ -35,11 +35,11 @@ linkRev.prototype.getCurrentLanguage = function() {
 };
 
 linkRev.prototype.getCurrentCountry = function(language) {
-    var locale = window.navigator.userLanguage || window.navigator.language;
+    var country = window.navigator.userLanguage || window.navigator.language;
 
-    if (locale.length > 2) {
+    if (country.length > 2) {
 
-        country = locale.substring(3, 5);
+        country = country.substring(3, 5);
 
         if (this.supportedCountries.indexOf(country) > -1) {
 
