@@ -19,14 +19,19 @@ linkRev.prototype.getCurrentUrl = function(callback, settings) {
 };
 
 linkRev.prototype.getCurrentLanguage = function() {
-    var locale = window.navigator.userLanguage || window.navigator.language;
+    var language = window.navigator.userLanguage || window.navigator.language;
 
-    if (locale.length > 2) {
+    if (language.length > 2) {
 
-        locale = locale.substring(0, 2);
+        language = language.substring(0, 2);        
     }
 
-    return locale;
+    if (this.supportedLanguages.indexOf(language) > -1) {
+        
+        return language;
+    }
+
+    return '';
 };
 
 linkRev.prototype.getCurrentCountry = function(language) {
@@ -34,7 +39,16 @@ linkRev.prototype.getCurrentCountry = function(language) {
 
     if (locale.length > 2) {
 
-        return locale.substring(3, 5);
+        country = locale.substring(3, 5);
+
+        if (this.supportedCountries.indexOf(country) > -1) {
+
+            return country;
+        }
+        else {
+
+            return '';
+        }
     }
     else {
 
@@ -65,6 +79,10 @@ linkRev.prototype.localizeHtmlPage = function() {
         }
     }
 };
+
+linkRev.prototype.supportedLanguages = ['en', 'de', 'pl'];
+
+linkRev.prototype.supportedCountries = ['AU', 'AT', 'CA', 'DE', 'GB', 'IN', 'IE', 'NZ', 'US', 'PL', 'CH'];
 
 linkRev.prototype.getBasicUrl = function() {
     return "https://linkrev.com/";
