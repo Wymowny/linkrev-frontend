@@ -58,5 +58,26 @@
   },
   "AlertLink": {
     "message": "Go to site and write your comment"
+  },
+  "Answer": {
+    "message": "Reply"
+  },
+  "AllLanguagesPost": {
+    "message": "Show comments in all languages"
+  },
+  "ChooseLanguage": {
+    "message": "Choose your language"
+  },
+  "ChooseCountry": {
+    "message": "Choose country"
+  },
+  "LoginButton": {
+    "message": "Login"
+  },
+  "LoginText": {
+    "message": "Submit"
+  },
+  "RegisterButton": {
+    "message": "Register"
   }
 }

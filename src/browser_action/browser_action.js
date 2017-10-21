@@ -13,6 +13,7 @@ linkRev.prototype.init = function() {
 
     // State classes:
     this.disabledButtonClass = 'button--disabled';
+    this.overlayVisibleClass = 'overlay--visible';
     this.isDangerClass = 'is-danger';
     this.isSuccessClass = 'is-success';
 
@@ -31,6 +32,9 @@ linkRev.prototype.init = function() {
     this.$alertQuote = $('#alert-quote');
     this.$alertQuoteContent = $('#alert-quote-content');
     this.$linkAlertGoTo = $('#alert-go-to');
+    this.$countrySelect = $('#country-select');
+    this.$languageSelect = $('#language-select');
+    this.$homepageCommentsSwitch = $('#homepageCommentsSwitch');
 
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
@@ -56,7 +60,7 @@ linkRev.prototype.setHots = function() {
             _this.$alert.show();
         }
     });
-}
+};
 
 linkRev.prototype.setSelectSorterValue = function() {
     var _this = this;
@@ -74,7 +78,10 @@ linkRev.prototype.setSelectSorterValue = function() {
 
 linkRev.prototype.initEventListeners = function() {
     this.$submitButton.on('click', this.sendComment.bind(this));
-    this.$selectSorter.on('change', this.manageSorting.bind(this));    
+    this.$selectSorter.on('change', this.manageSorting.bind(this));
+    this.$countrySelect.on('change', this.manageCountry.bind(this));
+    this.$languageSelect.on('change', this.manageLanguage.bind(this));
+    this.$homepageCommentsSwitch.on('change', this.manageHomepageComments.bind(this));
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
@@ -130,6 +137,21 @@ linkRev.prototype.initCommentsEventListeners = function() {
             });
         });
     });
+
+    // Handle settings button
+    $('[data-attribute="settingsToggle"]').on('click', function() {
+        $('[data-attribute="overlaySettings"]').toggleClass(_this.overlayVisibleClass);
+    });
+
+    // Handle panel button
+    $('[data-attribute="panelToggle"]').on('click', function() {
+        $('[data-attribute="overlayPanel"]').toggleClass(_this.overlayVisibleClass);
+    });
+
+    // Handle close overlay button
+    $('[data-attribute="closeOverlay"]').on('click', function() {
+        $('.' + _this.overlayVisibleClass).removeClass(_this.overlayVisibleClass);
+    });
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -160,7 +182,6 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
         url: commentsUrl,
         success: function (comments) {
             if (comments) {
-
                 var html = '';
 
                 this.$commentsCounter.text(comments.length);
@@ -176,15 +197,18 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
                         '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
-                        '<button class="button is-info is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '"><i class="fa fa-warning"></i>' + chrome.i18n.getMessage('Report')  + '</button>' +
+                        '<button class="button is-primary is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
+                        '<button class="button is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
                 }
 
-                if (comments.length > 0) {
+                if (comments.length > 0 && comments.length < 2) {
+                    $('#comments-order-panel').hide();
+                    $('#be-first-panel').hide();
+                } else if (comments.length > 0) {
                     $('#comments-order-panel').show();
                     $('#be-first-panel').hide();
-                }
-                else {
+                } else {
                     $('#comments-order-panel').hide();
                     $('#be-first-panel').show();
                 }
@@ -214,6 +238,22 @@ linkRev.prototype.sendComment = function() {
     }
 };
 
+linkRev.prototype.manageCountry = function() {
+    console.log('country change');
+};
+
+linkRev.prototype.manageLanguage = function() {
+    console.log('language change');
+};
+
+linkRev.prototype.manageHomepageComments = function() {
+    if (this.$homepageCommentsSwitch.is(':checked')) {
+        // Show homepagecomments
+    } else {
+        // Hide homepagecomments
+    }
+};
+
 linkRev.prototype.manageSorting = function() {
     var _this = this;
 
@@ -228,22 +268,6 @@ linkRev.prototype.manageSorting = function() {
     }    
 
     this.saveSortingStrategy = true;
-};
-
-linkRev.prototype.removeInvalidAttributes = function(target) {
-    var attrs = target.attributes, currentAttr;
-
-    for (var i = attrs.length - 1; i >= 0; i--) {
-        currentAttr = attrs[i].name;
-
-        if (attrs[i].specified && this.validAttrs.indexOf(currentAttr) === -1) {
-            target.removeAttribute(currentAttr);
-        }
-
-        if (currentAttr === "href" && /javascript[:]/gi.test(target.getAttribute("href"))) {
-            target.parentNode.removeChild(target);
-        }
-    }
 };
 
 linkRev.prototype.cleanDomString = function(data) {

@@ -9,6 +9,14 @@
     padding: 5px;
 }
 
+.label:not(:last-child) {
+    margin-bottom: 2px;
+}
+
+.label, .be-first-panel {
+    color: #4a4a4a;
+}
+
 .button--right {
     margin-left: auto;
 }
@@ -23,11 +31,79 @@ button.pointer {
     cursor: pointer;
 }
 
+.button--icon {
+    padding: 5px;
+    margin-left: 5px;
+}
+
+.inline-select {
+    display: inline-block;
+}
+
+input.switch-input[type=checkbox]{
+    height: 0;
+    width: 0;
+    visibility: hidden;
+}
+
+label.switch {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 40px;
+    height: 20px;
+    background: grey;
+    border-radius: 10px;
+    position: relative;
+    display: inline-block;
+    top: 2px;
+}
+
+label.switch:after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+input:checked + label.switch {
+    background: #22D0B2;
+}
+
+input:checked + label.switch:after {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+}
+
+label.switch:active:after {
+    width: 40px;
+}
+
+i.fa {
+    font-size: 18px;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
 /* Widget styling */
+
+.header {
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid #dbdbdb;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    margin: 3px 0 5px;
+    height: 36px;
+}
 
 #content {
     width: 430px;
-    padding: 5px;
+    padding: 10px;
 }
 
 #sendComment {
@@ -47,8 +123,8 @@ button.pointer {
     margin-top: 10px;
 }
 
-#errorsContainer {
-    margin-bottom: 10px;
+#errorsContainer .notification {
+    margin-bottom: 6px;
 }
 
 #be-first-panel, #comments-order-panel, #alert, #alert-quote {
@@ -56,10 +132,10 @@ button.pointer {
 }
 
 .discussion {
-    margin-bottom: 20px;
     display: flex;
-    padding: 10px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 10px;
 }
 
 .discussion__content {
@@ -92,7 +168,7 @@ button.pointer {
 
 .box__footer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-top: 5px;
 }
 
@@ -118,4 +194,58 @@ button.pointer {
 
 .bold {
     font-weight: bold;
+}
+
+/* Overlay styling */
+
+.overlay {
+   top: 0; left: 0; bottom: 0; right: 0;
+   background: #fff;
+   position: fixed;
+   display: none;
+   padding: 10px;
+   z-index: 1;
+}
+
+.overlay__close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.overlay__title {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.overlay__list li {
+    overflow: hidden;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.overlay--visible {
+    display: block;
+}
+
+.overlay__text {
+    padding-right: 10px;
+    background: white;
+    z-index: 1;
+}
+
+.overlay__trigger {
+    position: relative;
+}
+
+.overlay__trigger::before {
+    width: 500px;
+    height: 1px;
+    content: '';
+    background: #22D0B2;
+    position: absolute;
+    top: 13px;
+    left: -510px;
 }
