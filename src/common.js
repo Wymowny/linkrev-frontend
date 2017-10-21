@@ -8,11 +8,8 @@ linkRev.prototype.getCurrentUrl = function(callback, settings) {
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
 
         if (settings) {
-
             callback(tabs[0].url, settings);
-        }
-        else {
-
+        } else {
             callback(tabs[0].url);
         }
     });
@@ -22,12 +19,10 @@ linkRev.prototype.getCurrentLanguage = function() {
     var language = window.navigator.userLanguage || window.navigator.language;
 
     if (language.length > 2) {
-
-        language = language.substring(0, 2);        
+        language = language.substring(0, 2);
     }
 
     if (this.supportedLanguages.indexOf(language) > -1) {
-        
         return language;
     }
 
@@ -42,16 +37,11 @@ linkRev.prototype.getCurrentCountry = function(language) {
         country = country.substring(3, 5);
 
         if (this.supportedCountries.indexOf(country) > -1) {
-
             return country;
-        }
-        else {
-
+        } else {
             return '';
         }
-    }
-    else {
-
+    } else {
         if (language === 'pl') return 'PL';
         if (language === 'en') return 'US';
         if (language === 'de') return 'CH';

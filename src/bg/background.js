@@ -1,7 +1,6 @@
 "use strict";
 
 linkRev.prototype.init = function() {
-
     // Initial functions:
     this.onUpdatedTab();
     this.onActivatedTab();
@@ -53,18 +52,15 @@ linkRev.prototype.checkStatus = function(url) {
     var _this = this;
 
     chrome.storage.local.get('linkRev_settings', function(results) {
-
         var statusUrl = _this.getStatusUrl() + "?link=" + encodeURIComponent(url);
 
         if (results.linkRev_settings) {
 
             if (results.linkRev_settings.language) {
-
                 statusUrl += '&language=' + results.linkRev_settings.language;
             }
 
             if (results.linkRev_settings.country) {
-
                 statusUrl += '&country=' + results.linkRev_settings.country;
             }
 

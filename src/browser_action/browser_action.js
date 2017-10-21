@@ -3,7 +3,6 @@
 linkRev.sortingStrategies = Object.freeze({ BEST: 0, NEW: 1, OLD: 2 });
 
 linkRev.prototype.init = function() {
-
     // Basic variables:
     this.validAttrs = ['class', 'id', 'href', 'style'];
     this.nextCommentTimeBlocker = 30000;
@@ -69,7 +68,6 @@ linkRev.prototype.setSelectSorterValue = function() {
     var _this = this;
 
     chrome.storage.local.get('linkRev_commentsSortingStrategy', function(results) {
-        
         if (results.linkRev_commentsSortingStrategy) {
             _this.sortingStrategy = results.linkRev_commentsSortingStrategy;
             _this.$selectSorter.val(_this.sortingStrategy);
@@ -80,11 +78,11 @@ linkRev.prototype.setSelectSorterValue = function() {
 };
 
 linkRev.prototype.initEventListeners = function() {
-
     var _this = this;
 
     this.$submitButton.on('click', this.sendComment.bind(this));
     this.$selectSorter.on('change', this.manageSorting.bind(this));
+
     this.$buttonSettings.on('click', function() {
         chrome.storage.local.get('linkRev_settings', function(results) { 
             
@@ -99,10 +97,12 @@ linkRev.prototype.initEventListeners = function() {
             _this.$overlaySettings.toggleClass(_this.overlayVisibleClass);
         });       
     });
+
     this.$buttonCloseSettingsOverlay.on('click', function() {
         _this.$overlaySettings.removeClass(_this.overlayVisibleClass);
         _this.getExistingComments();
     });
+
     this.$countrySelect.on('change', this.manageCountry.bind(this));
     this.$languageSelect.on('change', this.manageLanguage.bind(this));
     this.$showCommentsFromAllLanguages.on('change', this.manageShowAllLanguagesSwitch.bind(this));
@@ -126,7 +126,29 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 dataType: "html"
             });
         });
-      });
+    });
+
+
+    // Handle answer button
+    $('[data-attribute="answerComment"]').each(function() {
+        $(this).on('click', function() {
+            $(this).addClass('visuallyhidden');
+            var currentCommentContainer = $(this).closest('.box');
+
+            currentCommentContainer.append('<div class="box-answer"><textarea id="answerTextarea" class="textarea answer-textarea" placeholder="' + chrome.i18n.getMessage('AnswerPlaceholder') + '"></textarea>' +
+                '<button id="submitAnswerButton" type="button" class="button is-small is-primary answer-button">' + chrome.i18n.getMessage('AnswerButton') + '</button></div>');
+
+            $('.box-answer')[0].scrollIntoView({behavior: "smooth"});
+
+            $('#submitAnswerButton').on('click', function() {
+                // Ajax call to add comment
+
+                $('.box-answer').fadeOut(300, function() {
+                    $(this).remove();
+                });
+            });
+        }.bind(this));
+    });
 
     // Handle like button
     $('[data-attribute="likeComment"]').each(function() {
@@ -160,17 +182,15 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 dataType: "html"
             });
         });
-    });    
+    });
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
-
     var _this = this;
 
-    chrome.storage.local.get('linkRev_settings', function(results) { 
-
+    chrome.storage.local.get('linkRev_settings', function(results) {
         var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(_this.$commentContent.val()) + '&CommentLanguage=' + results.linkRev_settings.language;
-        
+
         $.ajax({
             type: "POST",
             url: _this.getAddCommentUrl(),
@@ -185,21 +205,18 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
             }.bind(_this),
             dataType: "json"
         });
-    });    
+    });
 };
 
 linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
     var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy + '&showAll=' + settings.showAll;
 
     if (settings) {
-
         if(settings.language) {
-
             commentsUrl += '&language=' + settings.language;
         }
 
         if (settings.country) {
-
             commentsUrl += '&country=' + settings.country;
         }
     }
@@ -266,37 +283,28 @@ linkRev.prototype.sendComment = function() {
 };
 
 linkRev.prototype.manageCountry = function() {
-
     var _this = this;
 
     chrome.storage.local.get('linkRev_settings', function(results) { 
-        
         results.linkRev_settings.country = _this.$countrySelect.val();
-
         chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
     });
 };
 
 linkRev.prototype.manageLanguage = function() {
-
     var _this = this;
     
     chrome.storage.local.get('linkRev_settings', function(results) { 
-        
         results.linkRev_settings.language = _this.$languageSelect.val();
-
         chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
     });
 };
 
 linkRev.prototype.manageShowAllLanguagesSwitch = function() {
-
     var _this = this;
     
     chrome.storage.local.get('linkRev_settings', function(results) { 
-        
         results.linkRev_settings.showAll = _this.$showCommentsFromAllLanguages.is(':checked');
-
         chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
     });
 };
@@ -322,7 +330,6 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.activateButton = function() {
-    
     this.$submitButton.removeClass(this.disabledButtonClass);
 };
 
@@ -358,31 +365,23 @@ linkRev.prototype.createValidationMessage = function(message, additionalClass) {
 };
 
 linkRev.prototype.getExistingComments = function() {
-
     var _this = this;
     
     chrome.storage.local.get('linkRev_settings', function(results) {
-
         if (results.linkRev_settings) {
-
             _this.$buttonSettings.show();
             _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), results.linkRev_settings);
-        }
-        else {
-
+        } else {
             var language = _this.getCurrentLanguage();
             var country = _this.getCurrentCountry(language);
             var showAll = false;
-
             var settings = {
-
                 language: language,
                 country: country,
-                showAll: showAll,
+                showAll: showAll
             };
 
             chrome.storage.local.set({'linkRev_settings': settings}, function() {
-
                 _this.$buttonSettings.show();
                 _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), settings);
             });
