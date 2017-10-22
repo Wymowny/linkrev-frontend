@@ -1,4 +1,4 @@
-# LinkRev 0.2.1
+# LinkRev 0.3.1
 Write and read comments on the Internet!
 
 Website: http://linkrev.com
