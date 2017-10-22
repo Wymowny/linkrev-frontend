@@ -149,10 +149,9 @@ linkRev.prototype.initCommentsEventListeners = function() {
             $('.box-answer')[0].scrollIntoView({behavior: "smooth"});
 
             $('#submitAnswerButton').on('click', function() {
-
                 _this.replyToComment.replyToPrimaryCommentId = $(this).closest('.box-primary').attr('data-comment-id');
                 _this.replyToComment.content = $('#textarea-answer').val();
-                _this.getCurrentUrl(_this.replyToCommentAjaxQuery.bind(_this));                
+                _this.getCurrentUrl(_this.replyToCommentAjaxQuery.bind(_this));
             });
         }.bind(this));
     });
@@ -226,15 +225,9 @@ linkRev.prototype.replyToCommentAjaxQuery = function(url) {
             url: _this.getAddCommentUrl(),
             contentType:"application/x-www-form-urlencoded",
             data: data,
-            success: function(result) {
-
-                $('.box-answer').fadeOut(300, function() {
-                    $(this).remove();
-                });
-
-                // Append to current comment container
-                $('div[@class=".box-primary"][data-comment-id="' + _this.replyToComment.replyToPrimaryCommentId + '"]').append('Dawid');
-
+            success: function() {
+                $('.box-answer').fadeOut(300, function() {$(this).remove();});
+                _this.getExistingComments();
             }.bind(_this),
             dataType: "json"
         });
@@ -262,12 +255,13 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                 this.$commentsCounter.text(comments.length);
 
                 for (var i = 0; i < comments.length; i++) {
-                    var cleanId = this.cleanDomString(comments[i]._id);
-                    var cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
-                    var cleanContent = this.cleanDomString(comments[i].content);
-                    var cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
+                    if (!comments[i].replyToPrimaryCommentId) {
+                        let cleanId = this.cleanDomString(comments[i]._id);
+                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
+                        let cleanContent = this.cleanDomString(comments[i].content);
+                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
-                    html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
+                        html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
@@ -275,6 +269,24 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         '<button class="button is-primary reply-button is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
                         '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
+                    } else {
+                        let cleanId = this.cleanDomString(comments[i]._id);
+                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
+                        let cleanContent = this.cleanDomString(comments[i].content);
+                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
+                        let replyToPrimaryCommentId = this.cleanDomString(comments[i].replyToPrimaryCommentId);
+
+                        setTimeout(function() {
+                            $('.box-primary[data-comment-id="' + replyToPrimaryCommentId + '"]').append(
+                                '<div class="box" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
+                                ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
+                                '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
+                                '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
+                                '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                                '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
+                                '</div></div></div>');
+                        }, 0);
+                    }
                 }
 
                 if (comments.length > 0 && comments.length < 2) {
