@@ -228,6 +228,10 @@ i.fa {
     margin-bottom: 10px;
 }
 
+button[data-attribute="reportComment"] {
+    margin-left: auto;
+}
+
 /* Overlay styling */
 
 .overlay {
