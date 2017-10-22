@@ -3,8 +3,8 @@
 linkRev.sortingStrategies = Object.freeze({ BEST: 0, NEW: 1, OLD: 2 });
 
 linkRev.prototype.init = function() {
+
     // Basic variables:
-    this.validAttrs = ['class', 'id', 'href', 'style'];
     this.nextCommentTimeBlocker = 30000;
     this.maxLength = 1000;
     this.minLength = 2;
