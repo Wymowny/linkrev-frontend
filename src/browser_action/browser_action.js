@@ -5,7 +5,6 @@ linkRev.sortingStrategies = Object.freeze({ BEST: 0, NEW: 1, OLD: 2 });
 linkRev.prototype.init = function() {
 
     // Basic variables:
-    this.validAttrs = ['class', 'id', 'href', 'style'];
     this.nextCommentTimeBlocker = 30000;
     this.maxLength = 1000;
     this.minLength = 2;
@@ -16,6 +15,10 @@ linkRev.prototype.init = function() {
     this.overlayVisibleClass = 'overlay--visible';
     this.isDangerClass = 'is-danger';
     this.isSuccessClass = 'is-success';
+    this.replyToComment = {
+        content: '',
+        replyToPrimaryCommentId: ''
+    };
 
     // Initial functions:
     this.localizeHtmlPage();
@@ -32,9 +35,12 @@ linkRev.prototype.init = function() {
     this.$alertQuote = $('#alert-quote');
     this.$alertQuoteContent = $('#alert-quote-content');
     this.$linkAlertGoTo = $('#alert-go-to');
+    this.$buttonSettings = $('#settingsToggle');
+    this.$overlaySettings = $('#overlaySettings');
+    this.$buttonCloseSettingsOverlay = $('#buttonCloseSettingsOverlay');
     this.$countrySelect = $('#country-select');
     this.$languageSelect = $('#language-select');
-    this.$homepageCommentsSwitch = $('#homepageCommentsSwitch');
+    this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
@@ -48,15 +54,15 @@ linkRev.prototype.init = function() {
 linkRev.prototype.setHots = function() {
     var _this = this;
 
-    chrome.storage.local.get('hots', function(results) {
-        if (results.hots && results.hots.length > 0) {
-            if (results.hots[0].hotComment) {
-                _this.$alertQuoteContent.text(results.hots[0].hotComment);
+    chrome.storage.local.get('linkRev_hots', function(results) {
+        if (results.linkRev_hots && results.linkRev_hots.length > 0) {
+            if (results.linkRev_hots[0].hotComment) {
+                _this.$alertQuoteContent.text(results.linkRev_hots[0].hotComment);
                 _this.$alertQuote.show();
             }
 
-            _this.$alertTitle.text(results.hots[0].metaTitle);
-            _this.$linkAlertGoTo.attr('href', 'http://' + results.hots[0].url);
+            _this.$alertTitle.text(results.linkRev_hots[0].metaTitle);
+            _this.$linkAlertGoTo.attr('href', 'http://' + results.linkRev_hots[0].url);
             _this.$alert.show();
         }
     });
@@ -65,23 +71,43 @@ linkRev.prototype.setHots = function() {
 linkRev.prototype.setSelectSorterValue = function() {
     var _this = this;
 
-    chrome.storage.local.get('commentsSortingStrategy', function(results) {
-        
-        if (results.commentsSortingStrategy) {
-            _this.sortingStrategy = results.commentsSortingStrategy;
+    chrome.storage.local.get('linkRev_commentsSortingStrategy', function(results) {
+        if (results.linkRev_commentsSortingStrategy) {
+            _this.sortingStrategy = results.linkRev_commentsSortingStrategy;
             _this.$selectSorter.val(_this.sortingStrategy);
         } else {
             _this.sortingStrategy = linkRev.sortingStrategies.BEST;
         }
-    });   
+    }); 
 };
 
 linkRev.prototype.initEventListeners = function() {
+    var _this = this;
+
     this.$submitButton.on('click', this.sendComment.bind(this));
     this.$selectSorter.on('change', this.manageSorting.bind(this));
+
+    this.$buttonSettings.on('click', function() {
+        chrome.storage.local.get('linkRev_settings', function(results) {
+            _this.$languageSelect.val(results.linkRev_settings.language);
+            _this.$countrySelect.val(results.linkRev_settings.country);
+
+            if (results.linkRev_settings.showAll) {
+                _this.$showCommentsFromAllLanguages.attr('checked', 'checked');
+            }
+
+            _this.$overlaySettings.toggleClass(_this.overlayVisibleClass);
+        });
+    });
+
+    this.$buttonCloseSettingsOverlay.on('click', function() {
+        _this.$overlaySettings.removeClass(_this.overlayVisibleClass);
+        _this.getExistingComments();
+    });
+
     this.$countrySelect.on('change', this.manageCountry.bind(this));
     this.$languageSelect.on('change', this.manageLanguage.bind(this));
-    this.$homepageCommentsSwitch.on('change', this.manageHomepageComments.bind(this));
+    this.$showCommentsFromAllLanguages.on('change', this.manageShowAllLanguagesSwitch.bind(this));
 };
 
 linkRev.prototype.initCommentsEventListeners = function() {
@@ -102,7 +128,32 @@ linkRev.prototype.initCommentsEventListeners = function() {
                 dataType: "html"
             });
         });
-      });
+    });
+
+    // Handle answer button
+    $('[data-attribute="answerComment"]').each(function() {
+        $(this).on('click', function() {
+            if ($('.box-answer').length > 0) {
+                $('.box-answer').remove();
+                $('.reply-button').removeClass('visuallyhidden');
+            }
+
+            $(this).addClass('visuallyhidden');
+
+            var currentCommentContainer = $(this).closest('.box');
+
+            currentCommentContainer.append('<div class="box-answer"><textarea id="textarea-answer" class="textarea answer-textarea" placeholder="' + chrome.i18n.getMessage('AnswerPlaceholder') + '"></textarea>' +
+                '<button id="submitAnswerButton" type="button" class="button is-small is-primary answer-button">' + chrome.i18n.getMessage('AnswerButton') + '</button></div>');
+
+            $('.box-answer')[0].scrollIntoView({behavior: "smooth"});
+
+            $('#submitAnswerButton').on('click', function() {
+                _this.replyToComment.replyToPrimaryCommentId = $(this).closest('.box-primary').attr('data-comment-id');
+                _this.replyToComment.content = $('#textarea-answer').val();
+                _this.getCurrentUrl(_this.replyToCommentAjaxQuery.bind(_this));
+            });
+        }.bind(this));
+    });
 
     // Handle like button
     $('[data-attribute="likeComment"]').each(function() {
@@ -137,45 +188,61 @@ linkRev.prototype.initCommentsEventListeners = function() {
             });
         });
     });
-
-    // Handle settings button
-    $('[data-attribute="settingsToggle"]').on('click', function() {
-        $('[data-attribute="overlaySettings"]').toggleClass(_this.overlayVisibleClass);
-    });
-
-    // Handle panel button
-    $('[data-attribute="panelToggle"]').on('click', function() {
-        $('[data-attribute="overlayPanel"]').toggleClass(_this.overlayVisibleClass);
-    });
-
-    // Handle close overlay button
-    $('[data-attribute="closeOverlay"]').on('click', function() {
-        $('.' + _this.overlayVisibleClass).removeClass(_this.overlayVisibleClass);
-    });
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
-    var language = this.getCurrentLanguage();
-    var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(this.$commentContent.val()) + '&CommentLanguage=' + language;
+    var _this = this;
 
-    $.ajax({
-        type: "POST",
-        url: this.getAddCommentUrl(),
-        contentType:"application/x-www-form-urlencoded",
-        data: data,
-        success: function() {
-            this.saveSortingStrategy = false;
-            this.sortingStrategy = linkRev.sortingStrategies.NEW;
-            this.$selectSorter.val(this.sortingStrategy);
-            this.$commentContent.val('');
-            this.getExistingComments();
-        }.bind(this),
-        dataType: "json"
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(_this.$commentContent.val()) + '&CommentLanguage=' + results.linkRev_settings.language + '&CommentCountry=' + results.linkRev_settings.country;
+
+        $.ajax({
+            type: "POST",
+            url: _this.getAddCommentUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function() {
+                _this.saveSortingStrategy = false;
+                _this.sortingStrategy = linkRev.sortingStrategies.NEW;
+                _this.$selectSorter.val(_this.sortingStrategy);
+                _this.$commentContent.val('');
+                _this.getExistingComments();
+            }.bind(_this),
+            dataType: "json"
+        });
     });
 };
 
-linkRev.prototype.existingCommentsAjaxQuery = function(url) {
-    var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy;
+linkRev.prototype.replyToCommentAjaxQuery = function(url) {
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(_this.replyToComment.content) + '&ReplyToPrimaryCommentId=' + encodeURIComponent(_this.replyToComment.replyToPrimaryCommentId)  + '&CommentLanguage=' + results.linkRev_settings.language + '&CommentCountry=' + results.linkRev_settings.country;
+
+        $.ajax({
+            type: "POST",
+            url: _this.getAddCommentUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function() {
+                $('.box-answer').fadeOut(300, function() {$(this).remove();});
+                _this.getExistingComments();
+            }.bind(_this),
+            dataType: "json"
+        });
+    });
+};
+
+linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
+    var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy + '&showAll=' + settings.showAll;
+
+    if (settings.language) {
+        commentsUrl += '&language=' + settings.language;
+    }
+
+    if (settings.country) {
+        commentsUrl += '&country=' + settings.country;
+    }
 
     $.ajax({
         type: "GET",
@@ -187,19 +254,38 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url) {
                 this.$commentsCounter.text(comments.length);
 
                 for (var i = 0; i < comments.length; i++) {
-                    var cleanId = this.cleanDomString(comments[i]._id);
-                    var cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
-                    var cleanContent = this.cleanDomString(comments[i].content);
-                    var cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
+                    if (!comments[i].replyToPrimaryCommentId) {
+                        let cleanId = this.cleanDomString(comments[i]._id);
+                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
+                        let cleanContent = this.cleanDomString(comments[i].content);
+                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
-                    html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(cleanCreatedDateTime).toLocaleDateString() +
+                        html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
                         '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
-                        '<button class="button is-primary is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
-                        '<button class="button is-small" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
+                        '<button class="button is-primary reply-button is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
+                        '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
+                    } else {
+                        let cleanId = this.cleanDomString(comments[i]._id);
+                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
+                        let cleanContent = this.cleanDomString(comments[i].content);
+                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
+                        let replyToPrimaryCommentId = this.cleanDomString(comments[i].replyToPrimaryCommentId);
+
+                        setTimeout(function() {
+                            $('.box-primary[data-comment-id="' + replyToPrimaryCommentId + '"]').append(
+                                '<div class="box" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
+                                ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
+                                '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
+                                '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
+                                '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                                '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
+                                '</div></div></div>');
+                        }, 0);
+                    }
                 }
 
                 if (comments.length > 0 && comments.length < 2) {
@@ -234,24 +320,35 @@ linkRev.prototype.sendComment = function() {
         this.createValidationMessage('CommentSuccess', this.isSuccessClass);
 
         this.$submitButton.addClass(this.disabledButtonClass);
-        setTimeout(this.activateButton, this.nextCommentTimeBlocker);
+        setTimeout(this.activateButton.bind(this), this.nextCommentTimeBlocker);
     }
 };
 
 linkRev.prototype.manageCountry = function() {
-    console.log('country change');
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) { 
+        results.linkRev_settings.country = _this.$countrySelect.val();
+        chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
+    });
 };
 
 linkRev.prototype.manageLanguage = function() {
-    console.log('language change');
+    var _this = this;
+    
+    chrome.storage.local.get('linkRev_settings', function(results) { 
+        results.linkRev_settings.language = _this.$languageSelect.val();
+        chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
+    });
 };
 
-linkRev.prototype.manageHomepageComments = function() {
-    if (this.$homepageCommentsSwitch.is(':checked')) {
-        // Show homepagecomments
-    } else {
-        // Hide homepagecomments
-    }
+linkRev.prototype.manageShowAllLanguagesSwitch = function() {
+    var _this = this;
+    
+    chrome.storage.local.get('linkRev_settings', function(results) { 
+        results.linkRev_settings.showAll = _this.$showCommentsFromAllLanguages.is(':checked');
+        chrome.storage.local.set({'linkRev_settings': results.linkRev_settings});
+    });
 };
 
 linkRev.prototype.manageSorting = function() {
@@ -260,7 +357,7 @@ linkRev.prototype.manageSorting = function() {
     this.sortingStrategy = this.$selectSorter.val();
 
     if (this.saveSortingStrategy) {
-        chrome.storage.local.set({'commentsSortingStrategy': this.$selectSorter.val()}, function() {
+        chrome.storage.local.set({'linkRev_commentsSortingStrategy': this.$selectSorter.val()}, function() {
             _this.getExistingComments();
         });
     } else {
@@ -310,7 +407,28 @@ linkRev.prototype.createValidationMessage = function(message, additionalClass) {
 };
 
 linkRev.prototype.getExistingComments = function() {
-    this.getCurrentUrl(this.existingCommentsAjaxQuery.bind(this));
+    var _this = this;
+    
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        if (results.linkRev_settings) {
+            _this.$buttonSettings.show();
+            _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), results.linkRev_settings);
+        } else {
+            var language = _this.getCurrentLanguage();
+            var country = _this.getCurrentCountry(language);
+            var showAll = false;
+            var settings = {
+                language: language,
+                country: country,
+                showAll: showAll
+            };
+
+            chrome.storage.local.set({'linkRev_settings': settings}, function() {
+                _this.$buttonSettings.show();
+                _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), settings);
+            });
+        }
+    });    
 };
 
 linkRev.prototype.getAddCommentUrl = function() {

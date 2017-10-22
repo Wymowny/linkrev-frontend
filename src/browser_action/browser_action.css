@@ -89,15 +89,32 @@ i.fa {
     padding-right: 3px;
 }
 
+.visuallyhidden {
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px; width: 1px;
+    margin: -1px; padding: 0; border: 0;
+}
+
+.no-border {
+    border: none;
+}
+
+.grey {
+    color: grey;
+}
+
+.bold {
+    font-weight: bold;
+}
+
 /* Widget styling */
 
 .header {
     display: flex;
     justify-content: flex-end;
-    border-bottom: 1px solid #dbdbdb;
-    padding-bottom: 5px;
     padding-right: 5px;
-    margin: 3px 0 5px;
+    margin: 0 0 -5px;
     height: 36px;
 }
 
@@ -143,14 +160,22 @@ i.fa {
     margin-bottom: 5px;
 }
 
-.discussion svg {
+.discussion i {
     position: absolute;
+}
+
+.discussion .button {
+    -webkit-font-smoothing: auto;
 }
 
 /* Comments styling */
 
 .box {
     padding: 10px;
+}
+
+.box:not(:last-child) {
+    margin-bottom: 10px;
 }
 
 .box__head {
@@ -192,8 +217,23 @@ i.fa {
     text-align: center;
 }
 
-.bold {
-    font-weight: bold;
+.answer-textarea {
+    min-height: unset !important;
+    margin-top: -20px;
+    font-size: 14px;
+    height: 70px;
+}
+
+.answer-button {
+    margin-top: 5px;
+}
+
+.content:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+button[data-attribute="reportComment"] {
+    margin-left: auto;
 }
 
 /* Overlay styling */

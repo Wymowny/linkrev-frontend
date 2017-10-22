@@ -13,29 +13,25 @@
                 <a href="#" target="_blank" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
             <div class="header">
-                <button class="button is-primary is-small button--icon" data-attribute="panelToggle">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                </button>
-
-                <button class="button is-primary is-small button--icon" data-attribute="settingsToggle">
+                <button id="settingsToggle" class="button is-small button--icon no-border" title="__MSG_Settings__" style="display: none;">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                 </button>
             </div>
 
-            <div class="overlay" data-attribute="overlaySettings">
+            <div id="overlaySettings" class="overlay">
                 <div class="header">
-                    <button class="button overlay__close is-small button--icon" data-attribute="closeOverlay">
+                    <button id="buttonCloseSettingsOverlay" class="button is-small button--icon no-border" title="__MSG_Close__">
                         <i class="fa fa-times" aria-hidden="true"></i>
                     </button>
                 </div>
 
-                <h3 class="overlay__title">Settings:</h3>
+                <h3 class="overlay__title">__MSG_Settings__:</h3>
 
                 <ul class="overlay__list">
                     <li>
                         <span class="overlay__text">__MSG_AllLanguagesPost__</span>
                         <span class="overlay__trigger">
-                            <input class="switch-input" type="checkbox" id="homepageCommentsSwitch" /><label class="switch" for="homepageCommentsSwitch">Toggle</label>
+                            <input class="switch-input" type="checkbox" id="showCommentsFromAllLanguages" /><label class="switch" for="showCommentsFromAllLanguages">__MSG_Toggle__</label>
                         </span>
                     </li>
                     <li>
@@ -44,9 +40,10 @@
                             <div class="control">
                                 <div class="select is-small">
                                     <select id="language-select">
-                                        <option value="0">English</option>
-                                        <option value="1">Deutsch</option>
-                                        <option value="2">Polski</option>
+                                        <option value="en">__MSG_English__</option>
+                                        <option value="de">__MSG_German__</option>
+                                        <option value="pl">__MSG_Polish__</option>
+                                        <option value="">__MSG_Other__</option>
                                     </select>
                                 </div>
                             </div>
@@ -58,9 +55,18 @@
                             <div class="control">
                                 <div class="select is-small">
                                     <select id="country-select">
-                                        <option value="0">USA</option>
-                                        <option value="1">Poland</option>
-                                        <option value="2">Germany</option>
+                                        <option value="AU">__MSG_Australia__</option>
+                                        <option value="AT">__MSG_Austria__</option>
+                                        <option value="CA">__MSG_Canada__</option>
+                                        <option value="DE">__MSG_Germany__</option>
+                                        <option value="GB">__MSG_United_Kingdom__</option>
+                                        <option value="IN">__MSG_India__</option>
+                                        <option value="IE">__MSG_Ireland__</option>
+                                        <option value="NZ">__MSG_New_Zealand__</option>
+                                        <option value="US">__MSG_United_States__</option>
+                                        <option value="PL">__MSG_Poland__</option>
+                                        <option value="CH">__MSG_Switzerland__</option>
+                                        <option value="">__MSG_Other__</option>                                        
                                     </select>
                                 </div>
                             </div>
@@ -68,40 +74,6 @@
                     </li>
                 </ul>
             </div>
-
-            <div class="overlay" data-attribute="overlayPanel">
-                <div class="header">
-                    <button class="button overlay__close is-small button--icon" data-attribute="closeOverlay">
-                        <i class="fa fa-times" aria-hidden="true"></i>
-                    </button>
-                </div>
-
-                <h3 class="overlay__title">__MSG_LoginText__</h3>
-
-                <div class="field">
-                    <p class="control has-icons-left has-icons-right">
-                        <input class="input" type="email" placeholder="Email">
-                        <span class="icon is-small is-left">
-                          <i class="fa fa-envelope"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control has-icons-left">
-                        <input class="input" type="password" placeholder="Password">
-                        <span class="icon is-small is-left">
-                          <i class="fa fa-lock"></i>
-                        </span>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control">
-                        <button class="button is-success">__MSG_LoginButton__</button>
-                        <button class="button is-info">__MSG_RegisterButton__</button>
-                    </p>
-                </div>
-            </div>
-
 
             <form id="sendComment">
                 <div class="field">

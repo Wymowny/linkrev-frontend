@@ -63,13 +63,13 @@
     "message": "Antworten"
   },
   "AllLanguagesPost": {
-    "message": "Zeige Kommentare in allen Sprachen"
+    "message": "Kommentare von allen Sprachen zeigen"
   },
   "ChooseLanguage": {
-    "message": "Wählen Sie die Sprache"
+    "message": "Ihre Sprache"
   },
   "ChooseCountry": {
-    "message": "Wählen Sie ein Land"
+    "message": "Ihr Land"
   },
   "LoginButton": {
     "message": "Login"
@@ -79,5 +79,65 @@
   },
   "RegisterButton": {
     "message": "Registrieren"
+  },
+  "Settings": {
+    "message": "Einstellungen"
+  },  
+  "Close": {
+    "message": "Schliessen"
+  },
+  "English": {
+    "message": "Englisch"
+  },
+  "German": {
+    "message": "Deutsch"
+  },
+  "Polish": {
+    "message": "Polnisch"
+  },
+  "Australia": {
+    "message": "Australien"
+  },
+  "Austria": {
+    "message": "Österreich"
+  },
+  "Canada": {
+    "message": "Kanada"
+  },
+  "Germany": {
+    "message": "Deutschland"
+  },
+  "United_Kingdom": {
+    "message": "Großbritannien"
+  },
+  "India": {
+    "message": "Indien"
+  },
+  "Ireland": {
+    "message": "Irland"
+  },
+  "New_Zealand": {
+    "message": "Neuseeland"
+  },
+  "United_States": {
+    "message": "Vereinigte Staaten"
+  },
+  "Poland": {
+    "message": "Polen"
+  },
+  "Switzerland": {
+    "message": "Schweiz"
+  },
+  "Other": {
+    "message": "andere"
+  },
+  "Toggle": {
+    "message": "Umschalten"
+  },
+  "AnswerButton": {
+    "message": "Antwort"
+  },
+  "AnswerPlaceholder": {
+    "message": "Antwort"
   }
 }

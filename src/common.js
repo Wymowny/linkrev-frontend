@@ -4,9 +4,14 @@ function linkRev() {
     this.init();
 }
 
-linkRev.prototype.getCurrentUrl = function(callback) {
+linkRev.prototype.getCurrentUrl = function(callback, settings) {
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
-        callback(tabs[0].url);
+
+        if (settings) {
+            callback(tabs[0].url, settings);
+        } else {
+            callback(tabs[0].url);
+        }
     });
 };
 
@@ -17,7 +22,32 @@ linkRev.prototype.getCurrentLanguage = function() {
         language = language.substring(0, 2);
     }
 
-    return language;
+    if (this.supportedLanguages.indexOf(language) > -1) {
+        return language;
+    }
+
+    return '';
+};
+
+linkRev.prototype.getCurrentCountry = function(language) {
+    var country = window.navigator.userLanguage || window.navigator.language;
+
+    if (country.length > 2) {
+
+        country = country.substring(3, 5);
+
+        if (this.supportedCountries.indexOf(country) > -1) {
+            return country;
+        } else {
+            return '';
+        }
+    } else {
+        if (language === 'pl') return 'PL';
+        if (language === 'en') return 'US';
+        if (language === 'de') return 'CH';
+    }
+
+    return '';
 };
 
 linkRev.prototype.getCommentsUrl = function() {
@@ -39,6 +69,10 @@ linkRev.prototype.localizeHtmlPage = function() {
         }
     }
 };
+
+linkRev.prototype.supportedLanguages = ['en', 'de', 'pl'];
+
+linkRev.prototype.supportedCountries = ['AU', 'AT', 'CA', 'DE', 'GB', 'IN', 'IE', 'NZ', 'US', 'PL', 'CH'];
 
 linkRev.prototype.getBasicUrl = function() {
     return "https://linkrev.com/";
