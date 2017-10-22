@@ -160,8 +160,13 @@ i.fa {
     margin-bottom: 5px;
 }
 
-.discussion svg {
+.discussion i {
     position: absolute;
+}
+
+.discussion .button {
+    -webkit-font-smoothing: auto;
+    font-smoothing: auto;
 }
 
 /* Comments styling */
