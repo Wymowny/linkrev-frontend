@@ -7,14 +7,74 @@
     <body>
         <div id="content">
             <div class="content notification discussion" id="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 533.333 533.333">
-                    <path d="M165.5 533.33c-35.55-73.96-16.62-116.34 10.7-156.27 29.9-43.73 37.62-87 37.62-87s23.52 30.56 14.1 78.38c41.56-46.25 49.4-119.94 43.13-148.16C364.95 285.9 405.1 428.02 351 533.33 638.7 370.56 422.58 127 384.95 99.56c12.55 27.43 14.92 73.88-10.4 96.42C331.63 33.33 225.57 0 225.57 0c12.55 83.88-45.46 175.6-101.4 244.13-1.97-33.45-4.05-56.52-21.64-88.53-3.95 60.76-50.38 110.28-62.96 171.16-17.03 82.44 12.76 142.8 125.9 206.57z"/>
-                </svg>
-                <div id="alert-title" class="discussion__content bold">
-                </div>
+                <i class="fa fa-fire" aria-hidden="true"></i>
+                <div id="alert-title" class="discussion__content bold"></div>
                 <blockquote class="blockquote" id="alert-quote">"<span id="alert-quote-content"></span>"</blockquote>
                 <a href="#" target="_blank" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
+            <div class="header">
+                <button id="settingsToggle" class="button is-small button--icon no-border" title="__MSG_Settings__" style="display: none;">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div id="overlaySettings" class="overlay">
+                <div class="header">
+                    <button id="buttonCloseSettingsOverlay" class="button is-small button--icon no-border" title="__MSG_Close__">
+                        <i class="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <h3 class="overlay__title">__MSG_Settings__:</h3>
+
+                <ul class="overlay__list">
+                    <li>
+                        <span class="overlay__text">__MSG_AllLanguagesPost__</span>
+                        <span class="overlay__trigger">
+                            <input class="switch-input" type="checkbox" id="showCommentsFromAllLanguages" /><label class="switch" for="showCommentsFromAllLanguages">__MSG_Toggle__</label>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="overlay__text">__MSG_ChooseLanguage__</span>
+                        <div class="overlay__trigger field inline-select">
+                            <div class="control">
+                                <div class="select is-small">
+                                    <select id="language-select">
+                                        <option value="en">__MSG_English__</option>
+                                        <option value="de">__MSG_German__</option>
+                                        <option value="pl">__MSG_Polish__</option>
+                                        <option value="">__MSG_Other__</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="overlay__text">__MSG_ChooseCountry__</span>
+                        <div class="overlay__trigger field inline-select">
+                            <div class="control">
+                                <div class="select is-small">
+                                    <select id="country-select">
+                                        <option value="AU">__MSG_Australia__</option>
+                                        <option value="AT">__MSG_Austria__</option>
+                                        <option value="CA">__MSG_Canada__</option>
+                                        <option value="DE">__MSG_Germany__</option>
+                                        <option value="GB">__MSG_United_Kingdom__</option>
+                                        <option value="IN">__MSG_India__</option>
+                                        <option value="IE">__MSG_Ireland__</option>
+                                        <option value="NZ">__MSG_New_Zealand__</option>
+                                        <option value="US">__MSG_United_States__</option>
+                                        <option value="PL">__MSG_Poland__</option>
+                                        <option value="CH">__MSG_Switzerland__</option>
+                                        <option value="">__MSG_Other__</option>                                        
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
             <form id="sendComment">
                 <div class="field">
                     <label class="label">__MSG_Message__:</label>

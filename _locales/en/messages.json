@@ -9,7 +9,7 @@
     "message": "Your comment"
   },
   "IAgree": {
-    "message": "Submitting I agree to the "
+    "message": "Using LinkRev I agree to the "
   },
   "TermsAndConditions": {
     "message": "terms and conditions"
@@ -58,5 +58,86 @@
   },
   "AlertLink": {
     "message": "Go to site and write your comment"
+  },
+  "Answer": {
+    "message": "Reply"
+  },
+  "AllLanguagesPost": {
+    "message": "Show comments from all languages"
+  },
+  "ChooseLanguage": {
+    "message": "Your default language of comments"
+  },
+  "ChooseCountry": {
+    "message": "Your default country"
+  },
+  "LoginButton": {
+    "message": "Login"
+  },
+  "LoginText": {
+    "message": "Submit"
+  },
+  "RegisterButton": {
+    "message": "Register"
+  },
+  "Settings": {
+    "message": "Settings"
+  },  
+  "Close": {
+    "message": "Close"
+  },
+  "English": {
+    "message": "English"
+  },
+  "German": {
+    "message": "German"
+  },
+  "Polish": {
+    "message": "Polish"
+  },
+  "Australia": {
+    "message": "Australia"
+  },
+  "Austria": {
+    "message": "Austria"
+  },
+  "Canada": {
+    "message": "Canada"
+  },
+  "Germany": {
+    "message": "Germany"
+  },
+  "United_Kingdom": {
+    "message": "United Kingdom"
+  },
+  "India": {
+    "message": "India"
+  },
+  "Ireland": {
+    "message": "Ireland"
+  },
+  "New_Zealand": {
+    "message": "New Zealand"
+  },
+  "United_States": {
+    "message": "United States"
+  },
+  "Poland": {
+    "message": "Poland"
+  },
+  "Switzerland": {
+    "message": "Switzerland"
+  },
+  "Other": {
+    "message": "other"
+  },
+  "Toggle": {
+    "message": "Toggle"
+  },
+  "AnswerButton": {
+    "message": "Reply"
+  },
+  "AnswerPlaceholder": {
+    "message": "Your comment"
   }
 }

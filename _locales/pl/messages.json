@@ -9,7 +9,7 @@
     "message": "Twój komentarz"
   },
   "IAgree": {
-    "message": "Wysyłając komentarz akceptujesz  "
+    "message": "Korzystając z LinkRev akceptujesz  "
   },
   "TermsAndConditions": {
     "message": "regulamin."
@@ -58,5 +58,86 @@
   },
   "AlertLink": {
     "message": "Przejdź do strony i napisz komentarz"
+  },
+  "Answer": {
+    "message": "Odpowiedz"
+  },
+  "AllLanguagesPost": {
+    "message": "Pokaż komentarze ze wszystkich języków"
+  },
+  "ChooseLanguage": {
+    "message": "Wybierz domyślny język komentarzy"
+  },
+  "ChooseCountry": {
+    "message": "Wybierz domyślny kraj"
+  },
+  "LoginButton": {
+    "message": "Zaloguj"
+  },
+  "LoginText": {
+    "message": "Logowanie"
+  },
+  "RegisterButton": {
+    "message": "Zarejestruj"
+  },
+  "Settings": {
+    "message": "Ustawienia"
+  },  
+  "Close": {
+    "message": "Zamknij"
+  },
+  "English": {
+    "message": "angielski"
+  },
+  "German": {
+    "message": "niemiecki"
+  },
+  "Polish": {
+    "message": "polski"
+  },
+  "Australia": {
+    "message": "Australia"
+  },
+  "Austria": {
+    "message": "Austria"
+  },
+  "Canada": {
+    "message": "Kanada"
+  },
+  "Germany": {
+    "message": "Niemcy"
+  },
+  "United_Kingdom": {
+    "message": "Anglia"
+  },
+  "India": {
+    "message": "Indie"
+  },
+  "Ireland": {
+    "message": "Irlandia"
+  },
+  "New_Zealand": {
+    "message": "Nowa Zelandia"
+  },
+  "United_States": {
+    "message": "Stany Zjednoczone"
+  },
+  "Poland": {
+    "message": "Polska"
+  },
+  "Switzerland": {
+    "message": "Szwajcaria"
+  },
+  "Other": {
+    "message": "inny"
+  },
+  "Toggle": {
+    "message": "Przełącz"
+  },
+  "AnswerButton": {
+    "message": "Odpowiedz"
+  },
+  "AnswerPlaceholder": {
+    "message": "Twoja odpowiedź"
   }
 }
