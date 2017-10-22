@@ -15,6 +15,11 @@ linkRev.prototype.init = function() {
     this.overlayVisibleClass = 'overlay--visible';
     this.isDangerClass = 'is-danger';
     this.isSuccessClass = 'is-success';
+    this.replyToComment = {
+
+        content: '',
+        replyToPrimaryCommentId: ''
+    };
 
     // Initial functions:
     this.localizeHtmlPage();
@@ -135,21 +140,19 @@ linkRev.prototype.initCommentsEventListeners = function() {
             }
 
             $(this).addClass('visuallyhidden');
+
             var currentCommentContainer = $(this).closest('.box');
 
-            currentCommentContainer.append('<div class="box-answer"><textarea id="answerTextarea" class="textarea answer-textarea" placeholder="' + chrome.i18n.getMessage('AnswerPlaceholder') + '"></textarea>' +
+            currentCommentContainer.append('<div class="box-answer"><textarea id="textarea-answer" class="textarea answer-textarea" placeholder="' + chrome.i18n.getMessage('AnswerPlaceholder') + '"></textarea>' +
                 '<button id="submitAnswerButton" type="button" class="button is-small is-primary answer-button">' + chrome.i18n.getMessage('AnswerButton') + '</button></div>');
 
             $('.box-answer')[0].scrollIntoView({behavior: "smooth"});
 
             $('#submitAnswerButton').on('click', function() {
-                // Ajax call to add comment
 
-                $('.box-answer').fadeOut(300, function() {
-                    $(this).remove();
-                });
-
-                currentCommentContainer.append();
+                _this.replyToComment.replyToPrimaryCommentId = $(this).closest('.box-primary').attr('data-comment-id');
+                _this.replyToComment.content = $('#textarea-answer').val();
+                _this.getCurrentUrl(_this.replyToCommentAjaxQuery.bind(_this));                
             });
         }.bind(this));
     });
@@ -193,7 +196,7 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
     var _this = this;
 
     chrome.storage.local.get('linkRev_settings', function(results) {
-        var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(_this.$commentContent.val()) + '&CommentLanguage=' + results.linkRev_settings.language;
+        var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(_this.$commentContent.val()) + '&CommentLanguage=' + results.linkRev_settings.language + '&CommentCountry=' + results.linkRev_settings.country;
 
         $.ajax({
             type: "POST",
@@ -206,6 +209,32 @@ linkRev.prototype.addCommentAjaxQuery = function(url) {
                 _this.$selectSorter.val(_this.sortingStrategy);
                 _this.$commentContent.val('');
                 _this.getExistingComments();
+            }.bind(_this),
+            dataType: "json"
+        });
+    });
+};
+
+linkRev.prototype.replyToCommentAjaxQuery = function(url) {
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        var data = "Link=" + url + '&NewCommentContent=' + encodeURIComponent(_this.replyToComment.content) + '&ReplyToPrimaryCommentId=' + encodeURIComponent(_this.replyToComment.replyToPrimaryCommentId)  + '&CommentLanguage=' + results.linkRev_settings.language + '&CommentCountry=' + results.linkRev_settings.country;
+
+        $.ajax({
+            type: "POST",
+            url: _this.getAddCommentUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function(result) {
+
+                $('.box-answer').fadeOut(300, function() {
+                    $(this).remove();
+                });
+
+                // Append to current comment container
+                $('div[@class=".box-primary"][data-comment-id="' + _this.replyToComment.replyToPrimaryCommentId + '"]').append('Dawid');
+
             }.bind(_this),
             dataType: "json"
         });
@@ -238,7 +267,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                     var cleanContent = this.cleanDomString(comments[i].content);
                     var cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
-                    html += '<div class="box"><div class="content"><div class="box__head"><sub>' + new Date(cleanCreatedDateTime).toLocaleDateString() +
+                    html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
