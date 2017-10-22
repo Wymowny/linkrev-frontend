@@ -142,7 +142,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
 
             var currentCommentContainer = $(this).closest('.box');
 
-            currentCommentContainer.append('<div class="box-answer"><textarea id="textarea-answer" class="textarea answer-textarea" placeholder="' + chrome.i18n.getMessage('AnswerPlaceholder') + '"></textarea>' +
+            currentCommentContainer.find('.content-primary').after('<div class="box-answer"><textarea id="textarea-answer" class="textarea answer-textarea" placeholder="' + chrome.i18n.getMessage('AnswerPlaceholder') + '"></textarea>' +
                 '<button id="submitAnswerButton" type="button" class="button is-small is-primary answer-button">' + chrome.i18n.getMessage('AnswerButton') + '</button></div>');
 
             $('.box-answer')[0].scrollIntoView({behavior: "smooth"});

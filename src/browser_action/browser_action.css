@@ -217,6 +217,11 @@ i.fa {
     text-align: center;
 }
 
+.box-answer {
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
 .answer-textarea {
     min-height: unset !important;
     margin-top: -20px;
