@@ -16,7 +16,6 @@ linkRev.prototype.init = function() {
     this.isDangerClass = 'is-danger';
     this.isSuccessClass = 'is-success';
     this.replyToComment = {
-
         content: '',
         replyToPrimaryCommentId: ''
     };
@@ -44,11 +43,11 @@ linkRev.prototype.init = function() {
     this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
-    window.onload = function () {        
+    window.onload = function () {
         this.setHots();
-        this.setSelectSorterValue();        
+        this.setSelectSorterValue();
         this.getExistingComments();
-        this.initEventListeners();               
+        this.initEventListeners();
     }.bind(this);
 };
 
@@ -89,7 +88,7 @@ linkRev.prototype.initEventListeners = function() {
     this.$selectSorter.on('change', this.manageSorting.bind(this));
 
     this.$buttonSettings.on('click', function() {
-        chrome.storage.local.get('linkRev_settings', function(results) { 
+        chrome.storage.local.get('linkRev_settings', function(results) {
             _this.$languageSelect.val(results.linkRev_settings.language);
             _this.$countrySelect.val(results.linkRev_settings.country);
 
@@ -98,7 +97,7 @@ linkRev.prototype.initEventListeners = function() {
             }
 
             _this.$overlaySettings.toggleClass(_this.overlayVisibleClass);
-        });       
+        });
     });
 
     this.$buttonCloseSettingsOverlay.on('click', function() {
