@@ -250,6 +250,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
         success: function (comments) {
             if (comments) {
                 var html = '';
+                var _this = this;
 
                 this.$commentsCounter.text(comments.length);
 
@@ -260,7 +261,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         let cleanContent = this.cleanDomString(comments[i].content);
                         let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
-                        html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
+                        html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content content-primary"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
@@ -276,7 +277,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         let replyToPrimaryCommentId = this.cleanDomString(comments[i].replyToPrimaryCommentId);
 
                         setTimeout(function() {
-                            $('.box-primary[data-comment-id="' + replyToPrimaryCommentId + '"]').append(
+                            $('.box-primary[data-comment-id="' + replyToPrimaryCommentId + '"]').find('.content-primary').after(
                                 '<div class="box" data-comment-id="' + cleanId + '"><div class="content"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
                                 ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                                 '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
@@ -300,8 +301,11 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                 }
 
                 this.$existingComments.html(html);
-                this.initCommentsEventListeners();
-                this.checkRatings();
+
+                setTimeout(function() {
+                    _this.initCommentsEventListeners();
+                    _this.checkRatings();
+                }, 0);
             }
         }.bind(this),
         dataType: "json"
