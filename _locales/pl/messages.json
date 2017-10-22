@@ -133,5 +133,11 @@
   },
   "Toggle": {
     "message": "Przełącz"
+  },
+  "AnswerButton": {
+    "message": "Odpowiedz"
+  },
+  "AnswerPlaceholder": {
+    "message": "Twoja odpowiedź"
   }
 }
