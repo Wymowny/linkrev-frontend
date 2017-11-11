@@ -190,7 +190,7 @@ linkRev.prototype.initCommentsEventListeners = function() {
         });
     });
 
-    // Handle dislike buttons
+    // Handle link
     $('a').each(function() {
         $(this).on('click', function() {
             chrome.tabs.create({url: $(this).attr('href')});
