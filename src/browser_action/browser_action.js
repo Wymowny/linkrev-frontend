@@ -7,6 +7,7 @@ linkRev.prototype.init = function() {
     // Basic variables:
     this.nextCommentTimeBlocker = 30000;
     this.maxLength = 1000;
+    this.maxHrefLength = 30;
     this.minLength = 2;
     this.saveSortingStrategy = true;
 
@@ -192,7 +193,6 @@ linkRev.prototype.initCommentsEventListeners = function() {
     // Handle dislike buttons
     $('a').each(function() {
         $(this).on('click', function() {
-            alert('works like a charm!');
             chrome.tabs.create({url: $(this).attr('href')});
             return false;
         });
@@ -414,11 +414,51 @@ linkRev.prototype.updateRatingColor = function(element) {
 };
 
 linkRev.prototype.urlify = function(context) {
-    var urlRegex =/(\b(https?|ftp|www|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig,
+        _this = this;
 
     return context.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + url + '</a>';
+        return '<a href="' + url + '">' + _this.shortenUrl(url, _this.maxHrefLength) + '</a>';
     });
+};
+
+linkRev.prototype.shortenUrl = function(url, l) {
+    var length = typeof(l) !== "undefined" ? l : 100,
+        chunk_l = (length / 2);
+
+    url = url.replace('http://', '').replace('https://', '');
+
+    if (url.length <= length) {
+        return url;
+    } else {
+        var start_chunk = this.shortString(url, chunk_l, false),
+            end_chunk = this.shortString(url, chunk_l, true);
+
+        return start_chunk + ".." + end_chunk;
+    }
+};
+
+linkRev.prototype.shortString = function(string, l, reverse) {
+    var stopChars = [' ','/', '&'],
+        acceptableShortness = l * 0.80,
+        stringVariable = '\'' + string + '\'',
+        shortString = '';
+
+    reverse = typeof(reverse) !== 'undefined' ? reverse : false;
+
+    if (reverse) { string = stringVariable.split('').reverse().join(''); }
+
+    for (var i = 0; i < l - 1; i++) {
+        shortString += string[i];
+
+        if (i >= acceptableShortness && stopChars.indexOf(string[i]) >= 0) {
+            break;
+        }
+    }
+
+    if (reverse) { return shortString.split('').reverse().join(''); }
+
+    return shortString;
 };
 
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {
@@ -435,10 +475,10 @@ linkRev.prototype.getExistingComments = function() {
             _this.$buttonSettings.show();
             _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), results.linkRev_settings);
         } else {
-            var language = _this.getCurrentLanguage();
-            var country = _this.getCurrentCountry(language);
-            var showAll = false;
-            var settings = {
+            var language = _this.getCurrentLanguage(),
+                country = _this.getCurrentCountry(language),
+                showAll = false,
+                settings = {
                 language: language,
                 country: country,
                 showAll: showAll
