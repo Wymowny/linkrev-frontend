@@ -188,6 +188,15 @@ linkRev.prototype.initCommentsEventListeners = function() {
             });
         });
     });
+
+    // Handle dislike buttons
+    $('a').each(function() {
+        $(this).on('click', function() {
+            alert('works like a charm!');
+            chrome.tabs.create({url: $(this).attr('href')});
+            return false;
+        });
+    });
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -265,7 +274,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
-                        '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                        '</div><p class="comment__content">' + _this.urlify(cleanContent) + '</p><div class="box__footer">' +
                         '<button class="button is-primary reply-button is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
                         '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
@@ -402,6 +411,14 @@ linkRev.prototype.updateRatingColor = function(element) {
     } else if (currentNumberValue < 0) {
         currentNumber.addClass('has-text-danger');
     }
+};
+
+linkRev.prototype.urlify = function(context) {
+    var urlRegex =/(\b(https?|ftp|www|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+
+    return context.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    });
 };
 
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {
