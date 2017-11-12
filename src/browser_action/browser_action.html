@@ -13,7 +13,28 @@
                 <a href="#" target="_blank" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
             <div class="header">
-                <button id="settingsToggle" class="button is-small button--icon no-border" title="__MSG_Settings__" style="display: none;">
+                <div class="header__mark">
+                    <span class="header__rate">
+                        <button type="button" class="arrowButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 292.362 292.362">
+                                <path d="M286.935 197.286L159.028 69.379c-3.613-3.617-7.895-5.424-12.847-5.424s-9.233 1.807-12.85 5.424L5.424 197.286C1.807 200.9 0 205.184 0 210.132s1.807 9.233 5.424 12.847c3.621 3.617 7.902 5.428 12.85 5.428h255.813c4.949 0 9.233-1.811 12.848-5.428 3.613-3.613 5.427-7.898 5.427-12.847s-1.814-9.232-5.427-12.846z"></path>
+                            </svg>
+                        </button>
+
+                        <button type="button" class="arrowButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 292.362 292.362">
+                                <path d="M286.935 69.377c-3.614-3.617-7.898-5.424-12.848-5.424H18.274c-4.952 0-9.233 1.807-12.85 5.424C1.807 72.997 0 77.28 0 82.227c0 4.95 1.807 9.23 5.424 12.848L133.33 222.982c3.622 3.617 7.903 5.428 12.85 5.428s9.234-1.81 12.848-5.428L286.935 95.074c3.613-3.617 5.427-7.898 5.427-12.847 0-4.948-1.814-9.23-5.427-12.85z"></path>
+                            </svg>
+                        </button>
+                    </span>
+                    <span class="header__number">
+                        <span class="header__number">0</span>
+                        <span class="header__description"> - __MSG_PageRating__</span>
+                    </span>
+
+                </div>
+
+                <button id="settingsToggle" class="button is-small button--icon no-border settingsButton" title="__MSG_Settings__" style="display: none;">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                 </button>
             </div>

@@ -112,10 +112,22 @@ i.fa {
 
 .header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding-right: 5px;
     margin: 0 0 -5px;
     height: 36px;
+}
+
+.header__rate {
+    display: flex;
+    flex-direction: column;
+}
+
+.arrowButton {
+    border: none;
+    background: none;
+    margin: 0;
+    padding: 0;
 }
 
 #content {
@@ -146,6 +158,10 @@ i.fa {
 
 #be-first-panel, #comments-order-panel, #alert, #alert-quote {
     display: none;
+}
+
+.settingsButton {
+    margin-left: auto;
 }
 
 .discussion {
