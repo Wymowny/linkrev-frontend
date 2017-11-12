@@ -384,6 +384,32 @@ linkRev.prototype.cleanDomString = function(data) {
     return data.replace(/<[^>]*>?/g, '');
 };
 
+linkRev.prototype.wrapLongComments = function() {
+    var showChar = 100,
+        ellipsestext = "...",
+        moretext = "- show more";
+
+    $('.comment__content').each(function() {
+        let content = $(this).html();
+
+        if(content.length > showChar) {
+            let c = content.substr(0, showChar),
+                h = content.substr(showChar, content.length - showChar);
+
+            let html = c + '<span class="more-ellipses">' + ellipsestext + '&nbsp;</span><span class="more-content"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="more-link">' + moretext + '</a></span>';
+
+            $(this).html(html);
+        }
+    });
+
+    $(".more-link").click(function(){
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        $(this).remove();
+        return false;
+    });
+};
+
 linkRev.prototype.activateButton = function() {
     this.$submitButton.removeClass(this.disabledButtonClass);
 };
