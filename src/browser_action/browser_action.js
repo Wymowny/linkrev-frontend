@@ -40,6 +40,8 @@ linkRev.prototype.init = function() {
     this.$buttonCloseSettingsOverlay = $('#buttonCloseSettingsOverlay');
     this.$countrySelect = $('#country-select');
     this.$languageSelect = $('#language-select');
+    this.$arrowUpButton = $('#arrowUpButton');
+    this.$arrowDownButton = $('#arrowDownButton');
     this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
@@ -103,6 +105,16 @@ linkRev.prototype.initEventListeners = function() {
     this.$buttonCloseSettingsOverlay.on('click', function() {
         _this.$overlaySettings.removeClass(_this.overlayVisibleClass);
         _this.getExistingComments();
+    });
+
+    // Handle arrowUpButton button
+    this.$arrowUpButton.on('click', function() {
+
+    });
+
+    // Handle arrowDownButton button
+    this.$arrowDownButton.on('click', function() {
+
     });
 
     this.$countrySelect.on('change', this.manageCountry.bind(this));
@@ -256,10 +268,10 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 for (var i = 0; i < comments.length; i++) {
                     if (!comments[i].replyToPrimaryCommentId) {
-                        let cleanId = this.cleanDomString(comments[i]._id);
-                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
-                        let cleanContent = this.cleanDomString(comments[i].content);
-                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
+                        let cleanId = this.cleanDomString(comments[i]._id),
+                            cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate),
+                            cleanContent = this.cleanDomString(comments[i].content),
+                            cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
                         html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content content-primary"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
@@ -270,11 +282,11 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
                     } else {
-                        let cleanId = this.cleanDomString(comments[i]._id);
-                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
-                        let cleanContent = this.cleanDomString(comments[i].content);
-                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
-                        let replyToPrimaryCommentId = this.cleanDomString(comments[i].replyToPrimaryCommentId);
+                        let cleanId = this.cleanDomString(comments[i]._id),
+                            cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate),
+                            cleanContent = this.cleanDomString(comments[i].content),
+                            cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes),
+                            replyToPrimaryCommentId = this.cleanDomString(comments[i].replyToPrimaryCommentId);
 
                         setTimeout(function() {
                             $('.box-primary[data-comment-id="' + replyToPrimaryCommentId + '"]').find('.content-primary').after(

@@ -114,13 +114,18 @@ i.fa {
     display: flex;
     justify-content: space-between;
     padding-right: 5px;
-    margin: 0 0 -5px;
-    height: 36px;
+    margin: 0 0 5px;
+    height: 26px;
 }
 
 .header__rate {
     display: flex;
     flex-direction: column;
+    margin-right: 7px;
+}
+
+.header__mark {
+    display: flex;
 }
 
 .arrowButton {
@@ -128,6 +133,7 @@ i.fa {
     background: none;
     margin: 0;
     padding: 0;
+    height: 12px;
 }
 
 #content {
@@ -161,6 +167,11 @@ i.fa {
 }
 
 .settingsButton {
+    display: none;
+    margin-left: auto;
+}
+
+.exitButton {
     margin-left: auto;
 }
 
