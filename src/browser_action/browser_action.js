@@ -313,6 +313,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 setTimeout(function() {
                     _this.initCommentsEventListeners();
+                    _this.wrapLongComments();
                     _this.checkRatings();
                 }, 0);
             }
@@ -382,6 +383,31 @@ linkRev.prototype.manageSorting = function() {
 
 linkRev.prototype.cleanDomString = function(data) {
     return data.replace(/<[^>]*>?/g, '');
+};
+
+linkRev.prototype.wrapLongComments = function() {
+    var visibleTextLength = 180,
+        ellipsisText = '...';
+
+    $('.comment__content').each(function() {
+        var content = $(this).html();
+
+        if (content.length > visibleTextLength) {
+            var visibleContent = content.substr(0, visibleTextLength),
+                hiddenContent = content.substr(visibleTextLength, content.length - visibleTextLength);
+
+            var html = visibleContent + '<span class="more-ellipses">' + ellipsisText + '</span><span class="more-content"><span>' + hiddenContent + '</span><a href="" class="more-link">' + chrome.i18n.getMessage('ShowMore') + '</a></span>';
+
+            $(this).html(html);
+        }
+    });
+
+    $(".more-link").on('click', function(){
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        $(this).remove();
+        return false;
+    });
 };
 
 linkRev.prototype.activateButton = function() {

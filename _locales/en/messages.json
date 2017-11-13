@@ -139,5 +139,8 @@
   },
   "AnswerPlaceholder": {
     "message": "Your comment"
+  },
+  "ShowMore": {
+    "message": " - expand"
   }
 }
