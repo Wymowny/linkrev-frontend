@@ -142,5 +142,8 @@
   },
   "PagerRating": {
     "message": "ocena strony"
+  },
+  "ShowMore": {
+    "message": " - rozwiń"
   }
 }

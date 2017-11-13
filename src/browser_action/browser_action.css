@@ -256,6 +256,14 @@ i.fa {
     height: 70px;
 }
 
+.more-content span {
+    display: none;
+}
+
+.more-link {
+    display: inline;
+}
+
 .answer-button {
     margin-top: 5px;
 }

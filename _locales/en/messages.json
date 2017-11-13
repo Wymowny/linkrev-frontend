@@ -142,5 +142,8 @@
   },
   "PagerRating": {
     "message": "page rating"
+  },
+  "ShowMore": {
+    "message": " - expand"
   }
 }

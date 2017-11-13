@@ -7,6 +7,7 @@ linkRev.prototype.init = function() {
     // Basic variables:
     this.nextCommentTimeBlocker = 30000;
     this.maxLength = 1000;
+    this.maxHrefLength = 30;
     this.minLength = 2;
     this.saveSortingStrategy = true;
 
@@ -200,6 +201,14 @@ linkRev.prototype.initCommentsEventListeners = function() {
             });
         });
     });
+
+    // Handle link
+    $('a').each(function() {
+        $(this).on('click', function() {
+            chrome.tabs.create({url: $(this).attr('href')});
+            return false;
+        });
+    });
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -277,7 +286,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
-                        '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                        '</div><p class="comment__content">' + _this.urlify(cleanContent) + '</p><div class="box__footer">' +
                         '<button class="button is-primary reply-button is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
                         '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
@@ -316,6 +325,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 setTimeout(function() {
                     _this.initCommentsEventListeners();
+                    _this.wrapLongComments();
                     _this.checkRatings();
                 }, 0);
             }
@@ -387,6 +397,31 @@ linkRev.prototype.cleanDomString = function(data) {
     return data.replace(/<[^>]*>?/g, '');
 };
 
+linkRev.prototype.wrapLongComments = function() {
+    var visibleTextLength = 180,
+        ellipsisText = '...';
+
+    $('.comment__content').each(function() {
+        var content = $(this).html();
+
+        if (content.length > visibleTextLength) {
+            var visibleContent = content.substr(0, visibleTextLength),
+                hiddenContent = content.substr(visibleTextLength, content.length - visibleTextLength);
+
+            var html = visibleContent + '<span class="more-ellipses">' + ellipsisText + '</span><span class="more-content"><span>' + hiddenContent + '</span><a href="" class="more-link">' + chrome.i18n.getMessage('ShowMore') + '</a></span>';
+
+            $(this).html(html);
+        }
+    });
+
+    $(".more-link").on('click', function(){
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        $(this).remove();
+        return false;
+    });
+};
+
 linkRev.prototype.activateButton = function() {
     this.$submitButton.removeClass(this.disabledButtonClass);
 };
@@ -416,6 +451,54 @@ linkRev.prototype.updateRatingColor = function(element) {
     }
 };
 
+linkRev.prototype.urlify = function(context) {
+    var urlRegex =/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig,
+        _this = this;
+
+    return context.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + _this.shortenUrl(url, _this.maxHrefLength) + '</a>';
+    });
+};
+
+linkRev.prototype.shortenUrl = function(url, l) {
+    var length = typeof(l) !== "undefined" ? l : 100,
+        chunk_l = (length / 2);
+
+    url = url.replace('http://', '').replace('https://', '');
+
+    if (url.length <= length) {
+        return url;
+    } else {
+        var start_chunk = this.shortString(url, chunk_l, false),
+            end_chunk = this.shortString(url, chunk_l, true);
+
+        return start_chunk + ".." + end_chunk;
+    }
+};
+
+linkRev.prototype.shortString = function(string, l, reverse) {
+    var stopChars = [' ','/', '&'],
+        acceptableShortness = l * 0.80,
+        stringVariable = '\'' + string + '\'',
+        shortString = '';
+
+    reverse = typeof(reverse) !== 'undefined' ? reverse : false;
+
+    if (reverse) { string = stringVariable.split('').reverse().join(''); }
+
+    for (var i = 0; i < l - 1; i++) {
+        shortString += string[i];
+
+        if (i >= acceptableShortness && stopChars.indexOf(string[i]) >= 0) {
+            break;
+        }
+    }
+
+    if (reverse) { return shortString.split('').reverse().join(''); }
+
+    return shortString;
+};
+
 linkRev.prototype.createValidationMessage = function(message, additionalClass) {
     var messageData = '<div class=\"notification ' + additionalClass + ' validation\">' + chrome.i18n.getMessage(message) + '</div>';
 
@@ -430,10 +513,10 @@ linkRev.prototype.getExistingComments = function() {
             _this.$buttonSettings.show();
             _this.getCurrentUrl(_this.existingCommentsAjaxQuery.bind(_this), results.linkRev_settings);
         } else {
-            var language = _this.getCurrentLanguage();
-            var country = _this.getCurrentCountry(language);
-            var showAll = false;
-            var settings = {
+            var language = _this.getCurrentLanguage(),
+                country = _this.getCurrentCountry(language),
+                showAll = false,
+                settings = {
                 language: language,
                 country: country,
                 showAll: showAll
