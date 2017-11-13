@@ -140,9 +140,6 @@
   "AnswerPlaceholder": {
     "message": "Your comment"
   },
-  "PagerRating": {
-    "message": "page rating"
-  },
   "ShowMore": {
     "message": " - expand"
   }
