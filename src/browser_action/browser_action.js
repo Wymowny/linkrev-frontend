@@ -40,8 +40,8 @@ linkRev.prototype.init = function() {
     this.$buttonCloseSettingsOverlay = $('#buttonCloseSettingsOverlay');
     this.$countrySelect = $('#country-select');
     this.$languageSelect = $('#language-select');
-    this.$arrowUpButton = $('#arrowUpButton');
-    this.$arrowDownButton = $('#arrowDownButton');
+    this.$arrowUpButton = $('#arrow-up-button');
+    this.$arrowDownButton = $('#arrow-down-button');
     this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
