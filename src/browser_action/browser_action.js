@@ -386,17 +386,17 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.wrapLongComments = function() {
-    var showChar = 180,
-        ellipsestext = '...';
+    var visibleTextLength = 180,
+        ellipsisText = '...';
 
     $('.comment__content').each(function() {
         var content = $(this).html();
 
-        if(content.length > showChar) {
-            var visibleContent = content.substr(0, showChar),
-                hiddenContent = content.substr(showChar, content.length - showChar);
+        if (content.length > visibleTextLength) {
+            var visibleContent = content.substr(0, visibleTextLength),
+                hiddenContent = content.substr(visibleTextLength, content.length - visibleTextLength);
 
-            var html = visibleContent + '<span class="more-ellipses">' + ellipsestext + '</span><span class="more-content"><span>' + hiddenContent + '</span><a href="" class="more-link">' + chrome.i18n.getMessage('ShowMore') + '</a></span>';
+            var html = visibleContent + '<span class="more-ellipses">' + ellipsisText + '</span><span class="more-content"><span>' + hiddenContent + '</span><a href="" class="more-link">' + chrome.i18n.getMessage('ShowMore') + '</a></span>';
 
             $(this).html(html);
         }
