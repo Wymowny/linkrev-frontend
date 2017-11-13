@@ -313,6 +313,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 setTimeout(function() {
                     _this.initCommentsEventListeners();
+                    _this.wrapLongComments();
                     _this.checkRatings();
                 }, 0);
             }
@@ -385,24 +386,23 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.wrapLongComments = function() {
-    var showChar = 100,
-        ellipsestext = "...",
-        moretext = "- show more";
+    var showChar = 180,
+        ellipsestext = '...';
 
     $('.comment__content').each(function() {
-        let content = $(this).html();
+        var content = $(this).html();
 
         if(content.length > showChar) {
-            let c = content.substr(0, showChar),
-                h = content.substr(showChar, content.length - showChar);
+            var visibleContent = content.substr(0, showChar),
+                hiddenContent = content.substr(showChar, content.length - showChar);
 
-            let html = c + '<span class="more-ellipses">' + ellipsestext + '&nbsp;</span><span class="more-content"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="more-link">' + moretext + '</a></span>';
+            var html = visibleContent + '<span class="more-ellipses">' + ellipsestext + '</span><span class="more-content"><span>' + hiddenContent + '</span><a href="" class="more-link">' + chrome.i18n.getMessage('ShowMore') + '</a></span>';
 
             $(this).html(html);
         }
     });
 
-    $(".more-link").click(function(){
+    $(".more-link").on('click', function(){
         $(this).parent().prev().toggle();
         $(this).prev().toggle();
         $(this).remove();
