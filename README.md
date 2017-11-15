@@ -1,7 +1,11 @@
-# LinkRev 0.3.1
-Write and read comments on the Internet!
+# LinkRev 0.3.2
+Web Assistance Platform
+
+Rate sites, write and read comments on the Internet!
 
 Website: http://linkrev.com
+
+Rate sites - vote up or down links.
 
 Create comments on the Internet – add comments to any website on the Internet.
 
