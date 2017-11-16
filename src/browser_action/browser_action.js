@@ -156,14 +156,16 @@ linkRev.prototype.initEventListeners = function() {
         _this.getExistingComments();
     });
 
-    // Handle arrowUpButton button
     this.$arrowUpButton.on('click', function() {
 
+        _this.$arrowUpButton.attr('disabled', 'disabled');
+        _this.$arrowDownButton.attr('disabled', 'disabled');
     });
 
-    // Handle arrowDownButton button
     this.$arrowDownButton.on('click', function() {
 
+        _this.$arrowUpButton.attr('disabled', 'disabled');
+        _this.$arrowDownButton.attr('disabled', 'disabled');
     });
 
     this.$countrySelect.on('change', this.manageCountry.bind(this));
