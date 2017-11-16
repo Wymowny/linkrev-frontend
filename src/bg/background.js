@@ -71,6 +71,31 @@ linkRev.prototype.checkStatus = function(url) {
             type: "GET",
             url: statusUrl,
             success: function(result) {
+
+                var rating = result.likes - result.dislikes;
+
+                if (rating > 0) {
+
+                    chrome.browserAction.setIcon({ path: '../../icons/icon_green19.png' });
+                } else if (rating < 0) {
+
+                    chrome.browserAction.setIcon({ path: '../../icons/icon_red19.png'});
+                }
+                else {
+
+                    chrome.browserAction.setIcon({ path: '../../icons/icon19.png'});
+                }
+
+                chrome.storage.local.set({'linkRev_likesDislikes': { likes: result.likes, dislikes: result.dislikes }});
+
+                if (result.hotComment.length) {
+
+                    result.count += 1;
+                    chrome.storage.local.set({'linkRev_hotComment': result.hotComment});
+                } else {
+
+                    chrome.storage.local.remove('linkRev_hotComment');
+                }
     
                 if (result.hots.length) {
                     _this.updateIcon('HOT');
@@ -84,6 +109,7 @@ linkRev.prototype.checkStatus = function(url) {
                 }
             },
             error: function() {
+                chrome.browserAction.setIcon({ path: '../../icons/icon19.png' });
                 _this.updateIcon();
             },
             dataType: "json"

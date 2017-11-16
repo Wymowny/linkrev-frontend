@@ -75,5 +75,5 @@ linkRev.prototype.supportedLanguages = ['en', 'de', 'pl'];
 linkRev.prototype.supportedCountries = ['AU', 'AT', 'CA', 'DE', 'GB', 'IN', 'IE', 'NZ', 'US', 'PL', 'CH'];
 
 linkRev.prototype.getBasicUrl = function() {
-    return "https://linkrev.com/";
+    return "http://localhost:23704/";
 };
