@@ -13,7 +13,7 @@
                 <a href="#" target="_blank" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
             <div class="header">
-                <div class="header__mark">
+                <div id="rating" class="header__mark" style="display: none;">
                     <span class="header__rate">
                         <button type="button" class="header__arrow" id="arrow-up-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 292.362 292.362">
@@ -118,6 +118,9 @@
                 </div>
             </form>
 
+            <div id="link-hot-comment" style="display: none;">
+            </div>
+
             <div id="be-first-panel" class="be-first-panel">
                     __MSG_BeFirstAndWriteComment__
             </div>
@@ -137,6 +140,7 @@
         </div>
 
         <script src="../external/jquery/js/jquery-3.2.1.min.js"></script>
+        <script src="../external/safeResponse-1.1/js/safeResponse.js"></script>
         <script type="text/javascript" src="../common.js"></script>
         <script src="browser_action.js"></script>
     </body>

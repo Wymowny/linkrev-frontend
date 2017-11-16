@@ -41,18 +41,33 @@ linkRev.prototype.init = function() {
     this.$buttonCloseSettingsOverlay = $('#buttonCloseSettingsOverlay');
     this.$countrySelect = $('#country-select');
     this.$languageSelect = $('#language-select');
+    this.$hotComment = $('#link-hot-comment');
     this.$arrowUpButton = $('#arrow-up-button');
     this.$arrowDownButton = $('#arrow-down-button');
     this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
+        this.setHotComment();
         this.setHots();
         this.setSelectSorterValue();
         this.getExistingComments();
         this.initEventListeners();
     }.bind(this);
 };
+
+linkRev.prototype.setHotComment = function() {
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_hotComment', function(results) {
+
+        if (results.linkRev_hotComment) {
+
+            _this.$hotComment.html(safeResponse.cleanDomString(results.linkRev_hotComment));
+            _this.$hotComment.show();
+        }
+    });
+}
 
 linkRev.prototype.setHots = function() {
     var _this = this;
