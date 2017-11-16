@@ -69,23 +69,28 @@ linkRev.prototype.setRating = function() {
 
             var rating = parseInt(results.linkRev_likesDislikes.likes) - parseInt(results.linkRev_likesDislikes.dislikes);
 
-            if (rating > 0) {
-
-                _this.$linkRating.attr('class', 'header__number header__green-rating');
-                _this.$linkRating.text('+' + rating);
-            } else if (rating < 0) {
-
-                _this.$linkRating.attr('class', 'header__number header__red-rating');
-                _this.$linkRating.text(rating);
-            } else {
-
-                _this.$linkRating.attr('class', 'header__number');
-                _this.$linkRating.text(rating);
-            }            
-
-            _this.$rating.show();
+            _this.setLinkRating(rating);
         }
     });
+}
+
+linkRev.prototype.setLinkRating = function(rating) {
+
+    if (rating > 0) {
+
+        this.$linkRating.attr('class', 'header__number header__green-rating');
+        this.$linkRating.text('+' + rating);
+    } else if (rating < 0) {
+
+        this.$linkRating.attr('class', 'header__number header__red-rating');
+        this.$linkRating.text(rating);
+    } else {
+
+        this.$linkRating.attr('class', 'header__number');
+        this.$linkRating.text(rating);
+    }            
+
+    this.$rating.show();
 }
 
 linkRev.prototype.setHotComment = function() {
@@ -158,12 +163,14 @@ linkRev.prototype.initEventListeners = function() {
 
     this.$arrowUpButton.on('click', function() {
 
+        _this.getCurrentUrl(_this.voteLinkUp.bind(_this));
         _this.$arrowUpButton.attr('disabled', 'disabled');
         _this.$arrowDownButton.attr('disabled', 'disabled');
     });
 
     this.$arrowDownButton.on('click', function() {
 
+        _this.getCurrentUrl(_this.voteLinkDown.bind(_this));
         _this.$arrowUpButton.attr('disabled', 'disabled');
         _this.$arrowDownButton.attr('disabled', 'disabled');
     });
@@ -298,6 +305,46 @@ linkRev.prototype.replyToCommentAjaxQuery = function(url) {
             success: function() {
                 $('.box-answer').fadeOut(300, function() {$(this).remove();});
                 _this.getExistingComments();
+            }.bind(_this),
+            dataType: "json"
+        });
+    });
+};
+
+linkRev.prototype.voteLinkUp = function(url) {
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        var data = "Url=" + encodeURIComponent(url) + '&Language=' + results.linkRev_settings.language;
+
+        $.ajax({
+            type: "POST",
+            url: _this.getVoteLinkUpUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function(data) {
+                var rating = parseInt(data.likes) - parseInt(data.dislikes);
+                _this.setLinkRating(rating);
+            }.bind(_this),
+            dataType: "json"
+        });
+    });
+};
+
+linkRev.prototype.voteLinkDown = function(url) {
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        var data = "Url=" + encodeURIComponent(url) + '&Language=' + results.linkRev_settings.language;
+
+        $.ajax({
+            type: "POST",
+            url: _this.getVoteLinkDownUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function(data) {
+                var rating = parseInt(data.likes) - parseInt(data.dislikes);
+                _this.setLinkRating(rating);
             }.bind(_this),
             dataType: "json"
         });

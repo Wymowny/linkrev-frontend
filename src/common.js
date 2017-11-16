@@ -54,6 +54,14 @@ linkRev.prototype.getCommentsUrl = function() {
     return this.getBasicUrl() +  "api/comments";
 };
 
+linkRev.prototype.getVoteLinkUpUrl = function() {
+    return this.getBasicUrl() +  "api/link/voteUp";
+};
+
+linkRev.prototype.getVoteLinkDownUrl = function() {
+    return this.getBasicUrl() +  "api/link/voteDown";
+};
+
 linkRev.prototype.localizeHtmlPage = function() {
     var objects = document.getElementsByTagName('html');
 
