@@ -41,16 +41,71 @@ linkRev.prototype.init = function() {
     this.$buttonCloseSettingsOverlay = $('#buttonCloseSettingsOverlay');
     this.$countrySelect = $('#country-select');
     this.$languageSelect = $('#language-select');
+    this.$hotComment = $('#link-hot-comment');
+    this.$arrowUpButton = $('#arrow-up-button');
+    this.$rating = $('#rating');
+    this.$linkRating = $('#link-rating');
+    this.$arrowDownButton = $('#arrow-down-button');
     this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
+        this.setRating();
+        this.setHotComment();
         this.setHots();
         this.setSelectSorterValue();
         this.getExistingComments();
         this.initEventListeners();
     }.bind(this);
 };
+
+linkRev.prototype.setRating = function() {
+
+    var _this = this; 
+
+    chrome.storage.local.get('linkRev_likesDislikes', function(results) {
+        
+        if (results.linkRev_likesDislikes) {
+
+            var rating = parseInt(results.linkRev_likesDislikes.likes) - parseInt(results.linkRev_likesDislikes.dislikes);
+
+            _this.setLinkRating(rating);
+        }
+    });
+}
+
+linkRev.prototype.setLinkRating = function(rating) {
+
+    if (rating > 0) {
+
+        this.$linkRating.attr('class', 'header__number header__green-rating');
+        this.$linkRating.text('+' + rating);
+    } else if (rating < 0) {
+
+        this.$linkRating.attr('class', 'header__number header__red-rating');
+        this.$linkRating.text(rating);
+    } else {
+
+        this.$linkRating.attr('class', 'header__number');
+        this.$linkRating.text(rating);
+    }            
+
+    this.$rating.show();
+}
+
+linkRev.prototype.setHotComment = function() {
+
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_hotComment', function(results) {
+
+        if (results.linkRev_hotComment && results.linkRev_hotComment.length) {
+
+            _this.$hotComment.html(safeResponse.cleanDomString(results.linkRev_hotComment));
+            _this.$hotComment.show();
+        }
+    });
+}
 
 linkRev.prototype.setHots = function() {
     var _this = this;
@@ -104,6 +159,20 @@ linkRev.prototype.initEventListeners = function() {
     this.$buttonCloseSettingsOverlay.on('click', function() {
         _this.$overlaySettings.removeClass(_this.overlayVisibleClass);
         _this.getExistingComments();
+    });
+
+    this.$arrowUpButton.on('click', function() {
+
+        _this.getCurrentUrl(_this.voteLinkUp.bind(_this));
+        _this.$arrowUpButton.attr('disabled', 'disabled');
+        _this.$arrowDownButton.attr('disabled', 'disabled');
+    });
+
+    this.$arrowDownButton.on('click', function() {
+
+        _this.getCurrentUrl(_this.voteLinkDown.bind(_this));
+        _this.$arrowUpButton.attr('disabled', 'disabled');
+        _this.$arrowDownButton.attr('disabled', 'disabled');
     });
 
     this.$countrySelect.on('change', this.manageCountry.bind(this));
@@ -242,6 +311,46 @@ linkRev.prototype.replyToCommentAjaxQuery = function(url) {
     });
 };
 
+linkRev.prototype.voteLinkUp = function(url) {
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        var data = "Url=" + encodeURIComponent(url) + '&Language=' + results.linkRev_settings.language;
+
+        $.ajax({
+            type: "POST",
+            url: _this.getVoteLinkUpUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function(data) {
+                var rating = parseInt(data.likes) - parseInt(data.dislikes);
+                _this.setLinkRating(rating);
+            }.bind(_this),
+            dataType: "json"
+        });
+    });
+};
+
+linkRev.prototype.voteLinkDown = function(url) {
+    var _this = this;
+
+    chrome.storage.local.get('linkRev_settings', function(results) {
+        var data = "Url=" + encodeURIComponent(url) + '&Language=' + results.linkRev_settings.language;
+
+        $.ajax({
+            type: "POST",
+            url: _this.getVoteLinkDownUrl(),
+            contentType:"application/x-www-form-urlencoded",
+            data: data,
+            success: function(data) {
+                var rating = parseInt(data.likes) - parseInt(data.dislikes);
+                _this.setLinkRating(rating);
+            }.bind(_this),
+            dataType: "json"
+        });
+    });
+};
+
 linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
     var commentsUrl = this.getCommentsUrl() + '?link=' + encodeURIComponent(url) + '&sortingStrategy=' + this.sortingStrategy + '&showAll=' + settings.showAll;
 
@@ -265,10 +374,10 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 for (var i = 0; i < comments.length; i++) {
                     if (!comments[i].replyToPrimaryCommentId) {
-                        let cleanId = this.cleanDomString(comments[i]._id);
-                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
-                        let cleanContent = this.cleanDomString(comments[i].content);
-                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
+                        let cleanId = this.cleanDomString(comments[i]._id),
+                            cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate),
+                            cleanContent = this.cleanDomString(comments[i].content),
+                            cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
 
                         html += '<div class="box box-primary" data-comment-id="' + cleanId + '"><div class="content content-primary"><div class="box__head"><sub>ID: <span>' + cleanId.toString().substr(cleanId.length - 5) + '</span>' + ' ' + new Date(cleanCreatedDateTime).toLocaleDateString() +
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
@@ -279,11 +388,11 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
                     } else {
-                        let cleanId = this.cleanDomString(comments[i]._id);
-                        let cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate);
-                        let cleanContent = this.cleanDomString(comments[i].content);
-                        let cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes);
-                        let replyToPrimaryCommentId = this.cleanDomString(comments[i].replyToPrimaryCommentId);
+                        let cleanId = this.cleanDomString(comments[i]._id),
+                            cleanCreatedDateTime = this.cleanDomString(comments[i].createdDate),
+                            cleanContent = this.cleanDomString(comments[i].content),
+                            cleanLikesMinusDislikes = parseInt(comments[i].likesMinusDislikes),
+                            replyToPrimaryCommentId = this.cleanDomString(comments[i].replyToPrimaryCommentId);
 
                         setTimeout(function() {
                             $('.box-primary[data-comment-id="' + replyToPrimaryCommentId + '"]').find('.content-primary').after(
