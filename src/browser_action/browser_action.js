@@ -43,11 +43,14 @@ linkRev.prototype.init = function() {
     this.$languageSelect = $('#language-select');
     this.$hotComment = $('#link-hot-comment');
     this.$arrowUpButton = $('#arrow-up-button');
+    this.$rating = $('#rating');
+    this.$linkRating = $('#link-rating');
     this.$arrowDownButton = $('#arrow-down-button');
     this.$showCommentsFromAllLanguages = $('#showCommentsFromAllLanguages');
 
     // Functions fired after opening LinkRev extension:
     window.onload = function () {
+        this.setRating();
         this.setHotComment();
         this.setHots();
         this.setSelectSorterValue();
@@ -56,12 +59,42 @@ linkRev.prototype.init = function() {
     }.bind(this);
 };
 
+linkRev.prototype.setRating = function() {
+
+    var _this = this; 
+
+    chrome.storage.local.get('linkRev_likesDislikes', function(results) {
+        
+        if (results.linkRev_likesDislikes) {
+
+            var rating = parseInt(results.linkRev_likesDislikes.likes) - parseInt(results.linkRev_likesDislikes.dislikes);
+
+            if (rating > 0) {
+
+                _this.$linkRating.attr('class', 'header__number header__green-rating');
+                _this.$linkRating.text('+' + rating);
+            } else if (rating < 0) {
+
+                _this.$linkRating.attr('class', 'header__number header__red-rating');
+                _this.$linkRating.text(rating);
+            } else {
+
+                _this.$linkRating.attr('class', 'header__number');
+                _this.$linkRating.text(rating);
+            }            
+
+            _this.$rating.show();
+        }
+    });
+}
+
 linkRev.prototype.setHotComment = function() {
+
     var _this = this;
 
     chrome.storage.local.get('linkRev_hotComment', function(results) {
 
-        if (results.linkRev_hotComment) {
+        if (results.linkRev_hotComment && results.linkRev_hotComment.length) {
 
             _this.$hotComment.html(safeResponse.cleanDomString(results.linkRev_hotComment));
             _this.$hotComment.show();

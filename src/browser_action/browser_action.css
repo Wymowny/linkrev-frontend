@@ -144,6 +144,14 @@ i.fa {
     cursor: pointer;
 }
 
+.header__red-rating {
+    color: #e25822;
+}
+
+.header__green-rating {
+    color: #00b300;
+}
+
 #content {
     width: 430px;
     padding: 10px;
