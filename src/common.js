@@ -54,20 +54,20 @@ linkRev.prototype.getCommentsUrl = function() {
     return this.getBasicUrl() +  "api/comments";
 };
 
+linkRev.prototype.getVoteLinkUpUrl = function() {
+    return this.getBasicUrl() +  "api/link/voteUp";
+};
+
+linkRev.prototype.getVoteLinkDownUrl = function() {
+    return this.getBasicUrl() +  "api/link/voteDown";
+};
+
 linkRev.prototype.localizeHtmlPage = function() {
-    var objects = document.getElementsByTagName('html');
-
-    for (var j = 0; j < objects.length; j++) {
-        var obj = objects[j];
-        var valStrH = obj.innerHTML.toString();
-        var valNewH = valStrH.replace(/__MSG_(\w+)__/g, function(match, v1) {
+    $('body').children().each(function () {
+        $(this).html($(this).html().replace(/__MSG_(\w+)__/g, function(match, v1) {
             return v1 ? chrome.i18n.getMessage(v1) : "";
-        });
-
-        if (valNewH != valStrH) {
-            obj.innerHTML = valNewH;
-        }
-    }
+        }));
+    });
 };
 
 linkRev.prototype.supportedLanguages = ['en', 'de', 'pl'];

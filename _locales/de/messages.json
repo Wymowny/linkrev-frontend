@@ -1,6 +1,6 @@
 {
   "appDesc": {
-    "message": "Lesen und schreiben Sie Kommentare im Internet."
+    "message": "Web Assistance Platform. Bewerten Sie Seiten, lesen und schreiben Sie Kommentare im Internet."
   },
   "Message": {
     "message": "Kommentar"
@@ -139,5 +139,8 @@
   },
   "AnswerPlaceholder": {
     "message": "Antwort"
+  },
+  "ShowMore": {
+    "message": "erweitern"
   }
 }

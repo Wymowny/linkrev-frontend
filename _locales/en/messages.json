@@ -1,6 +1,6 @@
 {
   "appDesc": {
-    "message": "Write and read comments on the Internet."
+    "message": "The first and best Web Assistance Platform. Rate sites, write and read comments all over the web."
   },
   "Message": {
     "message": "Message"
@@ -139,5 +139,8 @@
   },
   "AnswerPlaceholder": {
     "message": "Your comment"
+  },
+  "ShowMore": {
+    "message": "expand"
   }
 }
