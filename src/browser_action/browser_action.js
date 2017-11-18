@@ -91,7 +91,7 @@ linkRev.prototype.setHotComment = function() {
 
     chrome.storage.local.get('linkRev_hotComment', function(results) {
         if (results.linkRev_hotComment && results.linkRev_hotComment.length) {
-            _this.$hotComment.html('<blockquote>' + safeResponse.cleanDomString(results.linkRev_hotComment) + '</blockquote>');
+            _this.$hotComment.append('<blockquote>' + results.linkRev_hotComment.toString() + '</blockquote>');
             _this.$hotComment.show();
         }
     });
