@@ -91,7 +91,7 @@ linkRev.prototype.setHotComment = function() {
 
     chrome.storage.local.get('linkRev_hotComment', function(results) {
         if (results.linkRev_hotComment && results.linkRev_hotComment.length) {
-            _this.$hotComment.html(safeResponse.cleanDomString(results.linkRev_hotComment));
+            _this.$hotComment.html('<blockquote>' + safeResponse.cleanDomString(results.linkRev_hotComment) + '</blockquote>');
             _this.$hotComment.show();
         }
     });
@@ -248,13 +248,15 @@ linkRev.prototype.initCommentsEventListeners = function() {
         });
     });
 
-    // Handle link
-    $('a').each(function() {
-        $(this).on('click', function() {
-            chrome.tabs.create({url: $(this).attr('href')});
-            return false;
+    // Handle links
+    setTimeout(function() {
+        $('a.external-link').each(function() {
+            $(this).on('click', function() {
+                chrome.tabs.create({url: $(this).attr('href')});
+                return false;
+            });
         });
-    });
+    }, 0);
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -409,11 +411,9 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 this.$existingComments.html(html);
 
-                setTimeout(function() {
-                    _this.initCommentsEventListeners();
-                    _this.wrapLongComments();
-                    _this.checkRatings();
-                }, 0);
+                _this.initCommentsEventListeners();
+                _this.checkRatings();
+                _this.wrapLongComments();
             }
         }.bind(this),
         dataType: "json"
@@ -484,7 +484,7 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.wrapLongComments = function() {
-    var visibleTextLength = 180,
+    var visibleTextLength = 160,
         ellipsisText = '...';
 
     $('.comment__content').each(function() {
@@ -542,7 +542,7 @@ linkRev.prototype.urlify = function(context) {
         _this = this;
 
     return context.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + _this.shortenUrl(url, _this.maxHrefLength) + '</a>';
+        return '<a href="' + url + '" class="external-link">' + _this.shortenUrl(url, _this.maxHrefLength) + '</a>';
     });
 };
 
@@ -565,12 +565,11 @@ linkRev.prototype.shortenUrl = function(url, l) {
 linkRev.prototype.shortString = function(string, l, reverse) {
     var stopChars = [' ','/', '&'],
         acceptableShortness = l * 0.80,
-        stringVariable = '\'' + string + '\'',
         shortString = '';
 
     reverse = typeof(reverse) !== 'undefined' ? reverse : false;
 
-    if (reverse) { string = stringVariable.split('').reverse().join(''); }
+    if (reverse) { string = string.split('').reverse().join(''); }
 
     for (var i = 0; i < l - 1; i++) {
         shortString += string[i];

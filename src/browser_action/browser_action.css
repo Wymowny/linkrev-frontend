@@ -135,6 +135,11 @@ i.fa {
     display: none;
 }
 
+.hot-comments blockquote {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .header__number {
     font-weight: bold;
 }
