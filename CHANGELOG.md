@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Rating of links
 - Comments count fallback
+- Wrapping long comments
+- Shortening and parsing links inside comments
 - Comments fallback
 
 ## [0.3.1] - 2017-10-22
