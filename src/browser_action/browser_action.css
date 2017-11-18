@@ -209,6 +209,18 @@ i.fa {
     display: block;
 }
 
+blockquote {
+    margin-bottom: 15px;
+}
+
+blockquote.comment__content--short {
+    max-height: 115px;
+}
+
+blockquote .comment-cover {
+    left: 0;
+}
+
 .comment-cover {
     bottom: 0;
     width: 100%;
