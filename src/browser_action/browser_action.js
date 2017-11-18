@@ -374,7 +374,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
-                        '</div><p class="comment__content">' + _this.urlify(cleanContent) + '</p><div class="box__footer">' +
+                        '</div><p class="comment__content">' + _this.urlify(cleanContent) + '<span class="comment-cover">' + chrome.i18n.getMessage('ShowMore') + '</span></p><div class="box__footer">' +
                         '<button class="button is-primary reply-button is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
                         '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
@@ -391,7 +391,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                                 ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                                 '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                                 '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
-                                '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                                '</div><p class="comment__content">' + cleanContent + '<span class="comment-cover">' + chrome.i18n.getMessage('ShowMore') + '</span></p><div class="box__footer">' +
                                 '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                                 '</div></div></div>');
                         }, 0);
@@ -484,27 +484,17 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.wrapLongComments = function() {
-    var visibleTextLength = 160,
-        ellipsisText = '...';
+    var maximumHeight = 150;
 
     $('.comment__content').each(function() {
-        var content = $(this).html();
-
-        if (content.length > visibleTextLength) {
-            var visibleContent = content.substr(0, visibleTextLength),
-                hiddenContent = content.substr(visibleTextLength, content.length - visibleTextLength);
-
-            var html = visibleContent + '<span class="more-ellipses">' + ellipsisText + '</span><span class="more-content"><span>' + hiddenContent + '</span><a href="" class="more-link">' + chrome.i18n.getMessage('ShowMore') + '</a></span>';
-
-            $(this).html(html);
+        if ($(this).height() > maximumHeight) {
+            $(this).addClass('comment__content--short');
         }
     });
 
-    $(".more-link").on('click', function(){
-        $(this).parent().prev().toggle();
-        $(this).prev().toggle();
+    $('.comment-cover').on('click', function(){
+        $(this).parent().removeClass('comment__content--short');
         $(this).remove();
-        return false;
     });
 };
 
