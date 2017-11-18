@@ -60,52 +60,42 @@ linkRev.prototype.init = function() {
 };
 
 linkRev.prototype.setRating = function() {
-
-    var _this = this; 
+    var _this = this;
 
     chrome.storage.local.get('linkRev_likesDislikes', function(results) {
-        
         if (results.linkRev_likesDislikes) {
-
             var rating = parseInt(results.linkRev_likesDislikes.likes) - parseInt(results.linkRev_likesDislikes.dislikes);
 
             _this.setLinkRating(rating);
         }
     });
-}
+};
 
 linkRev.prototype.setLinkRating = function(rating) {
-
     if (rating > 0) {
-
         this.$linkRating.attr('class', 'header__number header__green-rating');
         this.$linkRating.text('+' + rating);
     } else if (rating < 0) {
-
         this.$linkRating.attr('class', 'header__number header__red-rating');
         this.$linkRating.text(rating);
     } else {
-
         this.$linkRating.attr('class', 'header__number');
         this.$linkRating.text(rating);
     }            
 
     this.$rating.show();
-}
+};
 
 linkRev.prototype.setHotComment = function() {
-
     var _this = this;
 
     chrome.storage.local.get('linkRev_hotComment', function(results) {
-
         if (results.linkRev_hotComment && results.linkRev_hotComment.length) {
-
-            _this.$hotComment.html(safeResponse.cleanDomString(results.linkRev_hotComment));
+            _this.$hotComment.html('<blockquote>' + safeResponse.cleanDomString(results.linkRev_hotComment) + '</blockquote>');
             _this.$hotComment.show();
         }
     });
-}
+};
 
 linkRev.prototype.setHots = function() {
     var _this = this;
@@ -169,7 +159,6 @@ linkRev.prototype.initEventListeners = function() {
     });
 
     this.$arrowDownButton.on('click', function() {
-
         _this.getCurrentUrl(_this.voteLinkDown.bind(_this));
         _this.$arrowUpButton.attr('disabled', 'disabled');
         _this.$arrowDownButton.attr('disabled', 'disabled');
@@ -259,13 +248,15 @@ linkRev.prototype.initCommentsEventListeners = function() {
         });
     });
 
-    // Handle link
-    $('a').each(function() {
-        $(this).on('click', function() {
-            chrome.tabs.create({url: $(this).attr('href')});
-            return false;
+    // Handle links
+    setTimeout(function() {
+        $('a.external-link').each(function() {
+            $(this).on('click', function() {
+                chrome.tabs.create({url: $(this).attr('href')});
+                return false;
+            });
         });
-    });
+    }, 0);
 };
 
 linkRev.prototype.addCommentAjaxQuery = function(url) {
@@ -383,7 +374,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                         ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                         '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                         '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
-                        '</div><p class="comment__content">' + _this.urlify(cleanContent) + '</p><div class="box__footer">' +
+                        '</div><p class="comment__content">' + _this.urlify(cleanContent) + '<span class="comment-cover">' + chrome.i18n.getMessage('ShowMore') + '</span></p><div class="box__footer">' +
                         '<button class="button is-primary reply-button is-small" data-attribute="answerComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Answer') + '</button>' +
                         '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                         '</div></div></div>';
@@ -400,7 +391,7 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
                                 ' ' + new Date(cleanCreatedDateTime).toLocaleTimeString() + '</sub><span class="rating">' +
                                 '<button class="icon has-text-success pointer" data-attribute="likeComment" data-like-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-plus-square"></i></button>' + '<span class="rate__number" data-likesminusdislikes="' + cleanId + '">' + cleanLikesMinusDislikes + '</span>' +
                                 '<button class="icon has-text-danger pointer" data-attribute="dislikeComment" data-dislike-id="' + cleanId + '" data-comment-id="' + cleanId + '"><i class="fa fa-minus-square"></i></button></span>' +
-                                '</div><p class="comment__content">' + cleanContent + '</p><div class="box__footer">' +
+                                '</div><p class="comment__content">' + cleanContent + '<span class="comment-cover">' + chrome.i18n.getMessage('ShowMore') + '</span></p><div class="box__footer">' +
                                 '<button class="button is-small no-border grey" data-attribute="reportComment" data-comment-id="' + cleanId + '">' + chrome.i18n.getMessage('Report') + '</button>' +
                                 '</div></div></div>');
                         }, 0);
@@ -420,11 +411,9 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 this.$existingComments.html(html);
 
-                setTimeout(function() {
-                    _this.initCommentsEventListeners();
-                    _this.wrapLongComments();
-                    _this.checkRatings();
-                }, 0);
+                _this.initCommentsEventListeners();
+                _this.checkRatings();
+                _this.wrapLongComments();
             }
         }.bind(this),
         dataType: "json"
@@ -495,27 +484,17 @@ linkRev.prototype.cleanDomString = function(data) {
 };
 
 linkRev.prototype.wrapLongComments = function() {
-    var visibleTextLength = 180,
-        ellipsisText = '...';
+    var maximumHeight = 150;
 
     $('.comment__content').each(function() {
-        var content = $(this).html();
-
-        if (content.length > visibleTextLength) {
-            var visibleContent = content.substr(0, visibleTextLength),
-                hiddenContent = content.substr(visibleTextLength, content.length - visibleTextLength);
-
-            var html = visibleContent + '<span class="more-ellipses">' + ellipsisText + '</span><span class="more-content"><span>' + hiddenContent + '</span><a href="" class="more-link">' + chrome.i18n.getMessage('ShowMore') + '</a></span>';
-
-            $(this).html(html);
+        if ($(this).height() > maximumHeight) {
+            $(this).addClass('comment__content--short');
         }
     });
 
-    $(".more-link").on('click', function(){
-        $(this).parent().prev().toggle();
-        $(this).prev().toggle();
+    $('.comment-cover').on('click', function(){
+        $(this).parent().removeClass('comment__content--short');
         $(this).remove();
-        return false;
     });
 };
 
@@ -553,7 +532,7 @@ linkRev.prototype.urlify = function(context) {
         _this = this;
 
     return context.replace(urlRegex, function(url) {
-        return '<a href="' + url + '">' + _this.shortenUrl(url, _this.maxHrefLength) + '</a>';
+        return '<a href="' + url + '" class="external-link">' + _this.shortenUrl(url, _this.maxHrefLength) + '</a>';
     });
 };
 
@@ -576,12 +555,11 @@ linkRev.prototype.shortenUrl = function(url, l) {
 linkRev.prototype.shortString = function(string, l, reverse) {
     var stopChars = [' ','/', '&'],
         acceptableShortness = l * 0.80,
-        stringVariable = '\'' + string + '\'',
         shortString = '';
 
     reverse = typeof(reverse) !== 'undefined' ? reverse : false;
 
-    if (reverse) { string = stringVariable.split('').reverse().join(''); }
+    if (reverse) { string = string.split('').reverse().join(''); }
 
     for (var i = 0; i < l - 1; i++) {
         shortString += string[i];
