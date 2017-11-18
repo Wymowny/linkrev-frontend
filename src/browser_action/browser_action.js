@@ -60,52 +60,42 @@ linkRev.prototype.init = function() {
 };
 
 linkRev.prototype.setRating = function() {
-
-    var _this = this; 
+    var _this = this;
 
     chrome.storage.local.get('linkRev_likesDislikes', function(results) {
-        
         if (results.linkRev_likesDislikes) {
-
             var rating = parseInt(results.linkRev_likesDislikes.likes) - parseInt(results.linkRev_likesDislikes.dislikes);
 
             _this.setLinkRating(rating);
         }
     });
-}
+};
 
 linkRev.prototype.setLinkRating = function(rating) {
-
     if (rating > 0) {
-
         this.$linkRating.attr('class', 'header__number header__green-rating');
         this.$linkRating.text('+' + rating);
     } else if (rating < 0) {
-
         this.$linkRating.attr('class', 'header__number header__red-rating');
         this.$linkRating.text(rating);
     } else {
-
         this.$linkRating.attr('class', 'header__number');
         this.$linkRating.text(rating);
     }            
 
     this.$rating.show();
-}
+};
 
 linkRev.prototype.setHotComment = function() {
-
     var _this = this;
 
     chrome.storage.local.get('linkRev_hotComment', function(results) {
-
         if (results.linkRev_hotComment && results.linkRev_hotComment.length) {
-
             _this.$hotComment.html(safeResponse.cleanDomString(results.linkRev_hotComment));
             _this.$hotComment.show();
         }
     });
-}
+};
 
 linkRev.prototype.setHots = function() {
     var _this = this;
@@ -169,7 +159,6 @@ linkRev.prototype.initEventListeners = function() {
     });
 
     this.$arrowDownButton.on('click', function() {
-
         _this.getCurrentUrl(_this.voteLinkDown.bind(_this));
         _this.$arrowUpButton.attr('disabled', 'disabled');
         _this.$arrowDownButton.attr('disabled', 'disabled');
