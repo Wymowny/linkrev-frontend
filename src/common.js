@@ -45,6 +45,7 @@ linkRev.prototype.getCurrentCountry = function(language) {
         if (language === 'pl') return 'PL';
         if (language === 'en') return 'US';
         if (language === 'de') return 'CH';
+        if (language === 'pt') return 'BR';
     }
 
     return '';
@@ -70,9 +71,9 @@ linkRev.prototype.localizeHtmlPage = function() {
     });
 };
 
-linkRev.prototype.supportedLanguages = ['en', 'de', 'pl'];
+linkRev.prototype.supportedLanguages = ['en', 'de', 'pl', 'pt'];
 
-linkRev.prototype.supportedCountries = ['AU', 'AT', 'CA', 'DE', 'GB', 'IN', 'IE', 'NZ', 'US', 'PL', 'CH'];
+linkRev.prototype.supportedCountries = ['AU', 'AT', 'BR', 'CA', 'DE', 'GB', 'IN', 'IE', 'NZ', 'US', 'PL', 'PT', 'CH'];
 
 linkRev.prototype.getBasicUrl = function() {
     return "https://linkrev.com/";

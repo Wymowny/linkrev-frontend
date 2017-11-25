@@ -95,8 +95,14 @@
   "Polish": {
     "message": "Polish"
   },
+  "Portuguese": {
+    "message": "Portuguese"
+  },
   "Australia": {
     "message": "Australia"
+  },
+  "Brazil": {
+    "message": "Brazil"
   },
   "Austria": {
     "message": "Austria"
@@ -124,6 +130,9 @@
   },
   "Poland": {
     "message": "Poland"
+  },
+  "Portugal": {
+    "message": "Portugal"
   },
   "Switzerland": {
     "message": "Switzerland"
