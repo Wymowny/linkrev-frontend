@@ -411,9 +411,11 @@ linkRev.prototype.existingCommentsAjaxQuery = function(url, settings) {
 
                 this.$existingComments.html(html);
 
-                _this.initCommentsEventListeners();
-                _this.checkRatings();
-                _this.wrapLongComments();
+                setTimeout(function() {
+                    _this.initCommentsEventListeners();
+                    _this.checkRatings();
+                    _this.wrapLongComments();
+                }, 0);
             }
         }.bind(this),
         dataType: "json"
