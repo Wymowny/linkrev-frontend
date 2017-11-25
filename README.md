@@ -1,4 +1,4 @@
-# LinkRev 0.3.3
+# LinkRev 0.3.4
 Web Assistance Platform
 
 Rate sites, write and read comments on the Internet!
