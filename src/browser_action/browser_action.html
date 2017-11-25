@@ -13,7 +13,7 @@
                 <a href="#" target="_blank" id="alert-go-to" class="button button--right is-small is-danger">__MSG_AlertLink__</a>
             </div>
             <div class="header">
-                <div id="rating" class="header__mark">
+                <div id="rating" class="header__mark" style="display: none;">
                     <span class="header__rate">
                         <button type="button" class="header__arrow" id="arrow-up-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 292.362 292.362">
@@ -21,7 +21,7 @@
                             </svg>
                         </button>
 
-                        <span class="header__number" id="link-rating">+4</span>
+                        <span class="header__number" id="link-rating"></span>
 
                         <button type="button" class="header__arrow" id="arrow-down-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 292.362 292.362">
@@ -61,6 +61,7 @@
                                         <option value="en">__MSG_English__</option>
                                         <option value="de">__MSG_German__</option>
                                         <option value="pl">__MSG_Polish__</option>
+                                        <option value="pt">__MSG_Portuguese__</option>
                                         <option value="">__MSG_Other__</option>
                                     </select>
                                 </div>
@@ -75,6 +76,7 @@
                                     <select id="country-select">
                                         <option value="AU">__MSG_Australia__</option>
                                         <option value="AT">__MSG_Austria__</option>
+                                        <option value="BR">__MSG_Brazil__</option>
                                         <option value="CA">__MSG_Canada__</option>
                                         <option value="DE">__MSG_Germany__</option>
                                         <option value="GB">__MSG_United_Kingdom__</option>
@@ -83,6 +85,7 @@
                                         <option value="NZ">__MSG_New_Zealand__</option>
                                         <option value="US">__MSG_United_States__</option>
                                         <option value="PL">__MSG_Poland__</option>
+                                        <option value="PT">__MSG_Portugal__</option>
                                         <option value="CH">__MSG_Switzerland__</option>
                                         <option value="">__MSG_Other__</option>                                        
                                     </select>
@@ -106,7 +109,7 @@
                 <div class="field">
                     <div class="control">
                         <label class="checkbox">
-                            __MSG_IAgree__<a href="__MSG_TermsAndConditionsLink__" class="external-link">__MSG_TermsAndConditions__</a>
+                            __MSG_IAgree__<a href="__MSG_TermsAndConditionsLink__">__MSG_TermsAndConditions__</a>
                         </label>
                     </div>
                 </div>
@@ -118,7 +121,8 @@
                 </div>
             </form>
 
-            <div id="link-hot-comment" class="hot-comments content"></div>
+            <div id="link-hot-comment" style="display: none;">
+            </div>
 
             <div id="be-first-panel" class="be-first-panel">
                     __MSG_BeFirstAndWriteComment__
@@ -139,6 +143,7 @@
         </div>
 
         <script src="../external/jquery/js/jquery-3.2.1.min.js"></script>
+        <script src="../external/safeResponse-1.1/js/safeResponse.js"></script>
         <script type="text/javascript" src="../common.js"></script>
         <script src="browser_action.js"></script>
     </body>

@@ -1,0 +1,156 @@
+{
+    "appDesc": {
+      "message": "LinkRev: Avalie sites, escreva e leia comentários em toda a web."
+    },
+    "Message": {
+      "message": "Mensagem"
+    },
+    "YourComment": {
+      "message": "Seu comentário"
+    },
+    "IAgree": {
+      "message": "Usando LinkRev eu aceito o "
+    },
+    "TermsAndConditions": {
+      "message": "termos e condições"
+    },
+    "TermsAndConditionsLink": {
+      "message": "https://linkrev.com/pt/TermsAndConditions"
+    },
+    "Submit": {
+      "message": "Enviar"
+    },
+    "Comments": {
+      "message": "Comentários"
+    },
+    "BestFromAll": {
+      "message": "melhores"
+    },
+    "OldToNew": {
+      "message": "mais antigos"
+    },
+    "NewToOld": {
+      "message": "mais recentes"
+    },
+    "DiscussionLink": {
+      "message": "Vá para a discussão quente!"
+    },
+    "MessageLengthUnder": {
+      "message": "A mensagem é muito curta!"
+    },
+    "MessageLengthOver": {
+      "message": "A mensagem é muito longa!"
+    },
+    "MessageTiming": {
+      "message": "Você precisa esperar 30 segundos!"
+    },
+    "CommentSuccess": {
+      "message": "O comentário foi enviado com sucesso!"
+    },
+    "SentSuccessfully": {
+      "message": "Enviado com sucesso!"
+    },
+    "Report": {
+      "message": "Relatório"
+    },
+    "BeFirstAndWriteComment": {
+      "message": "Escreva seu comentário!"
+    },
+    "AlertLink": {
+      "message": "Vá para o site e escreva seu comentário!"
+    },
+    "Answer": {
+      "message": "Resposta"
+    },
+    "AllLanguagesPost": {
+      "message": "Mostrar comentários de todos os idiomas"
+    },
+    "ChooseLanguage": {
+      "message": "Seu idioma padrão"
+    },
+    "ChooseCountry": {
+      "message": "Seu país padrão"
+    },
+    "LoginButton": {
+      "message": "Entrar"
+    },
+    "LoginText": {
+      "message": "Enviar"
+    },
+    "RegisterButton": {
+      "message": "Registrar"
+    },
+    "Settings": {
+      "message": "Configurações"
+    },  
+    "Close": {
+      "message": "Fechar"
+    },
+    "English": {
+      "message": "Inglês"
+    },
+    "German": {
+      "message": "Alemão"
+    },
+    "Polish": {
+      "message": "Polonês"
+    },
+    "Portuguese": {
+      "message": "Português"
+    },
+    "Australia": {
+      "message": "Austrália"
+    },
+    "Brazil": {
+      "message": "Brasil"
+    },
+    "Austria": {
+      "message": "Áustria"
+    },
+    "Canada": {
+      "message": "Canadá"
+    },
+    "Germany": {
+      "message": "Alemanha"
+    },
+    "United_Kingdom": {
+      "message": "Reino Unido"
+    },
+    "India": {
+      "message": "Índia"
+    },
+    "Ireland": {
+      "message": "Irlanda"
+    },
+    "New_Zealand": {
+      "message": "Nova Zelândia"
+    },
+    "United_States": {
+      "message": "Estados Unidos"
+    },
+    "Poland": {
+      "message": "Polônia"
+    },
+    "Portugal": {
+      "message": "Portugal"
+    },
+    "Switzerland": {
+      "message": "Suíça"
+    },
+    "Other": {
+      "message": "outros"
+    },
+    "Toggle": {
+      "message": "Alternancia"
+    },
+    "AnswerButton": {
+      "message": "Resposta"
+    },
+    "AnswerPlaceholder": {
+      "message": "Seu comentário"
+    },
+    "ShowMore": {
+      "message": "Mostre mais"
+    }
+  }
+  
