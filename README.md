@@ -21,3 +21,5 @@ Extensions in browsers' stores:
 Information:
 - [Terms and conditions](https://linkrev.com/en/TermsAndConditions)
 - [Privacy Policy](https://linkrev.com/en/PrivacyPolicy)
+
+FYI: We turned off our servers, extension is no longer supported and developed!
